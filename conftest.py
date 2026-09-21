@@ -1,7 +1,10 @@
 import pytest
 from django.test import Client
 
+from apps.clients.tests.factories import ClientFactory
 from apps.core.tests.factories import StudioFactory, UserFactory
+from apps.scheduling.tests import factories as _event_factories  # noqa: F401  (registers)
+from apps.shoots.tests.factories import ShootFactory
 
 
 @pytest.fixture
@@ -28,3 +31,14 @@ def auth_client(studio):
     client = Client()
     client.force_login(studio.owner)
     return client
+
+
+@pytest.fixture
+def client_obj(studio):
+    """A client of the signed-in studio (named to avoid clashing with Django's `client`)."""
+    return ClientFactory(studio=studio)
+
+
+@pytest.fixture
+def shoot(studio):
+    return ShootFactory(studio=studio)

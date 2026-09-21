@@ -80,3 +80,21 @@ def test_dashboard_shows_only_the_signed_in_studio(auth_client, studio, other_st
     html = auth_client.get(reverse("core:dashboard")).content.decode()
     assert studio.name in html
     assert other_studio.name not in html
+
+
+@pytest.mark.django_db
+def test_deleting_an_account_removes_the_whole_studio(studio, other_studio):
+    from apps.clients.models import Client
+    from apps.scheduling.models import Event
+    from apps.shoots import services
+    from apps.shoots.models import Shoot
+    from apps.shoots.tests.factories import ShootFactory
+
+    shoot = ShootFactory(studio=studio)
+    services.save_main_event(shoot, shoot.created_at)
+    kept = ShootFactory(studio=other_studio)
+    studio.owner.delete()
+    assert not Shoot.objects.filter(studio_id=studio.pk).exists()
+    assert not Client.objects.filter(studio_id=studio.pk).exists()
+    assert not Event.objects.filter(studio_id=studio.pk).exists()
+    assert Shoot.objects.filter(pk=kept.pk).exists()

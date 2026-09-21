@@ -1,0 +1,67 @@
+{% extends "layouts/app.html" %}
+{% load formatting %}
+{% block title %}{{ object.display_name }}{% endblock %}
+{% block content %}
+  <a class="back-link" href="{% url 'clients:list' %}"><c-icon name="chevron-left" size="sm" />{% translate "Clients" %}</a>
+  <header class="page-header">
+    <div class="grid gap-2">
+      <h1 class="page-title">{{ object.display_name }}</h1>
+      {% if object.company %}<p class="text-md text-ink-2">{{ object.company }}</p>{% endif %}
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <c-button href="{% url 'shoots:create' %}?client={{ object.pk }}" icon="plus">{% translate "New shoot" %}</c-button>
+      <c-button variant="secondary" href="{% url 'clients:update' object.pk %}" icon="pencil">{% translate "Edit" %}</c-button>
+    </div>
+  </header>
+
+  <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
+    <section aria-labelledby="shoots-title" class="min-w-0">
+      <h2 id="shoots-title" class="mb-4 text-xl">{% translate "Shoots" %}</h2>
+      {% if shoots %}
+        <div class="rows">
+          {% for shoot in shoots %}
+            <a class="row" href="{{ shoot.get_absolute_url }}">
+              <span class="tnum w-20 text-sm leading-tight {% if shoot.starts_at and shoot.starts_at >= now %}text-ink{% else %}text-ink-2{% endif %}">
+                {% if shoot.starts_at %}{{ shoot.starts_at|date:"j. n. Y" }}{% else %}{% translate "No date" %}{% endif %}
+              </span>
+              <span class="grid min-w-0">
+                <span class="row-title">{{ shoot.title }}</span>
+                <span class="row-meta">{% firstof shoot.package.name "" %}{% if shoot.package and shoot.location %}, {% endif %}{% firstof shoot.location.name "" %}</span>
+              </span>
+              <span class="grid justify-items-end gap-1">
+                <c-badge :dot="shoot.status_colour">{{ shoot.get_status_display }}</c-badge>
+                <span class="tnum text-sm text-ink-2">{{ shoot.price|eur }}</span>
+              </span>
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="panel">
+          <c-empty icon="camera" title="{% translate 'No shoots yet' %}">
+            {% translate "Book the first shoot to see its date, status and price here." %}
+          </c-empty>
+        </div>
+      {% endif %}
+    </section>
+
+    <aside aria-labelledby="contact-title" class="grid content-start gap-6">
+      <div class="panel p-5">
+        <h2 id="contact-title" class="mb-4 text-xl">{% translate "Contact" %}</h2>
+        <dl class="facts">
+          {% if object.email %}<div><dt>{% translate "Email" %}</dt><dd><a class="link" href="mailto:{{ object.email }}">{{ object.email }}</a></dd></div>{% endif %}
+          {% if object.phone %}<div><dt>{% translate "Phone" %}</dt><dd><a class="link" href="tel:{{ object.phone|cut:' ' }}">{{ object.phone }}</a></dd></div>{% endif %}
+          {% if object.address %}<div><dt>{% translate "Address" %}</dt><dd>{{ object.address|linebreaksbr }}</dd></div>{% endif %}
+          {% if object.vat_id %}<div><dt>{% translate "Tax number" %}</dt><dd>{{ object.vat_id }}</dd></div>{% endif %}
+          <div><dt>{% translate "Came from" %}</dt><dd>{{ object.get_source_display }}</dd></div>
+        </dl>
+      </div>
+      {% if object.notes %}
+        <div class="panel p-5">
+          <h2 class="mb-3 text-xl">{% translate "Notes" %}</h2>
+          <div class="text-ink-2">{{ object.notes|linebreaks }}</div>
+        </div>
+      {% endif %}
+      <a class="inline-flex items-center gap-2 text-sm text-danger" href="{% url 'clients:delete' object.pk %}"><c-icon name="trash-2" size="sm" />{% translate "Delete client" %}</a>
+    </aside>
+  </div>
+{% endblock %}

@@ -30,3 +30,41 @@ def register_factory(model, factory):
 
 def register_url(case: TenantURLCase):
     TENANT_URL_CASES.append(case)
+
+
+def _register_url_cases():
+    """Every URL that takes a studio-owned object. A foreign id must always give 404."""
+    from apps.clients.models import Client
+    from apps.scheduling.models import Event
+    from apps.shoots.models import Location, Package, Shoot
+
+    for name, methods in [
+        ("clients:detail", ("get",)),
+        ("clients:update", ("get", "post")),
+        ("clients:delete", ("get", "post")),
+    ]:
+        register_url(TenantURLCase(name, Client, methods=methods))
+    for name, methods in [
+        ("shoots:detail", ("get",)),
+        ("shoots:update", ("get", "post")),
+        ("shoots:delete", ("get", "post")),
+        ("shoots:status", ("post",)),
+    ]:
+        register_url(TenantURLCase(name, Shoot, methods=methods))
+    for name, methods in [
+        ("scheduling:detail", ("get",)),
+        ("scheduling:update", ("get", "post")),
+        ("scheduling:delete", ("post",)),
+        ("scheduling:move", ("patch",)),
+    ]:
+        register_url(TenantURLCase(name, Event, methods=methods))
+    for name, model in [
+        ("shoots:package_update", Package),
+        ("shoots:package_delete", Package),
+        ("shoots:location_update", Location),
+        ("shoots:location_delete", Location),
+    ]:
+        register_url(TenantURLCase(name, model, methods=("get", "post")))
+
+
+_register_url_cases()

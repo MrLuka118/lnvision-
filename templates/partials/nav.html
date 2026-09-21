@@ -1,4 +1,5 @@
 {% url "account_logout" as logout_url %}
+{% url "core:settings" as settings_url %}
 {# Desktop: floating glass sidebar. Nothing scrolls beneath it, so it has no refraction. #}
 <nav class="app-sidebar glass" aria-label="{% translate 'Main' %}">
   <div class="sidebar-brand"><a class="wordmark" href="{% url 'core:dashboard' %}">{{ APP_NAME }}</a></div>
@@ -20,6 +21,7 @@
     <div id="account-menu" class="menu glass w-72" popover data-placement="top" style="position-anchor: --account-menu; position-area: top span-right; margin-bottom: 8px">
       {% include "partials/theme_switch.html" with prefix="sidebar" %}
       <div class="menu-sep"></div>
+      {% if settings_url %}<a class="menu-item" href="{{ settings_url }}"><c-icon name="settings" />{% translate "Settings" %}</a>{% endif %}
       <form method="post" action="{{ logout_url }}">
         {% csrf_token %}
         <button class="menu-item" type="submit"><c-icon name="log-out" />{% translate "Sign out" %}</button>
@@ -41,6 +43,7 @@
   <div id="account-fab-panel" class="grid gap-1 pt-2" x-show="open" x-cloak>
     {% include "partials/theme_switch.html" with prefix="fab" %}
     <div class="menu-sep"></div>
+    {% if settings_url %}<a class="menu-item" href="{{ settings_url }}"><c-icon name="settings" />{% translate "Settings" %}</a>{% endif %}
     <form method="post" action="{{ logout_url }}">
       {% csrf_token %}
       <button class="menu-item" type="submit"><c-icon name="log-out" />{% translate "Sign out" %}</button>

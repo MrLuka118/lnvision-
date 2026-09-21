@@ -1,0 +1,33 @@
+{% url "clients:create" as create_url %}
+{% if object_list %}
+  <div class="rows">
+    {% for client in object_list %}
+      <a class="row" href="{{ client.get_absolute_url }}">
+        <span class="avatar" aria-hidden="true">{{ client.initials }}</span>
+        <span class="grid min-w-0">
+          <span class="row-title">{{ client.display_name }}</span>
+          <span class="row-meta">{% firstof client.email client.phone client.company %}</span>
+        </span>
+        <span class="tnum text-right text-sm text-ink-2">
+          {% if client.next_shoot %}
+            <span class="block text-ink">{{ client.next_shoot|date:"SHORT_DATE_FORMAT" }}</span>{% translate "next shoot" %}
+          {% elif client.shoot_count %}
+            {% blocktranslate count counter=client.shoot_count trimmed %}{{ counter }} shoot{% plural %}{{ counter }} shoots{% endblocktranslate %}
+          {% endif %}
+        </span>
+      </a>
+    {% endfor %}
+  </div>
+  {% include "partials/pagination.html" %}
+{% elif query %}
+  <c-empty icon="search" title="{% translate 'No matches' %}">
+    {% blocktranslate trimmed %}No client matches “{{ query }}”. Try part of a name, an email or a phone number.{% endblocktranslate %}
+  </c-empty>
+{% else %}
+  <div class="panel">
+    <c-empty icon="users" title="{% translate 'No clients yet' %}">
+      {% translate "Clients you add, and everyone who sends an inquiry through your portfolio, appear here." %}
+      <c-slot name="actions"><c-button :href="create_url" icon="plus">{% translate "New client" %}</c-button></c-slot>
+    </c-empty>
+  </div>
+{% endif %}

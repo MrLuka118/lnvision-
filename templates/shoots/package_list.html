@@ -1,0 +1,38 @@
+{% extends "layouts/app.html" %}
+{% load formatting %}
+{% block title %}{% translate "Packages" %}{% endblock %}
+{% block content %}
+  {% url "core:settings" as settings_url %}
+  {% url "shoots:package_create" as create_url %}
+  <a class="back-link" href="{{ settings_url }}"><c-icon name="chevron-left" size="sm" />{% translate "Settings" %}</a>
+  <c-page-header title="{% translate 'Packages' %}" lede="{% translate 'What you offer. The price fills in new shoots; the deadlines are added when a shoot is confirmed.' %}">
+    <c-slot name="actions"><c-button :href="create_url" icon="plus">{% translate "New package" %}</c-button></c-slot>
+  </c-page-header>
+
+  <div class="max-w-3xl">
+    {% if object_list %}
+      <div class="rows">
+        {% for package in object_list %}
+          <a class="row" href="{% url 'shoots:package_update' package.pk %}">
+            <span class="avatar" aria-hidden="true"><c-icon name="wallet" size="sm" /></span>
+            <span class="grid min-w-0">
+              <span class="row-title">{{ package.name }}</span>
+              <span class="row-meta">{{ package.duration_minutes|duration }}, {% blocktranslate count days=package.delivery_days trimmed %}delivered within {{ days }} day{% plural %}delivered within {{ days }} days{% endblocktranslate %}</span>
+            </span>
+            <span class="grid justify-items-end gap-1">
+              <span class="tnum">{{ package.price|eur }}</span>
+              {% if not package.is_active %}<c-badge>{% translate "Not offered" %}</c-badge>{% endif %}
+            </span>
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="panel">
+        <c-empty icon="wallet" title="{% translate 'No packages yet' %}">
+          {% translate "Add the packages you offer, with price, length and delivery time." %}
+          <c-slot name="actions"><c-button :href="create_url" icon="plus">{% translate "New package" %}</c-button></c-slot>
+        </c-empty>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

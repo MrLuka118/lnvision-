@@ -23,5 +23,7 @@ class StudioScopedMixin(LoginRequiredMixin):
         return kwargs
 
     def form_valid(self, form):
-        form.instance.studio = self.request.studio
+        # Model forms only; DeleteView's confirmation form has no instance.
+        if hasattr(form, "instance"):
+            form.instance.studio = self.request.studio
         return super().form_valid(form)

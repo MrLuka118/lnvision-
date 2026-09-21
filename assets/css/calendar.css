@@ -1,0 +1,184 @@
+/* FullCalendar v7, classic theme, mapped onto our tokens. */
+@layer components {
+  .cal {
+    --fc-classic-button: var(--raised);
+    --fc-classic-button-border: var(--raised);
+    --fc-classic-button-strong: var(--ink);
+    --fc-classic-button-strong-border: var(--ink);
+    --fc-classic-button-outline: var(--line);
+    --fc-classic-button-foreground: var(--ink);
+    --fc-classic-primary: var(--ink);
+    --fc-classic-primary-foreground: var(--surround);
+    --fc-classic-event: var(--raised);
+    --fc-classic-event-contrast: var(--ink);
+    --fc-classic-background-event: var(--ink-3);
+    --fc-classic-highlight: color-mix(in srgb, var(--ink) 9%, transparent);
+    --fc-classic-today: color-mix(in srgb, var(--ink) 5%, transparent);
+    --fc-classic-now: #c15a63;
+    --fc-classic-background: transparent;
+    --fc-classic-faint: var(--line-soft);
+    --fc-classic-muted: color-mix(in srgb, var(--ink) 10%, transparent);
+    --fc-classic-strong: color-mix(in srgb, var(--ink) 16%, transparent);
+    --fc-classic-foreground: var(--ink);
+    --fc-classic-faint-foreground: var(--ink-3);
+    --fc-classic-muted-foreground: var(--ink-2);
+    --fc-classic-border: var(--line-soft);
+    --fc-classic-strong-border: var(--line);
+    --fc-classic-ring-color: var(--focus);
+    --fc-classic-small-dot-width: 8px;
+    --fc-classic-large-dot-width: 10px;
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+  }
+  .cal > * {
+    font-size: var(--text-sm) !important;
+  }
+
+  /* Our event chip, drawn inside FullCalendar's (transparent) event box. */
+  .cal-event {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    align-items: baseline;
+    gap: 0 0.4rem;
+    width: 100%;
+    height: 100%;
+    min-height: 1.5rem;
+    padding: 0.15rem 0.45rem 0.15rem 0.6rem;
+    border-radius: 6px;
+    background: var(--surface);
+    box-shadow:
+      inset 3px 0 0 var(--dot),
+      inset 0 0 0 1px var(--line-soft);
+    color: var(--ink);
+    overflow: hidden;
+    line-height: 1.3;
+    cursor: pointer;
+  }
+  .cal-event.is-tentative {
+    background: transparent;
+    box-shadow:
+      inset 3px 0 0 var(--dot),
+      inset 0 0 0 1px color-mix(in srgb, var(--dot) 60%, transparent);
+    outline: 1px dashed color-mix(in srgb, var(--dot) 70%, transparent);
+    outline-offset: -1px;
+  }
+  /* In the week and day grid there is room: let the title wrap. */
+  .cal-event.is-tall .cal-event-title {
+    white-space: normal;
+    width: 100%;
+  }
+  .cal-event-time {
+    font-size: var(--text-xs);
+    color: var(--ink-2);
+  }
+  .cal-event-title {
+    min-width: 0;
+    font-weight: 560;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .cal-event-meta {
+    width: 100%;
+    font-size: var(--text-xs);
+    color: var(--ink-2);
+  }
+
+  /* Title and actions on top; navigation and view switch below. */
+  .cal-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "title title"
+      "nav actions"
+      "views views";
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .cal-toolbar .page-title {
+    grid-area: title;
+  }
+  @media (min-width: 64rem) {
+    .cal-toolbar .page-title {
+      white-space: nowrap;
+    }
+  }
+  /* Phones: icon-only actions, the label stays for screen readers. */
+  @media (max-width: 40rem) {
+    .cal-actions .btn {
+      width: var(--btn-h);
+      padding-inline: 0;
+    }
+    .cal-actions .btn-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+  .cal-nav,
+  .cal-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .cal-nav {
+    grid-area: nav;
+  }
+  .cal-actions {
+    grid-area: actions;
+    justify-content: end;
+  }
+  .cal-views {
+    grid-area: views;
+  }
+  @media (min-width: 64rem) {
+    .cal-toolbar {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      grid-template-areas:
+        "title title actions"
+        "nav . views";
+    }
+    .cal-views {
+      width: 22rem;
+    }
+  }
+
+  .cal-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.1rem;
+    margin-bottom: 1.25rem;
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+  }
+  .cal-legend li {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .cal-legend li::before {
+    content: "";
+    width: 3px;
+    height: 0.9rem;
+    border-radius: 2px;
+    background: var(--dot);
+  }
+
+  /* List view draws its own dot before each event; our chip already carries the colour. */
+  .cal [role="list"] > [role="button"] > :first-child:not(:has(.cal-event)) {
+    display: none;
+  }
+
+  .event-popover[popover] {
+    position-anchor: --event-anchor;
+    position-area: bottom span-right;
+    position-try-fallbacks: flip-block, flip-inline;
+    width: 20rem;
+    margin: 6px;
+  }
+}

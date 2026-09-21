@@ -1,0 +1,34 @@
+{% extends "layouts/app.html" %}
+{% block title %}{% translate "Locations" %}{% endblock %}
+{% block content %}
+  {% url "core:settings" as settings_url %}
+  {% url "shoots:location_create" as create_url %}
+  <a class="back-link" href="{{ settings_url }}"><c-icon name="chevron-left" size="sm" />{% translate "Settings" %}</a>
+  <c-page-header title="{% translate 'Locations' %}">
+    <c-slot name="actions"><c-button :href="create_url" icon="plus">{% translate "New location" %}</c-button></c-slot>
+  </c-page-header>
+
+  <div class="max-w-3xl">
+    {% if object_list %}
+      <div class="rows">
+        {% for location in object_list %}
+          <a class="row" href="{% url 'shoots:location_update' location.pk %}">
+            <span class="avatar" aria-hidden="true"><c-icon name="map-pin" size="sm" /></span>
+            <span class="grid min-w-0">
+              <span class="row-title">{{ location.name }}</span>
+              {% if location.address %}<span class="row-meta">{{ location.address }}</span>{% endif %}
+            </span>
+            <span class="tnum text-sm text-ink-2">{% if location.shoot_count %}{% blocktranslate count counter=location.shoot_count trimmed %}{{ counter }} shoot{% plural %}{{ counter }} shoots{% endblocktranslate %}{% endif %}</span>
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="panel">
+        <c-empty icon="map-pin" title="{% translate 'No locations yet' %}">
+          {% translate "Add the places you shoot at, with the address and a map link for your clients." %}
+          <c-slot name="actions"><c-button :href="create_url" icon="plus">{% translate "New location" %}</c-button></c-slot>
+        </c-empty>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

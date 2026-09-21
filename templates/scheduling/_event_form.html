@@ -1,0 +1,25 @@
+{# Dialog body on the calendar page; also rendered inside generic/form.html's layout when not HTMX. #}
+<form method="post" action="{{ request.get_full_path }}" hx-post="{{ request.get_full_path }}" hx-target="#event-dialog-body" class="grid gap-5" novalidate>
+  {% csrf_token %}
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="text-xl">{{ page_title }}</h2>
+    <button class="btn btn-quiet btn-sm btn-icon -mr-2 -mt-1" type="button" value="close" formmethod="dialog" data-close-dialog aria-label="{% translate 'Close' %}"><c-icon name="x" /></button>
+  </div>
+  {% if shoot_url %}
+    <a class="event-chip no-underline" style="--dot: #e0a32e" href="{{ shoot_url }}">
+      <span class="grid"><span class="font-semibold">{% translate "Book a shoot instead" %}</span><span class="text-sm text-ink-2">{% translate "With client, package and price, on this date." %}</span></span>
+    </a>
+  {% endif %}
+  {% include "partials/form_errors.html" %}
+  {% for field in form.hidden_fields %}{{ field }}{% endfor %}
+  {% for section in form.sections %}
+    {% for row in section.rows %}
+      <div class="grid gap-5{% if row|length > 1 %} sm:grid-cols-2{% endif %}">
+        {% for field in row %}<c-field :field="field" />{% endfor %}
+      </div>
+    {% endfor %}
+  {% endfor %}
+  <div class="flex flex-wrap justify-end gap-2 pt-2">
+    <c-button type="submit">{{ submit_label }}</c-button>
+  </div>
+</form>

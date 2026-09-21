@@ -1,0 +1,11 @@
+{% if page_obj.has_other_pages %}
+  <nav class="mt-6 flex items-center justify-between gap-4 text-sm text-ink-2" aria-label="{% translate 'Pages' %}">
+    {% if page_obj.has_previous %}
+      <c-button variant="secondary" size="sm" icon="chevron-left" href="{% querystring page=page_obj.previous_page_number %}">{% translate "Previous" %}</c-button>
+    {% else %}<span></span>{% endif %}
+    <span class="tnum">{% blocktranslate with page=page_obj.number pages=page_obj.paginator.num_pages %}Page {{ page }} of {{ pages }}{% endblocktranslate %}</span>
+    {% if page_obj.has_next %}
+      <c-button variant="secondary" size="sm" href="{% querystring page=page_obj.next_page_number %}">{% translate "Next" %}<c-icon name="chevron-right" size="sm" /></c-button>
+    {% else %}<span></span>{% endif %}
+  </nav>
+{% endif %}

@@ -5,6 +5,7 @@
 @import "./glass.css";
 @import "./components.css";
 @import "./layout.css";
+@import "./calendar.css";
 
 @source not "../../docs";
 @source not "../../staticfiles";
