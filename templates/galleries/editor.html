@@ -22,6 +22,8 @@
       </div>
     </header>
 
+    {% include "galleries/_activity.html" %}
+
     <section aria-labelledby="upload-title" class="mb-10 grid gap-4">
       <h2 id="upload-title" class="visually-hidden">{% translate "Upload" %}</h2>
       <div class="dropzone" :class="dragging && 'is-dragging'">
@@ -98,8 +100,11 @@
         {% csrf_token %}
         <button class="btn btn-quiet btn-sm" type="submit">{% translate "Create new link" %}</button>
       </form>
-      <div class="flex gap-2">
+      <div class="flex flex-wrap gap-2">
         {% if object.is_published %}
+          {% if object.client.email and object.is_live %}
+            <form method="post" action="{% url 'galleries:action' object.pk 'send' %}">{% csrf_token %}<button class="btn btn-primary btn-sm" type="submit"><c-icon name="mail" size="sm" />{% blocktranslate with name=object.client.first_name %}Send to {{ name }}{% endblocktranslate %}</button></form>
+          {% endif %}
           <a class="btn btn-secondary btn-sm" href="{{ object.get_public_url }}" target="_blank" rel="noopener"><c-icon name="external-link" size="sm" />{% translate "Open" %}</a>
           <form method="post" action="{% url 'galleries:action' object.pk 'hide' %}">{% csrf_token %}<button class="btn btn-secondary btn-sm" type="submit">{% translate "Unpublish" %}</button></form>
         {% else %}

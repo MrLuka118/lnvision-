@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-21 20:03+0200\n"
+"POT-Creation-Date: 2026-09-21 21:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,7 +87,7 @@ msgstr "Za pare: druga oseba, prikazana poleg imena stranke."
 msgid "company"
 msgstr "podjetje"
 
-#: apps/clients/models.py:24
+#: apps/clients/models.py:24 apps/galleries/models.py:142
 msgid "email"
 msgstr "e-pošta"
 
@@ -108,12 +108,12 @@ msgid "came from"
 msgstr "vir"
 
 #: apps/clients/models.py:31 apps/scheduling/models.py:61
-#: apps/shoots/models.py:16 apps/shoots/models.py:128
+#: apps/shoots/models.py:16 apps/shoots/models.py:130
 msgid "notes"
 msgstr "opombe"
 
-#: apps/clients/models.py:34 apps/scheduling/models.py:51
-#: apps/shoots/models.py:98
+#: apps/clients/models.py:34 apps/galleries/models.py:39
+#: apps/scheduling/models.py:51 apps/shoots/models.py:100
 msgid "client"
 msgstr "stranka"
 
@@ -126,42 +126,43 @@ msgstr "stranke"
 msgid "%(client)s and %(partner)s"
 msgstr "%(client)s in %(partner)s"
 
-#: apps/clients/views.py:76 templates/clients/_results.html:30
+#: apps/clients/views.py:78 templates/clients/_results.html:30
 #: templates/clients/list.html:6
 msgid "New client"
 msgstr "Nova stranka"
 
-#: apps/clients/views.py:77
+#: apps/clients/views.py:79
 msgid "Add client"
 msgstr "Dodaj stranko"
 
-#: apps/clients/views.py:78 apps/core/navigation.py:19
+#: apps/clients/views.py:80 apps/core/navigation.py:19
 #: templates/clients/detail.html:5 templates/clients/list.html:2
 #: templates/clients/list.html:5
 msgid "Clients"
 msgstr "Stranke"
 
-#: apps/clients/views.py:79
+#: apps/clients/views.py:81
+#, python-format
 msgid "%(first_name)s added to your clients."
 msgstr "%(first_name)s je med vašimi strankami."
 
-#: apps/clients/views.py:91 apps/scheduling/views.py:139
-#: apps/shoots/views.py:116 apps/shoots/views_catalogue.py:55
+#: apps/clients/views.py:93 apps/scheduling/views.py:139
+#: apps/shoots/views.py:132 apps/shoots/views_catalogue.py:55
 #: apps/shoots/views_catalogue.py:134
 msgid "Save changes"
 msgstr "Shrani spremembe"
 
-#: apps/clients/views.py:92 apps/scheduling/views.py:141
-#: apps/shoots/views.py:117 apps/shoots/views_catalogue.py:56
+#: apps/clients/views.py:94 apps/scheduling/views.py:141
+#: apps/shoots/views.py:133 apps/shoots/views_catalogue.py:56
 #: apps/shoots/views_catalogue.py:135
 msgid "Changes saved."
 msgstr "Spremembe so shranjene."
 
-#: apps/clients/views.py:109 templates/clients/detail.html:64
+#: apps/clients/views.py:111 templates/clients/detail.html:64
 msgid "Delete client"
 msgstr "Izbriši stranko"
 
-#: apps/clients/views.py:111
+#: apps/clients/views.py:113
 msgid ""
 "This client has shoots. Delete or reassign the shoots first, so their "
 "history stays intact."
@@ -169,17 +170,19 @@ msgstr ""
 "Ta stranka ima fotografiranja. Najprej izbrišite ali prerazporedite "
 "fotografiranja, da se ohrani njihova zgodovina."
 
-#: apps/clients/views.py:117
+#: apps/clients/views.py:119
+#, python-format
 msgid "Delete %(name)s?"
 msgstr "Želite izbrisati stranko %(name)s?"
 
-#: apps/clients/views.py:121
+#: apps/clients/views.py:123
 msgid "Their contact details and notes are removed. This can't be undone."
 msgstr ""
-"Odstranjeni bodo njihovi kontaktni podatki in opombe. Tega dejanja ni mogoče"
-" razveljaviti."
+"Odstranjeni bodo njihovi kontaktni podatki in opombe. Tega dejanja ni mogoče "
+"razveljaviti."
 
-#: apps/clients/views.py:125
+#: apps/clients/views.py:127
+#, python-format
 msgid "%(name)s deleted."
 msgstr "Stranka %(name)s je izbrisana."
 
@@ -239,7 +242,7 @@ msgstr "studio"
 msgid "studios"
 msgstr "studii"
 
-#: apps/core/navigation.py:16 templates/core/dashboard.html:2
+#: apps/core/navigation.py:16 templates/core/dashboard.html:3
 msgid "Overview"
 msgstr "Pregled"
 
@@ -249,13 +252,15 @@ msgstr "Pregled"
 msgid "Calendar"
 msgstr "Koledar"
 
-#: apps/core/navigation.py:18 apps/shoots/views.py:91
+#: apps/core/navigation.py:18 apps/shoots/views.py:107
 #: templates/clients/detail.html:19 templates/shoots/detail.html:5
-#: templates/shoots/list.html:3 templates/shoots/list.html:6
+#: templates/shoots/list.html:2 templates/shoots/list.html:5
 msgid "Shoots"
 msgstr "Fotografiranja"
 
-#: apps/core/navigation.py:20
+#: apps/core/navigation.py:20 apps/galleries/views.py:52
+#: templates/galleries/editor.html:6 templates/galleries/list.html:2
+#: templates/galleries/list.html:5
 msgid "Galleries"
 msgstr "Galerije"
 
@@ -268,9 +273,9 @@ msgid "Studio"
 msgstr "Studio"
 
 #: apps/core/views.py:49 templates/core/settings.html:2
-#: templates/core/settings.html:4 templates/partials/nav.html:24
-#: templates/partials/nav.html:46 templates/shoots/location_list.html:6
-#: templates/shoots/package_list.html:7
+#: templates/core/settings.html:4 templates/galleries/editor.html:20
+#: templates/partials/nav.html:24 templates/partials/nav.html:46
+#: templates/shoots/location_list.html:6 templates/shoots/package_list.html:7
 msgid "Settings"
 msgstr "Nastavitve"
 
@@ -344,6 +349,8 @@ msgid "Client name"
 msgstr "Ime stranke"
 
 #: apps/core/views.py:147 templates/clients/detail.html:51
+#: templates/galleries/public/gallery.html:89
+#: templates/galleries/public/gallery.html:113
 msgid "Email"
 msgstr "E-pošta"
 
@@ -351,18 +358,428 @@ msgstr "E-pošta"
 msgid "The gallery link is sent here."
 msgstr "Na ta naslov pošljemo povezavo do galerije."
 
-#: apps/core/views.py:149 templates/shoots/detail.html:88
+#: apps/core/views.py:149 templates/shoots/detail.html:89
 msgid "Package"
 msgstr "Paket"
 
 #: apps/core/views.py:153 templates/clients/detail.html:60
-#: templates/shoots/detail.html:94
+#: templates/galleries/_activity.html:35 templates/shoots/detail.html:95
 msgid "Notes"
 msgstr "Opombe"
 
 #: apps/core/views.py:154
 msgid "Send a reminder a day before"
 msgstr "Pošlji opomnik en dan prej"
+
+#: apps/galleries/forms.py:17
+msgid "Not linked to a shoot"
+msgstr "Ni povezana s fotografiranjem"
+
+#: apps/galleries/forms.py:18
+msgid "Taken from the shoot"
+msgstr "Iz fotografiranja"
+
+#: apps/galleries/forms.py:19
+msgid "Leave empty to use the shoot's client."
+msgstr "Pustite prazno, če naj bo stranka iz fotografiranja."
+
+#: apps/galleries/forms.py:31
+msgid "New password"
+msgstr "Novo geslo"
+
+#: apps/galleries/forms.py:35
+msgid "Clients enter it once per device. Leave empty to keep the current one."
+msgstr "Stranka ga vnese enkrat na napravo. Pustite prazno, če želite obdržati trenutno geslo."
+
+#: apps/galleries/forms.py:37
+msgid "Open without a password"
+msgstr "Odpri brez gesla"
+
+#: apps/galleries/forms.py:41
+msgid "Look"
+msgstr "Videz"
+
+#: apps/galleries/forms.py:42
+msgid "Access"
+msgstr "Dostop"
+
+#: apps/galleries/forms.py:44
+msgid "What clients can do"
+msgstr "Kaj lahko naredijo stranke"
+
+#: apps/galleries/forms.py:47
+msgid "Photos"
+msgstr "Fotografije"
+
+#: apps/galleries/forms.py:70
+msgid "A few words shown under the title on the cover."
+msgstr "Nekaj besed pod naslovom na naslovnici."
+
+#: apps/galleries/forms.py:71
+msgid "After this the link shows a friendly note instead of the photos."
+msgstr "Po tem datumu povezava namesto fotografij pokaže prijazno obvestilo."
+
+#: apps/galleries/forms.py:72
+msgid "Applies to photos processed from now on. Originals never change."
+msgstr "Velja za fotografije, obdelane od zdaj naprej. Originali se nikoli ne spremenijo."
+
+#: apps/galleries/models.py:14 templates/core/styleguide.html:14
+msgid "Darkroom"
+msgstr "Temnica"
+
+#: apps/galleries/models.py:15 templates/core/styleguide.html:25
+msgid "Light table"
+msgstr "Svetlomiza"
+
+#: apps/galleries/models.py:16
+msgid "Photo book"
+msgstr "Fotoknjiga"
+
+#: apps/galleries/models.py:17
+msgid "Contact sheet"
+msgstr "Kontaktna kopija"
+
+#: apps/galleries/models.py:20
+msgid "No downloads"
+msgstr "Brez prenosov"
+
+#: apps/galleries/models.py:21 apps/galleries/models.py:185
+#: templates/galleries/public/gallery.html:107
+msgid "Web size"
+msgstr "Spletna velikost"
+
+#: apps/galleries/models.py:22 apps/galleries/models.py:186
+#: templates/galleries/public/gallery.html:108
+msgid "Originals"
+msgstr "Originali"
+
+#: apps/galleries/models.py:23
+msgid "Web size and originals"
+msgstr "Spletna velikost in originali"
+
+#: apps/galleries/models.py:31 apps/scheduling/models.py:43
+#: apps/shoots/models.py:136
+msgid "shoot"
+msgstr "fotografiranje"
+
+#: apps/galleries/models.py:41 apps/galleries/models.py:123
+#: apps/scheduling/models.py:30 apps/shoots/models.py:118
+msgid "title"
+msgstr "naslov"
+
+#: apps/galleries/models.py:42
+msgid "introduction"
+msgstr "uvod"
+
+#: apps/galleries/models.py:43
+msgid "date"
+msgstr "datum"
+
+#: apps/galleries/models.py:48
+msgid "available until"
+msgstr "na voljo do"
+
+#: apps/galleries/models.py:49
+msgid "published"
+msgstr "objavljena"
+
+#: apps/galleries/models.py:53
+msgid "theme"
+msgstr "tema"
+
+#: apps/galleries/models.py:61
+msgid "cover photo"
+msgstr "naslovna fotografija"
+
+#: apps/galleries/models.py:64
+msgid "downloads"
+msgstr "prenosi"
+
+#: apps/galleries/models.py:66
+msgid "clients can mark favourites"
+msgstr "stranke lahko označijo priljubljene"
+
+#: apps/galleries/models.py:67
+msgid "clients can comment"
+msgstr "stranke lahko pošljejo sporočilo"
+
+#: apps/galleries/models.py:68
+msgid "watermark web-size photos"
+msgstr "vodni žig na fotografijah spletne velikosti"
+
+#: apps/galleries/models.py:69
+msgid "remove GPS location from photos"
+msgstr "odstrani lokacijo GPS iz fotografij"
+
+#: apps/galleries/models.py:72
+msgid "gallery"
+msgstr "galerija"
+
+#: apps/galleries/models.py:73
+msgid "galleries"
+msgstr "galerije"
+
+#: apps/galleries/models.py:124 apps/shoots/models.py:29
+msgid "description"
+msgstr "opis"
+
+#: apps/galleries/models.py:128
+msgid "section"
+msgstr "poglavje"
+
+#: apps/galleries/models.py:129
+msgid "sections"
+msgstr "poglavja"
+
+#: apps/galleries/models.py:141 apps/shoots/models.py:13
+#: apps/shoots/models.py:28
+msgid "name"
+msgstr "ime"
+
+#: apps/galleries/models.py:146
+msgid "visitor"
+msgstr "obiskovalec"
+
+#: apps/galleries/models.py:147
+msgid "visitors"
+msgstr "obiskovalci"
+
+#: apps/galleries/models.py:151
+msgid "Anonymous visitor"
+msgstr "Anonimni obiskovalec"
+
+#: apps/galleries/models.py:174
+msgid "comment"
+msgstr "sporočilo"
+
+#: apps/galleries/models.py:189 apps/photos/models.py:27
+msgid "Waiting"
+msgstr "Čaka"
+
+#: apps/galleries/models.py:190
+msgid "Preparing"
+msgstr "V pripravi"
+
+#: apps/galleries/models.py:191 apps/photos/models.py:29
+msgid "Ready"
+msgstr "Pripravljeno"
+
+#: apps/galleries/models.py:192 apps/photos/models.py:30
+#: apps/photos/models.py:132
+msgid "Failed"
+msgstr "Ni uspelo"
+
+#: apps/galleries/models.py:212
+msgid "Opened the gallery"
+msgstr "Odprl galerijo"
+
+#: apps/galleries/models.py:213
+msgid "Viewed a photo"
+msgstr "Ogledal si je fotografijo"
+
+#: apps/galleries/models.py:214
+msgid "Marked a favourite"
+msgstr "Označil priljubljeno"
+
+#: apps/galleries/models.py:215
+msgid "Commented"
+msgstr "Poslal sporočilo"
+
+#: apps/galleries/models.py:216
+msgid "Downloaded a photo"
+msgstr "Prenesel fotografijo"
+
+#: apps/galleries/models.py:217
+msgid "Downloaded the gallery"
+msgstr "Prenesel galerijo"
+
+#: apps/galleries/public_views.py:146 templates/core/styleguide.html:90
+msgid "Favourite"
+msgstr "Priljubljena"
+
+#: apps/galleries/public_views.py:147
+msgid "Leave a note"
+msgstr "Pošlji sporočilo"
+
+#: apps/galleries/public_views.py:148 templates/core/styleguide.html:91
+msgid "Download"
+msgstr "Prenesi"
+
+#: apps/galleries/public_views.py:149
+msgid "Download original"
+msgstr "Prenesi original"
+
+#: apps/galleries/public_views.py:150 templates/galleries/editor.html:67
+#: templates/galleries/public/gallery.html:116
+#: templates/scheduling/_event_form.html:6
+#: templates/scheduling/calendar.html:62
+msgid "Close"
+msgstr "Zapri"
+
+#: apps/galleries/public_views.py:151 templates/partials/pagination.html:8
+#: templates/scheduling/calendar.html:18
+msgid "Next"
+msgstr "Naslednja"
+
+#: apps/galleries/public_views.py:152 templates/partials/pagination.html:4
+#: templates/scheduling/calendar.html:16
+msgid "Previous"
+msgstr "Prejšnja"
+
+#: apps/galleries/public_views.py:154
+msgid ""
+"Preparing your ZIP. You can close this; the link also arrives by e-mail."
+msgstr "Pripravljamo ZIP. To okno lahko zaprete, povezavo vam pošljemo tudi po e-pošti."
+
+#: apps/galleries/public_views.py:156
+msgid "Ready."
+msgstr "Pripravljeno."
+
+#: apps/galleries/public_views.py:157
+msgid "Something went wrong. Try again in a moment."
+msgstr "Nekaj je šlo narobe. Poskusite znova čez trenutek."
+
+#: apps/galleries/public_views.py:158
+msgid "Sent. Thank you."
+msgstr "Poslano. Hvala."
+
+#: apps/galleries/public_views.py:170
+msgid "Too many attempts. Wait a few minutes and try again."
+msgstr "Preveč poskusov. Počakajte nekaj minut in poskusite znova."
+
+#: apps/galleries/public_views.py:175
+msgid "That password doesn't match. Check with your photographer."
+msgstr "Geslo se ne ujema. Preverite ga pri fotografu."
+
+#: apps/galleries/public_views.py:190
+msgid "Add your name."
+msgstr "Vpišite svoje ime."
+
+#: apps/galleries/public_views.py:223
+msgid "Too many comments. Try again later."
+msgstr "Preveč sporočil. Poskusite znova pozneje."
+
+#: apps/galleries/public_views.py:227
+msgid "Write something first."
+msgstr "Najprej nekaj napišite."
+
+#: apps/galleries/public_views.py:288
+msgid "Too many requests. Try again in an hour."
+msgstr "Preveč zahtev. Poskusite znova čez eno uro."
+
+#: apps/galleries/views.py:50 templates/galleries/list.html:6
+#: templates/galleries/list.html:41 templates/shoots/detail.html:12
+msgid "New gallery"
+msgstr "Nova galerija"
+
+#: apps/galleries/views.py:51
+msgid "Create gallery"
+msgstr "Ustvari galerijo"
+
+#: apps/galleries/views.py:53
+msgid "Gallery created. Add the photos."
+msgstr "Galerija je ustvarjena. Dodajte fotografije."
+
+#: apps/galleries/views.py:156
+msgid "Gallery settings"
+msgstr "Nastavitve galerije"
+
+#: apps/galleries/views.py:157
+msgid "Save settings"
+msgstr "Shrani nastavitve"
+
+#: apps/galleries/views.py:158
+msgid "Settings saved."
+msgstr "Nastavitve so shranjene."
+
+#: apps/galleries/views.py:174 templates/core/styleguide.html:111
+#: templates/core/styleguide.html:155 templates/core/styleguide.html:157
+#: templates/core/styleguide.html:162
+msgid "Delete gallery"
+msgstr "Izbriši galerijo"
+
+#: apps/galleries/views.py:178 apps/shoots/views.py:154
+#, python-format
+msgid "Delete “%(title)s”?"
+msgstr "Želite izbrisati „%(title)s“?"
+
+#: apps/galleries/views.py:184
+#, python-format
+msgid ""
+"%(count)s photo, its original and every favourite and comment are removed. "
+"The client link stops working immediately. This can't be undone."
+msgid_plural ""
+"%(count)s photos, their originals and every favourite and comment are "
+"removed. The client link stops working immediately. This can't be undone."
+msgstr[0] "Odstranjena bo %(count)s fotografija z originalom ter vsemi priljubljenimi in sporočili. Povezava za stranko takoj preneha delovati. Tega ni mogoče razveljaviti."
+msgstr[1] "Odstranjeni bosta %(count)s fotografiji z originali ter vsemi priljubljenimi in sporočili. Povezava za stranko takoj preneha delovati. Tega ni mogoče razveljaviti."
+msgstr[2] "Odstranjene bodo %(count)s fotografije z originali ter vsemi priljubljenimi in sporočili. Povezava za stranko takoj preneha delovati. Tega ni mogoče razveljaviti."
+msgstr[3] "Odstranjenih bo %(count)s fotografij z originali ter vsemi priljubljenimi in sporočili. Povezava za stranko takoj preneha delovati. Tega ni mogoče razveljaviti."
+
+#: apps/galleries/views.py:193 apps/shoots/views.py:162
+#, python-format
+msgid "“%(title)s” deleted."
+msgstr "Izbrisali ste „%(title)s“."
+
+#: apps/galleries/views.py:206
+msgid "Published. The link works now."
+msgstr "Objavljeno. Povezava zdaj deluje."
+
+#: apps/galleries/views.py:209
+msgid "Hidden. The link shows a note until you publish again."
+msgstr "Skrito. Povezava kaže obvestilo, dokler galerije znova ne objavite."
+
+#: apps/galleries/views.py:216
+msgid "Link sent to %(email)s."
+msgstr "Povezava je poslana na %(email)s."
+
+#: apps/galleries/views.py:221
+msgid "New link created. The old link no longer works."
+msgstr "Ustvarjena je nova povezava. Stara ne deluje več."
+
+#: apps/photos/models.py:28 templates/galleries/_tile.html:8
+msgid "Processing"
+msgstr "Obdelava"
+
+#: apps/photos/models.py:62
+msgid "photo"
+msgstr "fotografija"
+
+#: apps/photos/models.py:63
+msgid "photos"
+msgstr "fotografije"
+
+#: apps/photos/models.py:130
+msgid "Uploading"
+msgstr "Nalaganje"
+
+#: apps/photos/models.py:131
+msgid "Complete"
+msgstr "Končano"
+
+#: apps/photos/views.py:38
+msgid "Invalid upload."
+msgstr "Neveljavno nalaganje."
+
+#: apps/photos/views.py:41
+msgid "Only JPEG, PNG, TIFF, WebP and AVIF photos can be uploaded."
+msgstr "Naložite lahko le fotografije JPEG, PNG, TIFF, WebP in AVIF."
+
+#: apps/photos/views.py:43
+msgid "This file is too large."
+msgstr "Datoteka je prevelika."
+
+#: apps/photos/views.py:76
+msgid "This upload is already finished."
+msgstr "To nalaganje je že končano."
+
+#: apps/photos/views.py:95
+msgid "The upload sent more data than announced."
+msgstr "Poslanih je bilo več podatkov, kot jih je bilo napovedanih."
+
+#: apps/photos/views.py:105
+msgid "This file isn't a photo we can read."
+msgstr "Te datoteke ne moremo prebrati kot fotografije."
 
 #: apps/scheduling/forms.py:39
 msgid "The event can't end before it starts."
@@ -375,10 +792,6 @@ msgstr "Dodajte naslov ali izberite stranko."
 #: apps/scheduling/models.py:29
 msgid "type"
 msgstr "vrsta"
-
-#: apps/scheduling/models.py:30 apps/shoots/models.py:116
-msgid "title"
-msgstr "naslov"
 
 #: apps/scheduling/models.py:31
 msgid "starts"
@@ -400,12 +813,8 @@ msgstr "nepotrjeno"
 msgid "Not confirmed yet, e.g. an inquiry."
 msgstr "Še ni potrjeno, npr. povpraševanje."
 
-#: apps/scheduling/models.py:43 apps/shoots/models.py:134
-msgid "shoot"
-msgstr "fotografiranje"
-
 #: apps/scheduling/models.py:59 apps/shoots/models.py:19
-#: apps/shoots/models.py:114
+#: apps/shoots/models.py:116
 msgid "location"
 msgstr "lokacija"
 
@@ -451,61 +860,69 @@ msgstr "Odstranjeno iz koledarja."
 msgid "New calendar link created. The old one no longer works."
 msgstr "Ustvarjena je nova povezava do koledarja. Stara ne deluje več."
 
-#: apps/shoots/forms.py:12
+#: apps/shoots/forms.py:13
 msgid "Starts"
 msgstr "Začetek"
 
-#: apps/shoots/forms.py:15
+#: apps/shoots/forms.py:16
 msgid "Leave empty while the date is still open."
 msgstr "Pustite prazno, dokler datum še ni določen."
 
-#: apps/shoots/forms.py:18
+#: apps/shoots/forms.py:19
 msgid "Ends"
 msgstr "Konec"
 
-#: apps/shoots/forms.py:21
+#: apps/shoots/forms.py:22
 msgid "Defaults to the package duration."
 msgstr "Privzeto je trajanje paketa."
 
-#: apps/shoots/forms.py:26 templates/shoots/detail.html:44
+#: apps/shoots/forms.py:27 templates/shoots/detail.html:45
 msgid "When and where"
 msgstr "Kdaj in kje"
 
-#: apps/shoots/forms.py:27
+#: apps/shoots/forms.py:28
 msgid "Package and price"
 msgstr "Paket in cena"
 
-#: apps/shoots/forms.py:39
+#: apps/shoots/forms.py:40
 msgid "Leave empty to name it after the package and client."
 msgstr "Pustite prazno, če želite poimenovati po paketu in stranki."
 
-#: apps/shoots/forms.py:60
+#: apps/shoots/forms.py:46
+msgid "Choose a client"
+msgstr "Izberite stranko"
+
+#: apps/shoots/forms.py:47
+msgid "No location yet"
+msgstr "Lokacija še ni določena"
+
+#: apps/shoots/forms.py:48
+msgid "No package"
+msgstr "Brez paketa"
+
+#: apps/shoots/forms.py:67
 msgid "The shoot can't end before it starts."
 msgstr "Fotografiranje se ne more končati pred začetkom."
 
-#: apps/shoots/forms.py:62
+#: apps/shoots/forms.py:69
 msgid "Add the start as well."
 msgstr "Dodajte tudi začetek."
 
-#: apps/shoots/forms.py:81
+#: apps/shoots/forms.py:88
 msgid "Map link"
 msgstr "Povezava na zemljevid"
 
-#: apps/shoots/forms.py:84
+#: apps/shoots/forms.py:91
 msgid "A Google Maps or Apple Maps link, so clients find you."
 msgstr "Povezava na Google Maps ali Apple Maps, da vas stranke najdejo."
 
-#: apps/shoots/forms.py:99
+#: apps/shoots/forms.py:106
 msgid "Price and scope"
 msgstr "Cena in obseg"
 
-#: apps/shoots/forms.py:100
+#: apps/shoots/forms.py:107
 msgid "Deadlines"
 msgstr "Roki"
-
-#: apps/shoots/models.py:13 apps/shoots/models.py:28
-msgid "name"
-msgstr "ime"
 
 #: apps/shoots/models.py:15
 msgid "map link"
@@ -515,11 +932,7 @@ msgstr "povezava na zemljevid"
 msgid "locations"
 msgstr "lokacije"
 
-#: apps/shoots/models.py:29
-msgid "description"
-msgstr "opis"
-
-#: apps/shoots/models.py:30 apps/shoots/models.py:122
+#: apps/shoots/models.py:30 apps/shoots/models.py:124
 msgid "price"
 msgstr "cena"
 
@@ -543,7 +956,7 @@ msgstr "rok za dostavo (dni po fotografiranju)"
 msgid "offered"
 msgstr "v ponudbi"
 
-#: apps/shoots/models.py:43 apps/shoots/models.py:106
+#: apps/shoots/models.py:43 apps/shoots/models.py:108
 msgid "package"
 msgstr "paket"
 
@@ -555,19 +968,19 @@ msgstr "paketi"
 msgid "Cancelled"
 msgstr "Odpovedano"
 
-#: apps/shoots/models.py:118
+#: apps/shoots/models.py:120
 msgid "status"
 msgstr "status"
 
-#: apps/shoots/models.py:126
+#: apps/shoots/models.py:128
 msgid "Taken from the package when left empty."
 msgstr "Če pustite prazno, se prevzame iz paketa."
 
-#: apps/shoots/models.py:129
+#: apps/shoots/models.py:131
 msgid "inquiry message"
 msgstr "sporočilo povpraševanja"
 
-#: apps/shoots/models.py:135
+#: apps/shoots/models.py:137
 msgid "shoots"
 msgstr "fotografiranja"
 
@@ -583,38 +996,38 @@ msgstr "Povpraševanja"
 msgid "All"
 msgstr "Vse"
 
-#: apps/shoots/views.py:89 templates/clients/detail.html:12
-#: templates/core/styleguide.html:108 templates/shoots/list.html:7
-#: templates/shoots/list.html:40
+#: apps/shoots/views.py:68
+msgid "Coming up"
+msgstr "Prihajajoča"
+
+#: apps/shoots/views.py:69
+msgid "Shot, not finished yet"
+msgstr "Posneta, še nezaključena"
+
+#: apps/shoots/views.py:105 templates/clients/detail.html:12
+#: templates/core/styleguide.html:108 templates/shoots/list.html:6
+#: templates/shoots/list.html:34
 msgid "New shoot"
 msgstr "Novo fotografiranje"
 
-#: apps/shoots/views.py:90
+#: apps/shoots/views.py:106
 msgid "Add shoot"
 msgstr "Dodaj fotografiranje"
 
-#: apps/shoots/views.py:92
+#: apps/shoots/views.py:108
 msgid "Shoot added."
 msgstr "Fotografiranje je dodano."
 
-#: apps/shoots/views.py:134 templates/shoots/detail.html:104
+#: apps/shoots/views.py:150 templates/shoots/detail.html:105
 msgid "Delete shoot"
 msgstr "Izbriši fotografiranje"
 
-#: apps/shoots/views.py:138
-msgid "Delete “%(title)s”?"
-msgstr "Želite izbrisati „%(title)s“?"
-
-#: apps/shoots/views.py:142
+#: apps/shoots/views.py:158
 msgid ""
 "Its calendar events and deadlines are removed too. This can't be undone."
 msgstr ""
 "Odstranjeni bodo tudi dogodki v koledarju in roki. Tega dejanja ni mogoče "
 "razveljaviti."
-
-#: apps/shoots/views.py:146
-msgid "“%(title)s” deleted."
-msgstr "Izbrisali ste „%(title)s“."
 
 #: apps/shoots/views_catalogue.py:38 templates/shoots/package_list.html:9
 #: templates/shoots/package_list.html:33
@@ -644,14 +1057,15 @@ msgid "Delete package"
 msgstr "Izbriši paket"
 
 #: apps/shoots/views_catalogue.py:75 apps/shoots/views_catalogue.py:154
+#, python-format
 msgid "Delete “%(name)s”?"
 msgstr "Želite izbrisati „%(name)s“?"
 
 #: apps/shoots/views_catalogue.py:86
 #, python-format
 msgid ""
-"%(count)s shoot uses this package. It keeps its price but loses the package."
-" To stop offering it, switch off “Offered” instead."
+"%(count)s shoot uses this package. It keeps its price but loses the package. "
+"To stop offering it, switch off “Offered” instead."
 msgid_plural ""
 "%(count)s shoots use this package. They keep their price but lose the "
 "package. To stop offering it, switch off “Offered” instead."
@@ -673,6 +1087,7 @@ msgid "The package will be permanently removed. This can't be undone."
 msgstr "Paket bo trajno odstranjen. Tega dejanja ni mogoče razveljaviti."
 
 #: apps/shoots/views_catalogue.py:96 apps/shoots/views_catalogue.py:173
+#, python-format
 msgid "“%(name)s” deleted."
 msgstr "Izbrisali ste „%(name)s“."
 
@@ -706,8 +1121,7 @@ msgstr "Izbriši lokacijo"
 #: apps/shoots/views_catalogue.py:165
 #, python-format
 msgid "%(count)s shoot takes place here. It stays, without a location."
-msgid_plural ""
-"%(count)s shoots take place here. They stay, without a location."
+msgid_plural "%(count)s shoots take place here. They stay, without a location."
 msgstr[0] ""
 "Tukaj poteka %(count)s fotografiranje. Ostalo bo, vendar brez lokacije."
 msgstr[1] ""
@@ -721,7 +1135,7 @@ msgstr[3] ""
 msgid "The location will be permanently removed. This can't be undone."
 msgstr "Lokacija bo trajno odstranjena. Tega dejanja ni mogoče razveljaviti."
 
-#: config/settings/base.py:170
+#: config/settings/base.py:172
 msgid "Slovenian"
 msgstr "Slovenščina"
 
@@ -753,8 +1167,8 @@ msgid ""
 "No client matches “%(query)s”. Try part of a name, an email or a phone "
 "number."
 msgstr ""
-"Nobena stranka ne ustreza iskanju „%(query)s“. Poskusite z delom imena, "
-"e-pošto ali telefonsko številko."
+"Nobena stranka ne ustreza iskanju „%(query)s“. Poskusite z delom imena, e-"
+"pošto ali telefonsko številko."
 
 #: templates/clients/_results.html:28
 msgid "No clients yet"
@@ -769,11 +1183,11 @@ msgstr ""
 "povpraševanje prek vašega portfolia."
 
 #: templates/clients/detail.html:13 templates/scheduling/_event_detail.html:16
-#: templates/shoots/detail.html:12
+#: templates/shoots/detail.html:13
 msgid "Edit"
 msgstr "Uredi"
 
-#: templates/clients/detail.html:25 templates/shoots/list.html:22
+#: templates/clients/detail.html:25 templates/shoots/_row.html:7
 msgid "No date"
 msgstr "Brez datuma"
 
@@ -811,36 +1225,36 @@ msgstr "Išči stranke"
 msgid "Name, email or phone"
 msgstr "Ime, e-pošta ali telefon"
 
-#: templates/core/dashboard.html:6
+#: templates/core/dashboard.html:7
 #, python-format
 msgid "Good day, %(name)s."
 msgstr "Dober dan, %(name)s."
 
-#: templates/core/dashboard.html:6
+#: templates/core/dashboard.html:7
 msgid "Good day."
 msgstr "Dober dan."
 
-#: templates/core/dashboard.html:14
+#: templates/core/dashboard.html:15
 msgid "Next 7 days"
 msgstr "Naslednjih 7 dni"
 
-#: templates/core/dashboard.html:15
+#: templates/core/dashboard.html:16
 msgid "Open calendar"
 msgstr "Odpri koledar"
 
-#: templates/core/dashboard.html:22 templates/scheduling/calendar.html:17
+#: templates/core/dashboard.html:23 templates/scheduling/calendar.html:17
 msgid "Today"
 msgstr "Danes"
 
-#: templates/core/dashboard.html:27
+#: templates/core/dashboard.html:28
 msgid "All day"
 msgstr "Cel dan"
 
-#: templates/core/dashboard.html:41
+#: templates/core/dashboard.html:42
 msgid "A free week"
 msgstr "Prost teden"
 
-#: templates/core/dashboard.html:42
+#: templates/core/dashboard.html:43
 msgid "No shoots, meetings or deadlines in the next seven days."
 msgstr "V naslednjih sedmih dneh ni fotografiranj, sestankov ali rokov."
 
@@ -875,14 +1289,6 @@ msgstr ""
 #: templates/core/styleguide.html:11
 msgid "Colour"
 msgstr "Barve"
-
-#: templates/core/styleguide.html:14
-msgid "Darkroom"
-msgstr "Temnica"
-
-#: templates/core/styleguide.html:25
-msgid "Light table"
-msgstr "Svetlomiza"
 
 #: templates/core/styleguide.html:37
 msgid ""
@@ -934,15 +1340,7 @@ msgstr ""
 msgid "Back"
 msgstr "Nazaj"
 
-#: templates/core/styleguide.html:90
-msgid "Favourite"
-msgstr "Priljubljena"
-
-#: templates/core/styleguide.html:91
-msgid "Download"
-msgstr "Prenesi"
-
-#: templates/core/styleguide.html:92
+#: templates/core/styleguide.html:92 templates/galleries/editor.html:21
 msgid "Share"
 msgstr "Deli"
 
@@ -955,14 +1353,11 @@ msgid "Upload photos"
 msgstr "Naloži fotografije"
 
 #: templates/core/styleguide.html:110 templates/core/styleguide.html:127
+#: templates/galleries/public/gallery.html:92
+#: templates/galleries/public/gallery.html:131
 #: templates/generic/confirm_delete.html:9 templates/generic/form.html:23
 msgid "Cancel"
 msgstr "Prekliči"
-
-#: templates/core/styleguide.html:111 templates/core/styleguide.html:155
-#: templates/core/styleguide.html:157 templates/core/styleguide.html:162
-msgid "Delete gallery"
-msgstr "Izbriši galerijo"
 
 #: templates/core/styleguide.html:112
 msgid "Unavailable"
@@ -1068,9 +1463,407 @@ msgstr "Dostavljene galerije"
 msgid "Icons"
 msgstr "Ikone"
 
-#: templates/cotton/field.html:7
+#: templates/cotton/field.html:7 templates/galleries/public/gallery.html:89
 msgid "optional"
 msgstr "neobvezno"
+
+#: templates/emails/gallery_link.txt:1
+#, python-format
+msgid "Hello %(name)s,"
+msgstr "Pozdravljeni, %(name)s,"
+
+#: templates/emails/gallery_link.txt:3
+msgid "your photos from “%(title)s” are ready. Open the gallery here:"
+msgstr "vaše fotografije „%(title)s“ so pripravljene. Galerijo odprete tukaj:"
+
+#: templates/emails/gallery_link.txt:7
+msgid "Tap the heart on the photos you love; I'll see your choice."
+msgstr "Pri fotografijah, ki so vam všeč, tapnite srce; vaš izbor bom videl tudi jaz."
+
+#: templates/emails/gallery_link.txt:8
+msgid ""
+"The gallery is protected with a password, which I'm sending you separately."
+msgstr "Galerija je zaščitena z geslom, ki vam ga pošiljam posebej."
+
+#: templates/emails/gallery_link.txt:9
+#, python-format
+msgid "The gallery is available until %(date)s."
+msgstr "Galerija je na voljo do %(date)s."
+
+#: templates/emails/gallery_link_subject.txt:1
+msgid "Your photos: %(title)s"
+msgstr "Vaše fotografije: %(title)s"
+
+#: templates/emails/zip_ready.txt:1
+msgid "The photos from “%(title)s” are packed and ready."
+msgstr "Fotografije „%(title)s“ so zapakirane in pripravljene."
+
+#: templates/emails/zip_ready.txt:5
+msgid "The file is about %(size)s MB. The link works until %(date)s."
+msgstr "Datoteka ima približno %(size)s MB. Povezava deluje do %(date)s."
+
+#: templates/emails/zip_ready_subject.txt:1
+msgid "%(title)s: your photos are ready to download"
+msgstr "%(title)s: fotografije so pripravljene za prenos"
+
+#: templates/galleries/_activity.html:4
+msgid "Clients' choices"
+msgstr "Izbor strank"
+
+#: templates/galleries/_activity.html:6
+msgid "Visits"
+msgstr "Obiski"
+
+#: templates/galleries/_activity.html:7
+msgid "People"
+msgstr "Osebe"
+
+#: templates/galleries/_activity.html:8
+msgid "Downloads"
+msgstr "Prenosi"
+
+#: templates/galleries/_activity.html:16
+#, python-format
+msgid "%(counter)s favourite"
+msgid_plural "%(counter)s favourites"
+msgstr[0] "%(counter)s priljubljena"
+msgstr[1] "%(counter)s priljubljeni"
+msgstr[2] "%(counter)s priljubljene"
+msgstr[3] "%(counter)s priljubljenih"
+
+#: templates/galleries/_activity.html:18 templates/galleries/editor.html:91
+#: templates/scheduling/calendar.html:51
+msgid "Copied"
+msgstr "Kopirano"
+
+#: templates/galleries/_activity.html:20
+msgid "Paste into Lightroom: Library filter, Text, File Name, Contains"
+msgstr "V Lightroomu prilepite v Library filter: Text, File Name, Contains"
+
+#: templates/galleries/_activity.html:20
+msgid "Copy file names for Lightroom"
+msgstr "Kopiraj imena datotek za Lightroom"
+
+#: templates/galleries/_activity.html:42
+msgid "New"
+msgstr "Novo"
+
+#: templates/galleries/_photo_grid.html:6 templates/galleries/list.html:29
+#, python-format
+msgid "%(counter)s photo"
+msgid_plural "%(counter)s photos"
+msgstr[0] "%(counter)s fotografija"
+msgstr[1] "%(counter)s fotografiji"
+msgstr[2] "%(counter)s fotografije"
+msgstr[3] "%(counter)s fotografij"
+
+#: templates/galleries/_photo_grid.html:6
+#, python-format
+msgid "%(counter)s still processing"
+msgid_plural "%(counter)s still processing"
+msgstr[0] "%(counter)s se še obdeluje"
+msgstr[1] "%(counter)s se še obdelujeta"
+msgstr[2] "%(counter)s se še obdelujejo"
+msgstr[3] "%(counter)s se še obdeluje"
+
+#: templates/galleries/_photo_grid.html:6
+#, python-format
+msgid "%(counter)s failed"
+msgid_plural "%(counter)s failed"
+msgstr[0] "%(counter)s ni uspela"
+msgstr[1] "%(counter)s nista uspeli"
+msgstr[2] "%(counter)s niso uspele"
+msgstr[3] "%(counter)s ni uspelo"
+
+#: templates/galleries/_photo_grid.html:17
+msgid "Remove section"
+msgstr "Odstrani poglavje"
+
+#: templates/galleries/_photo_grid.html:26
+msgid ""
+"No photos in this section yet. Upload into it, or move photos here from "
+"their menu."
+msgstr "V tem poglavju še ni fotografij. Naložite jih vanj ali jih sem premaknite iz menija fotografije."
+
+#: templates/galleries/_tile.html:8
+msgid "Couldn't process this file"
+msgstr "Datoteke ni bilo mogoče obdelati"
+
+#: templates/galleries/_tile.html:12
+msgid "Cover"
+msgstr "Naslovnica"
+
+#: templates/galleries/_tile.html:14
+#, python-format
+msgid "Actions for %(name)s"
+msgstr "Dejanja za %(name)s"
+
+#: templates/galleries/_tile.html:20
+msgid "Use as cover"
+msgstr "Nastavi za naslovnico"
+
+#: templates/galleries/_tile.html:21
+msgid "Try again"
+msgstr "Poskusi znova"
+
+#: templates/galleries/_tile.html:24
+msgid "Move to"
+msgstr "Premakni v"
+
+#: templates/galleries/_tile.html:25 templates/galleries/editor.html:37
+msgid "No section"
+msgstr "Brez poglavja"
+
+#: templates/galleries/_tile.html:29
+msgid "Delete photo"
+msgstr "Izbriši fotografijo"
+
+#: templates/galleries/editor.html:4
+msgid "%%(done)s of %%(total)s uploaded"
+msgstr "Naloženo %%(done)s od %%(total)s"
+
+#: templates/galleries/editor.html:13 templates/galleries/list.html:24
+msgid "Expired"
+msgstr "Potekla"
+
+#: templates/galleries/editor.html:14 templates/galleries/list.html:25
+msgid "Published"
+msgstr "Objavljena"
+
+#: templates/galleries/editor.html:15 templates/galleries/list.html:26
+msgid "Draft"
+msgstr "Osnutek"
+
+#: templates/galleries/editor.html:16
+#: templates/galleries/public/password.html:12
+msgid "Password"
+msgstr "Geslo"
+
+#: templates/galleries/editor.html:28
+msgid "Upload"
+msgstr "Nalaganje"
+
+#: templates/galleries/editor.html:31
+msgid "Drop photos anywhere on this page, or"
+msgstr "Spustite fotografije kamor koli na to stran ali"
+
+#: templates/galleries/editor.html:33
+msgid "Choose photos"
+msgstr "Izberi fotografije"
+
+#: templates/galleries/editor.html:35
+msgid "Upload into"
+msgstr "Naloži v"
+
+#: templates/galleries/editor.html:42
+msgid ""
+"JPEG, PNG, TIFF, WebP or AVIF, up to 150 MB each. Originals are kept; "
+"clients see web-size copies."
+msgstr "JPEG, PNG, TIFF, WebP ali AVIF, do 150 MB na datoteko. Originali se ohranijo, stranke vidijo kopije spletne velikosti."
+
+#: templates/galleries/editor.html:47
+msgid "New section"
+msgstr "Novo poglavje"
+
+#: templates/galleries/editor.html:48
+msgid "New section, e.g. Ceremony"
+msgstr "Novo poglavje, npr. Obred"
+
+#: templates/galleries/editor.html:49
+msgid "Add"
+msgstr "Dodaj"
+
+#: templates/galleries/editor.html:57
+msgid "No photos yet"
+msgstr "Še ni fotografij"
+
+#: templates/galleries/editor.html:58
+msgid ""
+"Upload the edited photos. They are processed in the background; you can keep "
+"working meanwhile."
+msgstr "Naložite obdelane fotografije. Obdelajo se v ozadju, vi pa lahko medtem delate naprej."
+
+#: templates/galleries/editor.html:64
+msgid "Uploads"
+msgstr "Nalaganja"
+
+#: templates/galleries/editor.html:74
+msgid "Uploaded"
+msgstr "Naloženo"
+
+#: templates/galleries/editor.html:85
+msgid "Share with your client"
+msgstr "Deli s stranko"
+
+#: templates/galleries/editor.html:87
+msgid ""
+"Anyone with this link can open the gallery. Send it to your client by email "
+"or message."
+msgstr "Galerijo lahko odpre vsak, ki ima to povezavo. Stranki jo pošljite po e-pošti ali v sporočilu."
+
+#: templates/galleries/editor.html:89
+msgid "The gallery is a draft. Publish it and the link starts working."
+msgstr "Galerija je osnutek. Ko jo objavite, povezava začne delovati."
+
+#: templates/galleries/editor.html:92
+msgid "Gallery link"
+msgstr "Povezava do galerije"
+
+#: templates/galleries/editor.html:94 templates/scheduling/calendar.html:54
+msgid "Copy"
+msgstr "Kopiraj"
+
+#: templates/galleries/editor.html:96
+msgid "Protected with a password. Send it separately."
+msgstr "Zaščitena z geslom. Pošljite ga posebej."
+
+#: templates/galleries/editor.html:97
+msgid "Available until %(date)s."
+msgstr "Na voljo do %(date)s."
+
+#: templates/galleries/editor.html:101 templates/scheduling/calendar.html:60
+msgid "Create new link"
+msgstr "Ustvari novo povezavo"
+
+#: templates/galleries/editor.html:106
+#, python-format
+msgid "Send to %(name)s"
+msgstr "Pošlji: %(name)s"
+
+#: templates/galleries/editor.html:108
+msgid "Open"
+msgstr "Odpri"
+
+#: templates/galleries/editor.html:109
+msgid "Unpublish"
+msgstr "Skrij"
+
+#: templates/galleries/editor.html:111
+msgid "Publish"
+msgstr "Objavi"
+
+#: templates/galleries/list.html:39
+msgid "No galleries yet"
+msgstr "Še ni galerij"
+
+#: templates/galleries/list.html:40
+msgid ""
+"A gallery is how you deliver a shoot: upload the photos, choose a look and "
+"send your client the link."
+msgstr "Z galerijo predate fotografiranje: naložite fotografije, izberite videz in stranki pošljite povezavo."
+
+#: templates/galleries/public/_tile.html:8
+#, python-format
+msgid "Open %(name)s"
+msgstr "Odpri %(name)s"
+
+#: templates/galleries/public/_tile.html:12
+#, python-format
+msgid "Favourite: %(name)s"
+msgstr "Priljubljena: %(name)s"
+
+#: templates/galleries/public/gallery.html:9
+msgid "Preview. Your client sees this once you publish."
+msgstr "Predogled. Stranka galerijo vidi, ko jo objavite."
+
+#: templates/galleries/public/gallery.html:25
+msgid "Gallery"
+msgstr "Galerija"
+
+#: templates/galleries/public/gallery.html:36
+msgid "Show favourites only"
+msgstr "Pokaži samo priljubljene"
+
+#: templates/galleries/public/gallery.html:40
+msgid "Download all"
+msgstr "Prenesi vse"
+
+#: templates/galleries/public/gallery.html:70
+msgid "The photos are on their way. Check back soon."
+msgstr "Fotografije so na poti. Kmalu preverite znova."
+
+#: templates/galleries/public/gallery.html:72
+msgid "No favourites yet. Tap the heart on the photos you love."
+msgstr "Priljubljenih še ni. Tapnite srce pri fotografijah, ki so vam všeč."
+
+#: templates/galleries/public/gallery.html:78
+msgid "This gallery is available until %(date)s."
+msgstr "Galerija je na voljo do %(date)s."
+
+#: templates/galleries/public/gallery.html:85
+msgid "Who is choosing?"
+msgstr "Kdo izbira?"
+
+#: templates/galleries/public/gallery.html:86
+msgid "Your name tells %(name)s whose favourites these are."
+msgstr "Vaše ime pove, čigav je izbor, ki ga bo videl %(name)s."
+
+#: templates/galleries/public/gallery.html:88
+msgid "Name"
+msgstr "Ime"
+
+#: templates/galleries/public/gallery.html:93
+msgid "Continue"
+msgstr "Nadaljuj"
+
+#: templates/galleries/public/gallery.html:102
+msgid "Download the whole gallery"
+msgstr "Prenesite celotno galerijo"
+
+#: templates/galleries/public/gallery.html:103
+msgid ""
+"%(counter)s photo, packed as one ZIP file. We prepare it in the background "
+"and e-mail you the link."
+msgid_plural ""
+"%(counter)s photos, packed as one ZIP file. We prepare it in the background "
+"and e-mail you the link."
+msgstr[0] "%(counter)s fotografija v eni datoteki ZIP. Pripravimo jo v ozadju in vam povezavo pošljemo po e-pošti."
+msgstr[1] "%(counter)s fotografiji v eni datoteki ZIP. Pripravimo ju v ozadju in vam povezavo pošljemo po e-pošti."
+msgstr[2] "%(counter)s fotografije v eni datoteki ZIP. Pripravimo jih v ozadju in vam povezavo pošljemo po e-pošti."
+msgstr[3] "%(counter)s fotografij v eni datoteki ZIP. Pripravimo jih v ozadju in vam povezavo pošljemo po e-pošti."
+
+#: templates/galleries/public/gallery.html:106
+msgid "Size"
+msgstr "Velikost"
+
+#: templates/galleries/public/gallery.html:117
+msgid "Download ZIP"
+msgstr "Prenesi ZIP"
+
+#: templates/galleries/public/gallery.html:118
+msgid "Prepare ZIP"
+msgstr "Pripravi ZIP"
+
+#: templates/galleries/public/gallery.html:127
+#, python-format
+msgid "A note for %(name)s"
+msgstr "Sporočilo za %(name)s"
+
+#: templates/galleries/public/gallery.html:128
+msgid "Comment"
+msgstr "Sporočilo"
+
+#: templates/galleries/public/gallery.html:132
+msgid "Send"
+msgstr "Pošlji"
+
+#: templates/galleries/public/password.html:10
+msgid "This gallery is private. Enter the password you received with the link."
+msgstr "Galerija je zasebna. Vnesite geslo, ki ste ga prejeli s povezavo."
+
+#: templates/galleries/public/password.html:16
+msgid "Open gallery"
+msgstr "Odpri galerijo"
+
+#: templates/galleries/public/unavailable.html:9
+msgid ""
+"This gallery is no longer available. If you still need the photos, write to "
+"your photographer and they can open it again."
+msgstr "Galerija ni več na voljo. Če fotografije še potrebujete, pišite fotografu in jo lahko znova odpre."
+
+#: templates/galleries/public/unavailable.html:10
+msgid "Write to"
+msgstr "Piši:"
 
 #: templates/partials/messages.html:6
 msgid "Dismiss"
@@ -1092,18 +1885,10 @@ msgstr "Račun"
 msgid "Pages"
 msgstr "Strani"
 
-#: templates/partials/pagination.html:4 templates/scheduling/calendar.html:16
-msgid "Previous"
-msgstr "Prejšnja"
-
 #: templates/partials/pagination.html:6
 #, python-format
 msgid "Page %(page)s of %(pages)s"
 msgstr "Stran %(page)s od %(pages)s"
-
-#: templates/partials/pagination.html:8 templates/scheduling/calendar.html:18
-msgid "Next"
-msgstr "Naslednja"
 
 #: templates/partials/theme_switch.html:3
 msgid "Appearance"
@@ -1128,11 +1913,6 @@ msgstr "Odpri fotografiranje"
 #: templates/scheduling/_event_detail.html:19
 msgid "Remove"
 msgstr "Odstrani"
-
-#: templates/scheduling/_event_form.html:6
-#: templates/scheduling/calendar.html:62
-msgid "Close"
-msgstr "Zapri"
 
 #: templates/scheduling/_event_form.html:10
 msgid "Book a shoot instead"
@@ -1168,17 +1948,9 @@ msgstr ""
 "Koledarju. Vaša fotografiranja, sestanki in roki se bodo prikazali tam ter "
 "se samodejno posodabljali."
 
-#: templates/scheduling/calendar.html:51
-msgid "Copied"
-msgstr "Kopirano"
-
 #: templates/scheduling/calendar.html:52
 msgid "Calendar link"
 msgstr "Povezava do koledarja"
-
-#: templates/scheduling/calendar.html:54
-msgid "Copy"
-msgstr "Kopiraj"
 
 #: templates/scheduling/calendar.html:56
 msgid ""
@@ -1187,47 +1959,43 @@ msgstr ""
 "Vsakdo s to povezavo lahko vidi vaš koledar. Če pride v javnost, ustvarite "
 "novo."
 
-#: templates/scheduling/calendar.html:60
-msgid "Create new link"
-msgstr "Ustvari novo povezavo"
-
-#: templates/shoots/detail.html:22
+#: templates/shoots/detail.html:23
 msgid "Cancelled."
 msgstr "Odpovedano."
 
-#: templates/shoots/detail.html:22
+#: templates/shoots/detail.html:23
 msgid "It stays in the history but not in your active shoots."
 msgstr "Ostane v zgodovini, vendar ne med vašimi aktivnimi fotografiranji."
 
-#: templates/shoots/detail.html:23
+#: templates/shoots/detail.html:24
 msgid "Reopen as inquiry"
 msgstr "Ponovno odpri kot povpraševanje"
 
-#: templates/shoots/detail.html:28
+#: templates/shoots/detail.html:29
 msgid "Status"
 msgstr "Status"
 
-#: templates/shoots/detail.html:47
+#: templates/shoots/detail.html:48
 msgid "Date"
 msgstr "Datum"
 
-#: templates/shoots/detail.html:48
+#: templates/shoots/detail.html:49
 msgid "Not set yet"
 msgstr "Še ni določeno"
 
-#: templates/shoots/detail.html:51
+#: templates/shoots/detail.html:52
 msgid "Time"
 msgstr "Čas"
 
-#: templates/shoots/detail.html:55
+#: templates/shoots/detail.html:56
 msgid "Location"
 msgstr "Lokacija"
 
-#: templates/shoots/detail.html:67
+#: templates/shoots/detail.html:68
 msgid "Deadlines and meetings"
 msgstr "Roki in sestanki"
 
-#: templates/shoots/detail.html:80
+#: templates/shoots/detail.html:81
 msgid ""
 "Editing and delivery deadlines are added from the package once the shoot is "
 "confirmed."
@@ -1235,28 +2003,28 @@ msgstr ""
 "Roka za obdelavo in dostavo se dodata iz paketa, ko je fotografiranje "
 "potrjeno."
 
-#: templates/shoots/detail.html:89
+#: templates/shoots/detail.html:90
 msgid "Price"
 msgstr "Cena"
 
-#: templates/shoots/detail.html:101
+#: templates/shoots/detail.html:102
 msgid "Cancel shoot"
 msgstr "Odpovej fotografiranje"
 
-#: templates/shoots/list.html:10
+#: templates/shoots/list.html:9
 msgid "Filter shoots"
 msgstr "Filtriraj fotografiranja"
 
-#: templates/shoots/list.html:38
+#: templates/shoots/list.html:32
 msgid "Nothing here"
 msgstr "Tukaj ni ničesar"
 
-#: templates/shoots/list.html:39
+#: templates/shoots/list.html:33
 msgid "Shoots you book appear here until they are paid."
 msgstr ""
 "Fotografiranja, ki jih rezervirate, so tukaj prikazana, dokler niso plačana."
 
-#: templates/shoots/list.html:39
+#: templates/shoots/list.html:33
 msgid "No shoots match this filter."
 msgstr "Nobeno fotografiranje ne ustreza temu filtru."
 
@@ -1281,6 +2049,7 @@ msgstr ""
 "se dodajo, ko je fotografiranje potrjeno."
 
 #: templates/shoots/package_list.html:20
+#, python-format
 msgid "delivered within %(days)s day"
 msgid_plural "delivered within %(days)s days"
 msgstr[0] "dostava v %(days)s dnevu"

@@ -1,8 +1,9 @@
 import json
+from pathlib import PurePosixPath
 
 from django.contrib import messages
 from django.db import transaction
-from django.db.models import Count
+from django.db.models import Count, Prefetch
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -24,7 +25,8 @@ from apps.photos.tasks import process_photo
 from apps.shoots.models import Shoot
 
 from .forms import GalleryCreateForm, GallerySettingsForm, SectionForm
-from .models import Gallery
+from .models import Favorite, Gallery, GalleryEvent, PhotoComment
+from .tasks import send_gallery_link
 
 
 class GalleryListView(StudioListView):
@@ -99,7 +101,9 @@ class GalleryEditorView(StudioDetailView):
             {"section": s, "photos": [p for p in photos if p.section_id == s.pk]} for s in sections
         ]
         loose = [p for p in photos if p.section_id is None]
+        activity_data = activity(gallery)
         return super().get_context_data(
+            activity=activity_data,
             groups=[{"section": None, "photos": loose}, *grouped],
             sections=sections,
             counts=counts,
@@ -107,6 +111,42 @@ class GalleryEditorView(StudioDetailView):
             section_form=SectionForm(studio=self.request.studio),
             **kwargs,
         )
+
+
+def activity(gallery):
+    """What clients did: selections per person, notes, and a few counts."""
+    events = gallery.events.values("kind").annotate(n=Count("id"))
+    counts = {row["kind"]: row["n"] for row in events}
+    visitors = list(
+        gallery.visitors.filter(favorites__isnull=False)
+        .distinct()
+        .prefetch_related(
+            Prefetch(
+                "favorites",
+                queryset=Favorite.objects.select_related("photo").order_by("photo__position"),
+            )
+        )
+    )
+    for visitor in visitors:
+        visitor.picked = [f.photo for f in visitor.favorites.all()]
+        visitor.filenames = ", ".join(PurePosixPath(p.original_name).stem for p in visitor.picked)
+    comments = list(gallery.comments.select_related("visitor", "photo")[:50])
+    unread = [c.pk for c in comments if c.read_at is None]
+    if unread:
+        PhotoComment.objects.filter(pk__in=unread).update(read_at=timezone.now())
+    for comment in comments:
+        comment.is_new = comment.pk in unread
+    return {
+        "views": counts.get(GalleryEvent.Kind.VIEW, 0),
+        "visitors": gallery.events.filter(kind=GalleryEvent.Kind.VIEW)
+        .values("ip_hash")
+        .distinct()
+        .count(),
+        "downloads": counts.get(GalleryEvent.Kind.DOWNLOAD_PHOTO, 0)
+        + counts.get(GalleryEvent.Kind.DOWNLOAD_ZIP, 0),
+        "selections": visitors,
+        "comments": comments,
+    }
 
 
 class GallerySettingsView(StudioUpdateView):
@@ -167,6 +207,15 @@ class GalleryActionView(StudioScopedMixin, View):
         elif action == "hide":
             gallery.is_published = False
             messages.success(request, _("Hidden. The link shows a note until you publish again."))
+        elif action == "send":
+            if not (gallery.is_live and gallery.client and gallery.client.email):
+                return HttpResponse(status=400)
+            transaction.on_commit(lambda: send_gallery_link.delay(gallery.pk))
+            messages.success(
+                request,
+                _("Link sent to %(email)s.") % {"email": gallery.client.email},
+            )
+            return HttpResponseRedirect(gallery.get_absolute_url())
         elif action == "new-link":
             gallery.rotate_token()
             messages.success(request, _("New link created. The old link no longer works."))

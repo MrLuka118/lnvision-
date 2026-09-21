@@ -1,0 +1,11 @@
+{% load i18n formatting %}{% blocktranslate with name=client.first_name %}Hello {{ name }},{% endblocktranslate %}
+
+{% blocktranslate with title=gallery.title %}your photos from “{{ title }}” are ready. Open the gallery here:{% endblocktranslate %}
+
+{{ link }}
+
+{% if gallery.allow_favorites %}{% translate "Tap the heart on the photos you love; I'll see your choice." %}
+{% endif %}{% if gallery.has_password %}{% translate "The gallery is protected with a password, which I'm sending you separately." %}
+{% endif %}{% if gallery.expires_at %}{% blocktranslate with date=gallery.expires_at|long_date %}The gallery is available until {{ date }}.{% endblocktranslate %}
+{% endif %}
+{{ studio.name }}

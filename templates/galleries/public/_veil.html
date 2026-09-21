@@ -1,0 +1,2 @@
+{# The cover's 24-pixel placeholder, blurred: atmosphere without showing the photo itself. #}
+<div class="g-veil" aria-hidden="true"{% if gallery.cover_photo.lqip %} style="background-image: url({{ gallery.cover_photo.lqip }}); background-color: {{ gallery.cover_photo.dominant_color }}"{% endif %}></div>

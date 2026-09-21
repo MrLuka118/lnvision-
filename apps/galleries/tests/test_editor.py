@@ -119,3 +119,30 @@ def test_editor_grid_partial_for_polling(auth_client, studio):
 def test_unpublished_gallery_link_is_not_found(client, studio):
     gallery = GalleryFactory(studio=studio)
     assert client.get(gallery.get_public_url()).status_code == 404
+
+
+def test_sending_the_link_to_the_client(
+    auth_client, studio, mailoutbox, django_capture_on_commit_callbacks
+):
+    from apps.clients.tests.factories import ClientFactory
+
+    client = ClientFactory(studio=studio, first_name="Ana", email="ana@example.si")
+    gallery = GalleryFactory(studio=studio, client=client, is_published=True)
+    gallery.set_password("geslo-za-ano")
+    gallery.save()
+    with django_capture_on_commit_callbacks(execute=True):
+        response = auth_client.post(reverse("galleries:action", args=[gallery.pk, "send"]))
+    assert response.status_code == 302
+    [mail] = mailoutbox
+    assert mail.to == ["ana@example.si"]
+    assert gallery.get_public_url() in mail.body
+    assert "geslo-za-ano" not in mail.body  # the password never travels with the link
+
+
+def test_drafts_are_not_sent(auth_client, studio):
+    from apps.clients.tests.factories import ClientFactory
+
+    gallery = GalleryFactory(studio=studio, client=ClientFactory(studio=studio))
+    assert (
+        auth_client.post(reverse("galleries:action", args=[gallery.pk, "send"])).status_code == 400
+    )

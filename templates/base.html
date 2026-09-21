@@ -19,14 +19,16 @@
         "alpine": "{% static 'vendor/alpine-csp-3.17.4.esm.min.js' %}",
         "app/components": "{% static 'js/components.js' %}",
         "app/popover": "{% static 'js/popover.js' %}",
-        "app/refraction": "{% static 'js/refraction.js' %}"
+        "app/refraction": "{% static 'js/refraction.js' %}",
+        "photoswipe": "{% static 'vendor/photoswipe-5.4.4.esm.min.js' %}",
+        "photoswipe/lightbox": "{% static 'vendor/photoswipe-lightbox-5.4.4.esm.min.js' %}"
       }
     }
   </script>
   <script type="module" src="{% static 'js/app.js' %}"></script>
   {% block head %}{% endblock %}
 </head>
-<body class="{% block body_class %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<body class="{% block body_class %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' {% block body_attrs %}{% endblock %}>
   {% block body %}{% endblock %}
   {% block extra_body %}{% endblock %}
 </body>

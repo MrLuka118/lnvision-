@@ -1,12 +1,13 @@
 {% extends "layouts/app.html" %}
+{% load formatting %}
 {% block title %}{% translate "Overview" %}{% endblock %}
 {% block content %}
   <header class="mb-14 grid gap-3">
     <p class="text-md text-ink-2">
       {% if request.user.first_name %}{% blocktranslate with name=request.user.first_name %}Good day, {{ name }}.{% endblocktranslate %}{% else %}{% translate "Good day." %}{% endif %}
     </p>
-    {% now "l" as weekday %}{% now "j." as day %}{% now "F" as month %}
-    <h1 class="text-3xl sm:text-5xl xl:text-6xl">{{ weekday|capfirst }}, <span class="whitespace-nowrap">{{ day }} {{ month }}</span></h1>
+    {% now "l" as weekday %}
+    <h1 class="text-6xl">{{ weekday|capfirst }}, <span class="whitespace-nowrap">{{ today|long_date:False }}</span></h1>
   </header>
 
   <section aria-labelledby="week-title" class="max-w-3xl">

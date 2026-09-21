@@ -39,3 +39,25 @@ def duration(minutes):
     if hours:
         return f"{hours}{NBSP}h"
     return f"{rest}{NBSP}min"
+
+
+# Slovenian dates put the month in the genitive: "18. julija 2026", not "18. julij 2026".
+SL_MONTHS_GENITIVE = [
+    "januarja", "februarja", "marca", "aprila", "maja", "junija",
+    "julija", "avgusta", "septembra", "oktobra", "novembra", "decembra",
+]  # fmt: skip
+
+
+@register.filter
+def long_date(value, with_year=True):
+    """A date written out: '18. julija 2026' in Slovenian, the locale's own form otherwise."""
+    if not value:
+        return ""
+    from django.utils import formats, timezone, translation
+
+    if hasattr(value, "tzinfo") and value.tzinfo is not None:
+        value = timezone.localtime(value)
+    if translation.get_language() == "sl":
+        text = f"{value.day}. {SL_MONTHS_GENITIVE[value.month - 1]}"
+        return f"{text} {value.year}" if with_year else text
+    return formats.date_format(value, "j F Y" if with_year else "j F")

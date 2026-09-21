@@ -103,6 +103,19 @@ class Photo(TenantModel):
         width = self.best_width(960)
         return self.rendition_url(width, "jpg") if width else ""
 
+    @property
+    def display_width(self) -> int:
+        widths = self.renditions.get("widths", [])
+        return widths[-1] if widths else (self.width or 0)
+
+    @property
+    def display_height(self) -> int:
+        return round(self.display_width / self.aspect_ratio) if self.display_width else 0
+
+    @property
+    def display_src(self) -> str:
+        return self.rendition_url(self.display_width, "jpg") if self.display_width else ""
+
     def best_width(self, target: int) -> int | None:
         widths = self.renditions.get("widths", [])
         if not widths:
