@@ -47,6 +47,29 @@ export function registerComponents(Alpine) {
     },
   }));
 
+  Alpine.data("copy", () => ({
+    label: "",
+
+    init() {
+      this.label = this.$el.querySelector("[x-text]")?.textContent.trim() || "";
+      this.original = this.label;
+    },
+
+    async copy() {
+      const value = this.$refs.value.value;
+      try {
+        await navigator.clipboard.writeText(value);
+      } catch {
+        this.$refs.value.select();
+        return;
+      }
+      this.label = this.$el.dataset.copied || this.original;
+      setTimeout(() => {
+        this.label = this.original;
+      }, 2000);
+    },
+  }));
+
   Alpine.data("toast", () => ({
     open: true,
 

@@ -1,0 +1,108 @@
+{% extends "layouts/app.html" %}
+{% load formatting %}
+{% block title %}{{ object.title }}{% endblock %}
+{% block content %}
+  <a class="back-link" href="{% url 'shoots:list' %}"><c-icon name="chevron-left" size="sm" />{% translate "Shoots" %}</a>
+  <header class="page-header">
+    <div class="grid gap-2">
+      <h1 class="page-title">{{ object.title }}</h1>
+      <p class="text-md text-ink-2"><a class="link" href="{{ object.client.get_absolute_url }}">{{ object.client.display_name }}</a></p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <c-button variant="secondary" href="{% url 'shoots:update' object.pk %}" icon="pencil">{% translate "Edit" %}</c-button>
+    </div>
+  </header>
+
+  <div id="shoot-body" class="grid gap-10">
+    {% url "shoots:status" object.pk as status_url %}
+    {% if object.status == "cancelled" %}
+      <form method="post" action="{{ status_url }}" hx-post="{{ status_url }}" hx-target="#shoot-body" hx-select="#shoot-body" hx-swap="outerHTML"
+            class="panel flex flex-wrap items-center justify-between gap-4 p-5">
+        {% csrf_token %}
+        <p><span class="font-semibold">{% translate "Cancelled." %}</span> <span class="text-ink-2">{% translate "It stays in the history but not in your active shoots." %}</span></p>
+        <button class="btn btn-secondary btn-sm" name="status" value="inquiry">{% translate "Reopen as inquiry" %}</button>
+      </form>
+    {% else %}
+      <form method="post" action="{{ status_url }}" hx-post="{{ status_url }}" hx-target="#shoot-body" hx-select="#shoot-body" hx-swap="outerHTML">
+        {% csrf_token %}
+        <h2 class="visually-hidden">{% translate "Status" %}</h2>
+        <ol class="pipeline">
+          {% for step in pipeline %}
+            <li>
+              <button class="pipeline-step{% if step.done %} is-done{% endif %}" name="status" value="{{ step.value }}"{% if step.current %} aria-current="step"{% endif %}>
+                <span class="pipeline-dot" aria-hidden="true"></span>{{ step.label }}
+              </button>
+            </li>
+          {% endfor %}
+        </ol>
+      </form>
+    {% endif %}
+
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
+      <section aria-labelledby="when-title" class="grid content-start gap-8">
+        <div class="panel p-5">
+          <h2 id="when-title" class="mb-4 text-xl">{% translate "When and where" %}</h2>
+          <dl class="facts sm:grid-cols-2">
+            <div>
+              <dt>{% translate "Date" %}</dt>
+              <dd>{% if object.starts_at %}{{ object.starts_at|date:"l, j. n. Y"|capfirst }}{% else %}{% translate "Not set yet" %}{% endif %}</dd>
+            </div>
+            <div>
+              <dt>{% translate "Time" %}</dt>
+              <dd class="tnum">{% if object.starts_at %}{{ object.starts_at|date:"H:i" }}{% if object.ends_at %}–{{ object.ends_at|date:"H:i" }}{% endif %}{% else %}—{% endif %}</dd>
+            </div>
+            <div class="sm:col-span-2">
+              <dt>{% translate "Location" %}</dt>
+              <dd>
+                {% if object.location %}
+                  {% if object.location.maps_url %}<a class="link" href="{{ object.location.maps_url }}" target="_blank" rel="noopener">{{ object.location.name }}</a>{% else %}{{ object.location.name }}{% endif %}
+                  {% if object.location.address %}<span class="block text-sm text-ink-2">{{ object.location.address|linebreaksbr }}</span>{% endif %}
+                {% else %}—{% endif %}
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <section aria-labelledby="deadlines-title">
+          <h2 id="deadlines-title" class="mb-4 text-xl">{% translate "Deadlines and meetings" %}</h2>
+          {% if deadlines %}
+            <div class="grid gap-2">
+              {% for event in deadlines %}
+                <div class="event-chip" style="--dot: {{ event.colour }}">
+                  <span class="grid">
+                    <span class="font-semibold">{{ event.get_kind_display }}</span>
+                    <span class="tnum text-sm text-ink-2">{% if event.all_day %}{{ event.start|date:"l, j. n. Y"|capfirst }}{% else %}{{ event.start|date:"l, j. n. Y, H:i"|capfirst }}{% endif %}</span>
+                  </span>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-ink-2">{% translate "Editing and delivery deadlines are added from the package once the shoot is confirmed." %}</p>
+          {% endif %}
+        </section>
+      </section>
+
+      <aside class="grid content-start gap-6">
+        <div class="panel p-5">
+          <dl class="facts">
+            <div><dt>{% translate "Package" %}</dt><dd>{% firstof object.package.name "—" %}</dd></div>
+            <div><dt>{% translate "Price" %}</dt><dd class="tnum font-display text-2xl">{{ object.price|eur }}</dd></div>
+          </dl>
+        </div>
+        {% if object.notes %}
+          <div class="panel p-5">
+            <h2 class="mb-3 text-xl">{% translate "Notes" %}</h2>
+            <div class="text-ink-2">{{ object.notes|linebreaks }}</div>
+          </div>
+        {% endif %}
+        {% if object.status != "cancelled" %}
+          <form method="post" action="{{ status_url }}">
+            {% csrf_token %}
+            <button class="inline-flex items-center gap-2 text-sm text-ink-2 hover:text-ink" name="status" value="cancelled"><c-icon name="x" size="sm" />{% translate "Cancel shoot" %}</button>
+          </form>
+        {% endif %}
+        <a class="inline-flex items-center gap-2 text-sm text-danger" href="{% url 'shoots:delete' object.pk %}"><c-icon name="trash-2" size="sm" />{% translate "Delete shoot" %}</a>
+      </aside>
+    </div>
+  </div>
+{% endblock %}

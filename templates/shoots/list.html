@@ -1,0 +1,39 @@
+{% extends "layouts/app.html" %}
+{% block title %}{% translate "Shoots" %}{% endblock %}
+{% block content %}
+  {% url "shoots:create" as create_url %}
+  <c-page-header title="{% translate 'Shoots' %}">
+    <c-slot name="actions"><c-button :href="create_url" icon="plus">{% translate "New shoot" %}</c-button></c-slot>
+  </c-page-header>
+
+  <nav class="mb-6 flex flex-wrap gap-2" aria-label="{% translate 'Filter shoots' %}">
+    {% for key, label in filters %}
+      <a class="filter-pill" href="?status={{ key }}"{% if key == current %} aria-current="page"{% endif %}>{{ label }}</a>
+    {% endfor %}
+  </nav>
+
+  <div class="max-w-5xl">
+    {% if groups %}
+      <div class="grid gap-10">
+        {% for label, shoots in groups %}
+          {% if shoots %}
+            <section class="grid gap-3">
+              <h2 class="text-xl">{{ label }}</h2>
+              <div class="rows">{% for shoot in shoots %}{% include "shoots/_row.html" %}{% endfor %}</div>
+            </section>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% elif object_list %}
+      <div class="rows">{% for shoot in object_list %}{% include "shoots/_row.html" %}{% endfor %}</div>
+      {% include "partials/pagination.html" %}
+    {% else %}
+      <div class="panel">
+        <c-empty icon="camera" title="{% translate 'Nothing here' %}">
+          {% if current == "active" %}{% translate "Shoots you book appear here until they are paid." %}{% else %}{% translate "No shoots match this filter." %}{% endif %}
+          <c-slot name="actions"><c-button :href="create_url" icon="plus">{% translate "New shoot" %}</c-button></c-slot>
+        </c-empty>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

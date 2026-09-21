@@ -1,0 +1,19 @@
+{% extends "layouts/app.html" %}
+{% block title %}{% translate "Clients" %}{% endblock %}
+{% block content %}
+  {% url "clients:create" as create_url %}
+  <c-page-header title="{% translate 'Clients' %}">
+    <c-slot name="actions"><c-button :href="create_url" icon="plus">{% translate "New client" %}</c-button></c-slot>
+  </c-page-header>
+
+  <form class="search mb-6 max-w-md" role="search" method="get"
+        hx-get="{% url 'clients:list' %}" hx-target="#client-results" hx-push-url="true"
+        hx-trigger="input changed delay:250ms from:input, search from:input">
+    <c-icon name="search" />
+    <label class="visually-hidden" for="client-search">{% translate "Search clients" %}</label>
+    <input class="input" type="search" id="client-search" name="q" value="{{ query }}" autocomplete="off"
+           placeholder="{% translate 'Name, email or phone' %}">
+  </form>
+
+  <div id="client-results" class="max-w-4xl">{% include "clients/_results.html" %}</div>
+{% endblock %}

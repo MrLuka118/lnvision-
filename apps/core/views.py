@@ -1,13 +1,62 @@
+from datetime import datetime, time, timedelta
+from itertools import groupby
+
 from django import forms
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.http import Http404
+from django.urls import reverse_lazy
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, UpdateView
+
+from .forms import StudioForm
+from .generic import FormPageMixin
+from .models import Studio
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "core/dashboard.html"
+
+    def get_context_data(self, **kwargs):
+        from apps.scheduling.models import Event
+
+        today = timezone.localdate()
+        start = timezone.make_aware(datetime.combine(today, time.min))
+        week = (
+            Event.objects.for_studio(self.request.studio)
+            .filter(start__gte=start, start__lt=start + timedelta(days=7))
+            .select_related("shoot", "client", "location")
+            .order_by("start")
+        )
+        # Group by local date: an evening event is still "today" in Ljubljana, not tomorrow in UTC.
+        days = [
+            {"date": day, "events": list(events)}
+            for day, events in groupby(week, key=lambda e: timezone.localdate(e.start))
+        ]
+        return super().get_context_data(days=days, today=today, **kwargs)
+
+
+class SettingsView(LoginRequiredMixin, TemplateView):
+    template_name = "core/settings.html"
+
+
+class StudioSettingsView(LoginRequiredMixin, FormPageMixin, SuccessMessageMixin, UpdateView):
+    model = Studio
+    form_class = StudioForm
+    page_title = _("Studio")
+    back_label = _("Settings")
+    success_message = _("Studio details saved.")
+
+    def get_object(self, queryset=None):
+        return self.request.studio
+
+    def get_success_url(self):
+        return reverse_lazy("core:settings")
+
+    def get_cancel_url(self):
+        return reverse_lazy("core:settings")
 
 
 class StyleGuideView(TemplateView):

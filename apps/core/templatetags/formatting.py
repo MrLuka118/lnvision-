@@ -24,3 +24,18 @@ def eur(value, decimals=2):
     grouped = f"{int(whole):,}".replace(",", ".")
     number = f"{grouped},{fraction}" if decimals else grouped
     return f"{sign}{number}{NBSP}€"
+
+
+@register.filter
+def duration(minutes):
+    """90 -> '1 h 30 min', 120 -> '2 h', 45 -> '45 min'."""
+    try:
+        minutes = int(minutes)
+    except (TypeError, ValueError):
+        return ""
+    hours, rest = divmod(minutes, 60)
+    if hours and rest:
+        return f"{hours}{NBSP}h {rest}{NBSP}min"
+    if hours:
+        return f"{hours}{NBSP}h"
+    return f"{rest}{NBSP}min"

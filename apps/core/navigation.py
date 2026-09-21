@@ -15,6 +15,7 @@ class NavEntry:
 NAVIGATION = [
     NavEntry("core:dashboard", _("Overview"), "layout-dashboard"),
     NavEntry("scheduling:calendar", _("Calendar"), "calendar"),
+    NavEntry("shoots:list", _("Shoots"), "camera"),
     NavEntry("clients:list", _("Clients"), "users"),
     NavEntry("galleries:list", _("Galleries"), "images"),
     NavEntry("finance:dashboard", _("Finance"), "wallet"),

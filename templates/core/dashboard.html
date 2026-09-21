@@ -10,11 +10,38 @@
   </header>
 
   <section aria-labelledby="week-title" class="max-w-3xl">
-    <h2 id="week-title" class="mb-4 text-xl">{% translate "Next 7 days" %}</h2>
-    <div class="panel">
-      <c-empty icon="calendar" title="{% translate 'Your week will appear here' %}">
-        {% translate "Shoots, client meetings and editing and delivery deadlines for the next seven days, in order." %}
-      </c-empty>
+    <div class="mb-4 flex items-baseline justify-between gap-4">
+      <h2 id="week-title" class="text-xl">{% translate "Next 7 days" %}</h2>
+      <a class="link text-sm" href="{% url 'scheduling:calendar' %}">{% translate "Open calendar" %}</a>
     </div>
+    {% if days %}
+      <div class="grid gap-6">
+        {% for day in days %}
+          <div class="grid gap-2">
+            <h3 class="font-sans text-sm font-semibold text-ink-2">
+              {% if day.date == today %}{% translate "Today" %}{% else %}{{ day.date|date:"l, j. n."|capfirst }}{% endif %}
+            </h3>
+            <div class="rows">
+              {% for event in day.events %}
+                <a class="row" href="{% if event.shoot %}{{ event.shoot.get_absolute_url }}{% else %}{% url 'scheduling:calendar' %}{% endif %}" style="--dot: {{ event.colour }}">
+                  <span class="tnum w-14 text-sm text-ink-2">{% if event.all_day %}{% translate "All day" %}{% else %}{{ event.start|date:"H:i" }}{% endif %}</span>
+                  <span class="grid min-w-0">
+                    <span class="row-title">{{ event.display_title }}</span>
+                    <span class="row-meta">{{ event.get_kind_display }}{% if event.location %}, {{ event.location.name }}{% endif %}</span>
+                  </span>
+                  <span class="badge-dot" aria-hidden="true"></span>
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="panel">
+        <c-empty icon="calendar" title="{% translate 'A free week' %}">
+          {% translate "No shoots, meetings or deadlines in the next seven days." %}
+        </c-empty>
+      </div>
+    {% endif %}
   </section>
 {% endblock %}

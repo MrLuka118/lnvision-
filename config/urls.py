@@ -6,6 +6,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("racun/", include("allauth.urls")),
     path("", include("apps.core.urls")),
+    path("", include("apps.clients.urls")),
+    path("", include("apps.shoots.urls")),
+    path("", include("apps.scheduling.urls")),
 ]
 
 if settings.DEBUG:

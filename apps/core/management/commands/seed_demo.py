@@ -35,6 +35,7 @@ class Command(BaseCommand):
             user = self.seed_user(options["password"])
             self.seed_studio(user)
             self.seed_email(user)
+            self.seed_business(user.studio)
         self.stdout.write(self.style.SUCCESS("Demo user seeded successfully"))
         self.stdout.write(self.style.SUCCESS(f"Email: {user.email}"))
         self.stdout.write(self.style.SUCCESS(f"Password: {options['password']}"))
@@ -69,6 +70,17 @@ class Command(BaseCommand):
         """Create or update demo studio."""
         ensure_studio(user, "Studio Svetloba")
         self.stdout.write("Ensured demo studio")
+
+    def seed_business(self, studio):
+        """Clients, shoots and calendar for an empty demo studio (skipped when it has data)."""
+        from apps.clients.models import Client
+        from apps.core.demo import seed_studio
+
+        if Client.objects.for_studio(studio).exists():
+            self.stdout.write("Demo studio already has data; use --reset to start over")
+            return
+        counts = seed_studio(studio)
+        self.stdout.write(", ".join(f"{n} {name}" for name, n in counts.items()))
 
     def seed_email(self, user):
         """Create or update verified email address."""

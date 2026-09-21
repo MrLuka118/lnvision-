@@ -1,0 +1,40 @@
+{% extends "layouts/app.html" %}
+{% block title %}{% translate "Settings" %}{% endblock %}
+{% block content %}
+  <c-page-header title="{% translate 'Settings' %}" />
+
+  <div class="rows max-w-3xl">
+    <a class="row" href="{% url 'core:studio_settings' %}">
+      <span class="avatar" aria-hidden="true"><c-icon name="settings" size="sm" /></span>
+      <span class="grid min-w-0">
+        <span class="row-title">{% translate "Studio" %}</span>
+        <span class="row-meta">{% translate "Name, portfolio address, contact and invoicing details" %}</span>
+      </span>
+      <c-icon name="chevron-right" class="text-ink-3" />
+    </a>
+    <a class="row" href="{% url 'shoots:package_list' %}">
+      <span class="avatar" aria-hidden="true"><c-icon name="wallet" size="sm" /></span>
+      <span class="grid min-w-0">
+        <span class="row-title">{% translate "Packages" %}</span>
+        <span class="row-meta">{% translate "What you offer, prices and deadlines" %}</span>
+      </span>
+      <c-icon name="chevron-right" class="text-ink-3" />
+    </a>
+    <a class="row" href="{% url 'shoots:location_list' %}">
+      <span class="avatar" aria-hidden="true"><c-icon name="map-pin" size="sm" /></span>
+      <span class="grid min-w-0">
+        <span class="row-title">{% translate "Locations" %}</span>
+        <span class="row-meta">{% translate "Places you shoot at, with addresses and map links" %}</span>
+      </span>
+      <c-icon name="chevron-right" class="text-ink-3" />
+    </a>
+    <a class="row" href="{% url 'scheduling:calendar' %}">
+      <span class="avatar" aria-hidden="true"><c-icon name="calendar" size="sm" /></span>
+      <span class="grid min-w-0">
+        <span class="row-title">{% translate "Calendar" %}</span>
+        <span class="row-meta">{% translate "Show your calendar in Google or Apple Calendar" %}</span>
+      </span>
+      <c-icon name="chevron-right" class="text-ink-3" />
+    </a>
+  </div>
+{% endblock %}

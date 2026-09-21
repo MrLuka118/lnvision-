@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "apps.core",
     "apps.accounts",
+    "apps.clients",
+    "apps.shoots",
+    "apps.scheduling",
 ]
 
 MIDDLEWARE = [
