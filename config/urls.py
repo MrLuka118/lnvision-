@@ -9,6 +9,9 @@ urlpatterns = [
     path("", include("apps.clients.urls")),
     path("", include("apps.shoots.urls")),
     path("", include("apps.scheduling.urls")),
+    path("", include("apps.photos.urls")),
+    path("", include("apps.galleries.urls")),
+    path("", include("apps.galleries.public_urls")),
 ]
 
 if settings.DEBUG:

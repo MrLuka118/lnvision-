@@ -9,6 +9,7 @@
       <p class="text-md text-ink-2"><a class="link" href="{{ object.client.get_absolute_url }}">{{ object.client.display_name }}</a></p>
     </div>
     <div class="flex flex-wrap gap-2">
+      <c-button variant="secondary" href="{% url 'galleries:create' %}?shoot={{ object.pk }}" icon="images">{% translate "New gallery" %}</c-button>
       <c-button variant="secondary" href="{% url 'shoots:update' object.pk %}" icon="pencil">{% translate "Edit" %}</c-button>
     </div>
   </header>

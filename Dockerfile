@@ -8,9 +8,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     UV_PROJECT_ENVIRONMENT=/opt/venv \
     PATH="/opt/venv/bin:$PATH"
 
-# exiftool: lossless GPS removal. gettext: compilemessages.
+# exiftool: lossless GPS removal. gettext: compilemessages. DejaVu: watermark text.
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends libimage-exiftool-perl gettext curl \
+    && apt-get install -y --no-install-recommends libimage-exiftool-perl gettext curl fontconfig fonts-dejavu-core \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=ghcr.io/astral-sh/uv:0.9 /uv /usr/local/bin/uv

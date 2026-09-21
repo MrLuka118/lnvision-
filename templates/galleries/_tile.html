@@ -1,0 +1,32 @@
+{# One photo in the editor grid. Expects: photo, gallery, sections. #}
+<div class="tile" style="--ar: {{ photo.aspect_ratio|stringformat:'.4f' }}">
+  {% if photo.is_ready %}
+    <c-photo :photo="photo" sizes="(min-width: 64rem) 18vw, 45vw" :alt="photo.original_name" />
+  {% else %}
+    <div class="photo" style="--ar: 1.5"></div>
+    <div class="tile-state{% if photo.status == 'failed' %} is-failed{% endif %}">
+      {% if photo.status == "failed" %}<c-icon name="triangle-alert" />{% translate "Couldn't process this file" %}{% else %}<span class="spinner" aria-hidden="true"></span>{% translate "Processing" %}{% endif %}
+      <span class="w-full truncate text-ink-3">{{ photo.original_name }}</span>
+    </div>
+  {% endif %}
+  {% if gallery.cover_photo_id == photo.pk %}<c-badge class="tile-cover-mark" dot="var(--ink)">{% translate "Cover" %}</c-badge>{% endif %}
+  {% with menu_id="photo-menu-"|add:photo.uuid.hex %}
+    <button class="btn btn-glass btn-sm btn-icon tile-menu-button" type="button" popovertarget="{{ menu_id }}" style="anchor-name: --{{ menu_id }}" aria-label="{% blocktranslate with name=photo.original_name %}Actions for {{ name }}{% endblocktranslate %}"><c-icon name="ellipsis" /></button>
+    <div id="{{ menu_id }}" class="menu glass" popover style="position-anchor: --{{ menu_id }}; position-area: bottom span-left; margin-block: 6px">
+      {% url "galleries:photo_action" gallery.pk photo.pk "cover" as cover_url %}
+      {% url "galleries:photo_action" gallery.pk photo.pk "move" as move_url %}
+      {% url "galleries:photo_action" gallery.pk photo.pk "delete" as delete_url %}
+      {% url "galleries:photo_action" gallery.pk photo.pk "retry" as retry_url %}
+      {% if photo.is_ready %}<button class="menu-item" hx-post="{{ cover_url }}" hx-swap="none"><c-icon name="images" />{% translate "Use as cover" %}</button>{% endif %}
+      {% if photo.status == "failed" %}<button class="menu-item" hx-post="{{ retry_url }}" hx-swap="none"><c-icon name="upload" />{% translate "Try again" %}</button>{% endif %}
+      {% if sections %}
+        <div class="menu-sep"></div>
+        <p class="px-3 pb-1 pt-1 text-xs text-ink-2">{% translate "Move to" %}</p>
+        {% if photo.section_id %}<button class="menu-item" hx-post="{{ move_url }}" hx-vals='{"section": ""}' hx-swap="none">{% translate "No section" %}</button>{% endif %}
+        {% for section in sections %}{% if section.pk != photo.section_id %}<button class="menu-item" hx-post="{{ move_url }}" hx-vals='{"section": "{{ section.pk }}"}' hx-swap="none">{{ section.title }}</button>{% endif %}{% endfor %}
+      {% endif %}
+      <div class="menu-sep"></div>
+      <button class="menu-item text-danger" hx-post="{{ delete_url }}" hx-swap="none"><c-icon name="trash-2" />{% translate "Delete photo" %}</button>
+    </div>
+  {% endwith %}
+</div>
