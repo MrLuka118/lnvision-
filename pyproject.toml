@@ -1,0 +1,56 @@
+[project]
+name = "aperture-studio"
+version = "0.1.0"
+description = "Studio management and photo delivery for professional photographers."
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "django>=5.2,<6.0",
+    "django-environ>=0.12",
+    "psycopg[binary]>=3.2",
+    "celery[redis]>=5.5",
+    "django-storages[s3]>=1.14",
+    "django-allauth[socialaccount]>=65.0",
+    "django-cotton>=2.0",
+    "django-tailwind-cli>=4.0",
+    "django-htmx>=1.21",
+    "django-ratelimit>=4.1",
+    "django-csp>=4.0",
+    "argon2-cffi>=23.1",
+    "pyvips[binary]>=3.0",
+    "whitenoise>=6.8",
+    "gunicorn>=23.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-django>=4.9",
+    "pytest-xdist>=3.6",
+    "factory-boy>=3.3",
+    "ruff>=0.8",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+extend-exclude = ["**/migrations/*.py", "static/vendor"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "DJ", "SIM", "RUF", "S"]
+ignore = ["RUF012"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/**" = ["S101", "S105", "S106"]
+"config/settings/*.py" = ["F405", "F403"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["apps", "config"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+python_files = ["tests.py", "test_*.py"]
+addopts = "-ra --strict-markers --ds=config.settings.test"

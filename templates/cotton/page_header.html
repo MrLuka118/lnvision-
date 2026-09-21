@@ -1,0 +1,8 @@
+<c-vars title lede="" />
+<header class="page-header">
+  <div class="grid max-w-3xl gap-3">
+    <h1 class="page-title">{{ title }}</h1>
+    {% if lede %}<p class="max-w-prose text-md text-ink-2">{{ lede }}</p>{% endif %}
+  </div>
+  {% if actions %}<div class="flex flex-wrap gap-2">{{ actions }}</div>{% endif %}
+</header>

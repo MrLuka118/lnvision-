@@ -1,6 +1,6 @@
 # Aperture Studio – načrt
 
-Stanje: **osnutek, čaka na potrditev** (21. 9. 2026). Koda se začne pisati šele po potrditvi.
+Stanje: **potrjeno**, 1. faza zaključena 21. 9. 2026.
 
 ---
 
@@ -8,8 +8,8 @@ Stanje: **osnutek, čaka na potrditev** (21. 9. 2026). Koda se začne pisati še
 
 | Kaj | Stanje | Ukrep |
 |---|---|---|
-| Docker (Compose) | ni nameščen | Docker Desktop ali OrbStack (lažji na Macu) |
-| Node / npx | ni nameščen | `brew install node`: rabi ga samo Playwright MCP plugin, projekt sam je brez Nodea |
+| Docker (Compose) | ✅ Colima (brez GUI) | `colima start --cpu 6 --memory 8 --vm-type vz --mount-type virtiofs` |
+| Node / npx | ✅ | rabi ga samo Playwright MCP plugin (+ Google Chrome); projekt sam je brez Nodea |
 | Python 3.13 | na gostitelju 3.9 | aplikacija teče v Dockerju; za orodja na gostitelju `uv python install 3.13` |
 | Plugini | vsi nameščeni | Playwright MCP se ne poveže, dokler ni Nodea |
 
@@ -206,8 +206,10 @@ Vmesnik je **nevtralno siv brez barvnega odtenka**. To ni estetska odločitev: v
 
 ### Postavitev
 - **Aplikacija:**
-  - na namizju plavajoča steklena navigacija levo (ozek pas, ki se razširi);
-  - na telefonu plavajoča spodnja vrstica z zavihki (doseg palca), ki se razširi v meni;
+  - na namizju plavajoča steklena stranska vrstica levo, račun v meniju na dnu;
+  - na telefonu plavajoča spodnja vrstica samo z razdelki (največ 5, HIG: zavihki ne izvajajo dejanj) in gumb z avatarjem zgoraj desno, ki se razširi v meni računa;
+  - učinek roba drsenja pod plavajočimi kontrolniki;
+  - videz: Temno (privzeto), Svetlo, Samodejno (sledi sistemu);
   - vsebina je poravnana levo, obrazci in besedilo so ozki, tabele in koledar široki.
 - **Galerija za stranke** (glavni izdelek; tukaj je ves pogum, drugje je vmesnik tih):
   - naslovna fotografija čez cel zaslon (`100svh`) z naslovom v Bodoni Moda spodaj levo;
@@ -273,8 +275,8 @@ aperture_studio/
 │   ├── base.html
 │   ├── layouts/{app,public,gallery,auth}.html
 │   └── cotton/                 # komponente design systema
+├── assets/css/                # Tailwind vhod: app, tokens, base, glass, components, layout
 ├── static/
-│   ├── css/src/{app.css,tokens.css,glass.css,themes/*.css}
 │   ├── js/{glass,uploader,calendar,gallery,portfolio,counters,csrf}.js
 │   ├── vendor/                 # pripete ESM knjižnice + manifest s SHA-384
 │   └── fonts/

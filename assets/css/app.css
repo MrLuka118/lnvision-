@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@import "./tokens.css";
+@import "./base.css";
+@import "./glass.css";
+@import "./components.css";
+@import "./layout.css";
+
+@source not "../../docs";
+@source not "../../staticfiles";

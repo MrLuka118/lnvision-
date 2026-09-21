@@ -1,0 +1,10 @@
+{% if messages %}
+  <div class="toasts" role="status" aria-live="polite">
+    {% for message in messages %}
+      <div class="toast glass" x-data="toast" x-show="open" x-transition.opacity.duration.250ms>
+        <span>{{ message }}</span>
+        <c-button variant="quiet" size="sm" icon="x" icon_only aria-label="{% translate 'Dismiss' %}" @click="dismiss" />
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}

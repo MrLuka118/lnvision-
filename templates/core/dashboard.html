@@ -1,0 +1,20 @@
+{% extends "layouts/app.html" %}
+{% block title %}{% translate "Overview" %}{% endblock %}
+{% block content %}
+  <header class="mb-14 grid gap-3">
+    <p class="text-md text-ink-2">
+      {% if request.user.first_name %}{% blocktranslate with name=request.user.first_name %}Good day, {{ name }}.{% endblocktranslate %}{% else %}{% translate "Good day." %}{% endif %}
+    </p>
+    {% now "l" as weekday %}{% now "j." as day %}{% now "F" as month %}
+    <h1 class="text-3xl sm:text-5xl xl:text-6xl">{{ weekday|capfirst }}, <span class="whitespace-nowrap">{{ day }} {{ month }}</span></h1>
+  </header>
+
+  <section aria-labelledby="week-title" class="max-w-3xl">
+    <h2 id="week-title" class="mb-4 text-xl">{% translate "Next 7 days" %}</h2>
+    <div class="panel">
+      <c-empty icon="calendar" title="{% translate 'Your week will appear here' %}">
+        {% translate "Shoots, client meetings and editing and delivery deadlines for the next seven days, in order." %}
+      </c-empty>
+    </div>
+  </section>
+{% endblock %}

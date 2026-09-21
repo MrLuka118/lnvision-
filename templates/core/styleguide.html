@@ -1,0 +1,191 @@
+{% extends "layouts/app.html" %}
+{% load formatting %}
+{% block title %}{% translate "Design system" %}{% endblock %}
+{% block content %}
+  <c-page-header title="{% translate 'Design system' %}" lede="{% translate 'The interface stays neutral grey so it never shifts how the colours in a photograph are perceived. Colour comes from the photographs.' %}" />
+
+  <div class="grid gap-20">
+
+    {# ------------------------------------------------------------- colour #}
+    <section aria-labelledby="sg-colour" class="grid gap-6">
+      <h2 id="sg-colour" class="text-2xl">{% translate "Colour" %}</h2>
+      <div class="grid gap-4 md:grid-cols-2">
+        <div data-theme="dark" class="rounded-[var(--radius-lg)] bg-surround p-5 text-ink ring-1 ring-line-soft">
+          <p class="mb-4 font-display text-lg">{% translate "Darkroom" %}</p>
+          <ul class="grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3">
+            {% for token in tokens %}
+              <li class="flex items-center gap-3 text-sm">
+                <span class="h-9 w-9 flex-none rounded-[var(--radius-sm)] ring-1 ring-line-soft" style="background: var(--{{ token }})"></span>
+                <span>{{ token }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div data-theme="light" class="rounded-[var(--radius-lg)] bg-surround p-5 text-ink ring-1 ring-line-soft">
+          <p class="mb-4 font-display text-lg">{% translate "Light table" %}</p>
+          <ul class="grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3">
+            {% for token in tokens %}
+              <li class="flex items-center gap-3 text-sm">
+                <span class="h-9 w-9 flex-none rounded-[var(--radius-sm)] ring-1 ring-line-soft" style="background: var(--{{ token }})"></span>
+                <span>{{ token }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="grid gap-3">
+        <p class="max-w-prose text-ink-2">{% translate "Event types take their colour from the ColorChecker Classic chart photographers calibrate with. The colour sits in a bar; text stays neutral, so contrast never depends on the hue." %}</p>
+        <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+          {% for label, colour, patch in event_colours %}
+            <div class="event-chip" style="--dot: {{ colour }}">
+              <span class="grid"><span class="font-semibold">{{ label }}</span><span class="text-xs text-ink-2">{{ patch }}</span></span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    {# --------------------------------------------------------- typography #}
+    <section aria-labelledby="sg-type" class="grid gap-8">
+      <h2 id="sg-type" class="text-2xl">{% translate "Typography" %}</h2>
+      <div class="grid gap-5">
+        <p class="font-display text-4xl sm:text-5xl lg:text-6xl">Poroka na Bledu</p>
+        <p class="font-display text-3xl sm:text-4xl">Žiga in Špela, <span class="whitespace-nowrap">14. 6. 2026</span></p>
+        <p class="font-display text-2xl italic sm:text-3xl">Čarobna svetloba zlate ure</p>
+        <p class="font-display text-2xl">Portreti v ateljeju, Ljubljana</p>
+        <p class="font-display text-xl">Galerija je pripravljena za ogled</p>
+      </div>
+      <div class="grid max-w-[68ch] gap-4">
+        <p class="text-lg">Bodoni Moda {% translate "for display, Hanken Grotesk for the interface." %}</p>
+        <p>Fotografirali smo ob jezeru, potem pa še v gozdu nad Vintgarjem. Izbor 480 fotografij je obdelan in pripravljen za prenos; označite priljubljene, da vam pripravimo album. Šumniki in ostali znaki: č š ž ć đ Č Š Ž Ć Đ.</p>
+        <p class="text-sm text-ink-2">{% translate "Secondary text, 14 px. Used for supporting details, never for anything that has to be read to act." %}</p>
+      </div>
+      <div class="panel max-w-md p-5">
+        <p class="mb-3 text-sm text-ink-2">{% translate "Tabular figures line up in columns" %}</p>
+        <dl class="tnum grid grid-cols-[1fr_auto] gap-y-1.5">
+          <dt>Poroka Novak</dt><dd class="text-right">{{ 1850|eur }}</dd>
+          <dt>Portret Kranjc</dt><dd class="text-right">{{ 240|eur }}</dd>
+          <dt>Adobe Photography</dt><dd class="text-right">{{ -11.99|eur }}</dd>
+          <dt class="font-semibold">{% translate "Total" %}</dt><dd class="text-right font-semibold">{{ 2078.01|eur }}</dd>
+        </dl>
+      </div>
+    </section>
+
+    {# -------------------------------------------------------------- glass #}
+    <section aria-labelledby="sg-glass" class="grid gap-6">
+      <div class="grid max-w-prose gap-2">
+        <h2 id="sg-glass" class="text-2xl">{% translate "Glass" %}</h2>
+        <p class="text-ink-2">{% translate "Regular glass for navigation, popovers and sheets. Clear glass only for controls floating over photos, with a dimming layer when the photo is bright." %}</p>
+      </div>
+      <div class="grid gap-4 xl:grid-cols-3">
+        {% for sample in samples %}
+          <figure class="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-lg)] sm:aspect-[3/2] xl:aspect-[4/5]">
+            <picture>
+              <source type="image/avif" srcset="{% static 'img/samples/' %}{{ sample.name }}-800.avif 800w, {% static 'img/samples/' %}{{ sample.name }}-1600.avif 1600w" sizes="(min-width: 80rem) 30vw, 100vw">
+              <img class="absolute inset-0 h-full w-full object-cover" src="{% static 'img/samples/' %}{{ sample.name }}-1600.jpg" alt="" loading="lazy">
+            </picture>
+            <div class="glass-clear absolute left-3 right-3 top-3 flex items-center justify-between gap-2 p-1.5"{% if sample.dim %} data-dim{% endif %} style="--glass-radius: var(--radius-full)">
+              <c-button variant="glass" size="sm" icon="arrow-left" icon_only aria-label="{% translate 'Back' %}" />
+              <div class="flex gap-1.5">
+                <c-button variant="glass" size="sm" icon="heart" icon_only aria-label="{% translate 'Favourite' %}" />
+                <c-button variant="glass" size="sm" icon="download" icon_only aria-label="{% translate 'Download' %}" />
+                <c-button variant="glass" size="sm" icon="share-2" icon_only aria-label="{% translate 'Share' %}" />
+              </div>
+            </div>
+            <div class="glass absolute bottom-3 left-3 right-3 grid gap-1 p-5" data-refract>
+              <p class="font-display text-xl">Poroka Novak</p>
+              <p class="text-sm text-ink-2">{{ sample.label }}. 480 fotografij, 12 priljubljenih.</p>
+            </div>
+          </figure>
+        {% endfor %}
+      </div>
+    </section>
+
+    {# ------------------------------------------------------------ buttons #}
+    <section aria-labelledby="sg-buttons" class="grid gap-6">
+      <h2 id="sg-buttons" class="text-2xl">{% translate "Buttons" %}</h2>
+      <div class="flex flex-wrap items-center gap-3">
+        <c-button icon="plus">{% translate "New shoot" %}</c-button>
+        <c-button variant="secondary" icon="upload">{% translate "Upload photos" %}</c-button>
+        <c-button variant="quiet">{% translate "Cancel" %}</c-button>
+        <c-button variant="danger" icon="trash-2">{% translate "Delete gallery" %}</c-button>
+        <c-button disabled>{% translate "Unavailable" %}</c-button>
+      </div>
+      <div class="flex flex-wrap items-center gap-3">
+        <c-button size="lg">{% translate "Send gallery" %}</c-button>
+        <c-button size="sm" variant="secondary">{% translate "Copy link" %}</c-button>
+        <c-button variant="secondary" icon="search" icon_only aria-label="{% translate 'Search' %}" />
+        <a class="link" href="#sg-buttons">{% translate "Text link" %}</a>
+      </div>
+    </section>
+
+    {# -------------------------------------------------------------- forms #}
+    <section aria-labelledby="sg-forms" class="grid gap-6">
+      <h2 id="sg-forms" class="text-2xl">{% translate "Forms" %}</h2>
+      <form class="grid max-w-md gap-5" novalidate>
+        {% for field in form %}<c-field :field="field" />{% endfor %}
+        <div class="flex gap-2"><c-button type="button">{% translate "Save" %}</c-button><c-button type="button" variant="quiet">{% translate "Cancel" %}</c-button></div>
+      </form>
+    </section>
+
+    {# ----------------------------------------------------------- controls #}
+    <section aria-labelledby="sg-controls" class="grid gap-6">
+      <h2 id="sg-controls" class="text-2xl">{% translate "Controls" %}</h2>
+      <c-segmented label="{% translate 'Calendar view' %}" class="max-w-md">
+        <c-segmented.option name="sg-view" value="month" checked>{% translate "Month" %}</c-segmented.option>
+        <c-segmented.option name="sg-view" value="week">{% translate "Week" %}</c-segmented.option>
+        <c-segmented.option name="sg-view" value="day">{% translate "Day" %}</c-segmented.option>
+        <c-segmented.option name="sg-view" value="list">{% translate "List" %}</c-segmented.option>
+      </c-segmented>
+      <div class="flex flex-wrap gap-2">
+        {% for label, colour in statuses %}<c-badge :dot="colour">{{ label }}</c-badge>{% endfor %}
+      </div>
+    </section>
+
+    {# ------------------------------------------------------------ layers #}
+    <section aria-labelledby="sg-layers" class="grid gap-6">
+      <h2 id="sg-layers" class="text-2xl">{% translate "Popovers and dialogs" %}</h2>
+      <div class="flex flex-wrap gap-3">
+        <button class="btn btn-secondary" popovertarget="sg-menu" style="anchor-name: --sg-menu"><c-icon name="ellipsis" />{% translate "Gallery actions" %}</button>
+        <c-menu id="sg-menu">
+          <button class="menu-item" type="button"><c-icon name="link" />{% translate "Copy link" %}</button>
+          <button class="menu-item" type="button"><c-icon name="mail" />{% translate "Send to client" %}</button>
+          <button class="menu-item" type="button"><c-icon name="lock" />{% translate "Set password" %}</button>
+          <div class="menu-sep"></div>
+          <button class="menu-item text-danger" type="button"><c-icon name="trash-2" />{% translate "Delete gallery" %}</button>
+        </c-menu>
+        <button class="btn btn-danger" commandfor="sg-dialog" command="show-modal"><c-icon name="trash-2" />{% translate "Delete gallery" %}</button>
+        <c-modal id="sg-dialog" title="{% translate 'Delete this gallery?' %}">
+          {% translate "480 photos and 12 favourites will be removed. The client link stops working immediately." %}
+          <c-slot name="actions">
+            <button class="btn btn-quiet" value="cancel">{% translate "Keep gallery" %}</button>
+            <button class="btn btn-danger" value="delete">{% translate "Delete gallery" %}</button>
+          </c-slot>
+        </c-modal>
+      </div>
+      <div class="toast glass w-fit" style="position: static; --glass-radius: var(--radius-full)">
+        <c-icon name="circle-check" />{% translate "Gallery sent to Ana Novak." %}
+      </div>
+    </section>
+
+    {# ------------------------------------------------------------- numbers #}
+    <section aria-labelledby="sg-numbers" class="grid gap-6">
+      <h2 id="sg-numbers" class="text-2xl">{% translate "Figures" %}</h2>
+      <div class="grid gap-8 sm:grid-cols-3">
+        <c-stat label="{% translate 'Income this month' %}" value="12480" format="eur" />
+        <c-stat label="{% translate 'Shoots this year' %}" value="38" />
+        <c-stat label="{% translate 'Galleries delivered' %}" value="26" />
+      </div>
+    </section>
+
+    {# --------------------------------------------------------------- icons #}
+    <section aria-labelledby="sg-icons" class="grid gap-6">
+      <h2 id="sg-icons" class="text-2xl">{% translate "Icons" %}</h2>
+      <ul class="grid grid-cols-4 gap-2 sm:grid-cols-7 lg:grid-cols-10">
+        {% for icon in icons %}
+          <li class="grid justify-items-center gap-2 rounded-[var(--radius-md)] p-3 text-center text-xs text-ink-2"><c-icon :name="icon" class="text-ink" />{{ icon }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
+{% endblock %}

@@ -1,0 +1,7 @@
+<c-vars title icon="" class="" />
+<div class="empty{% if class %} {{ class }}{% endif %}">
+  {% if icon %}<c-icon :name="icon" class="h-7 w-7 text-ink-3" />{% endif %}
+  <p class="empty-title">{{ title }}</p>
+  <div class="max-w-prose">{{ slot }}</div>
+  {% if actions %}<div class="mt-2 flex flex-wrap gap-2">{{ actions }}</div>{% endif %}
+</div>
