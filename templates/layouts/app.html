@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block body %}
+  {% include "partials/nav.html" %}
+  {% include "partials/messages.html" %}
+  <main id="main" class="app-main">
+    {% block content %}{% endblock %}
+  </main>
+{% endblock %}

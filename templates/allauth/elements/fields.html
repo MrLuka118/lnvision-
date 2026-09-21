@@ -1,0 +1,9 @@
+{% with form=attrs.form %}
+  {% if form.non_field_errors %}
+    <div class="rounded-[var(--radius-md)] bg-[color-mix(in_oklab,var(--danger)_14%,transparent)] px-4 py-3 text-sm text-ink" role="alert">
+      {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+    </div>
+  {% endif %}
+  {% for field in form.hidden_fields %}{{ field }}{% endfor %}
+  {% for field in form.visible_fields %}<c-field :field="field" />{% endfor %}
+{% endwith %}

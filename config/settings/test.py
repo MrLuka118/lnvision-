@@ -1,7 +1,7 @@
 import tempfile
 from pathlib import Path
 
-from .base import *  # noqa: F403
+from .base import *
 
 DEBUG = False
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
@@ -14,7 +14,7 @@ CELERY_TASK_EAGER_PROPAGATES = True
 DATA_DIR = Path(tempfile.mkdtemp(prefix="aperture-test-"))
 MEDIA_ROOT = DATA_DIR / "media"
 STORAGES = {
-    **STORAGES,  # noqa: F405
+    **STORAGES,
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
         "OPTIONS": {"location": DATA_DIR / "private", "base_url": None},
@@ -24,3 +24,6 @@ STORAGES = {
         "OPTIONS": {"location": MEDIA_ROOT, "base_url": "/media/"},
     },
 }
+
+STATIC_ROOT = DATA_DIR / "staticfiles"
+STATIC_ROOT.mkdir(parents=True, exist_ok=True)

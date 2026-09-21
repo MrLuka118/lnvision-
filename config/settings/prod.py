@@ -1,4 +1,4 @@
-from .base import *  # noqa: F403
+from .base import *
 from .base import env
 
 DEBUG = False
@@ -10,9 +10,7 @@ CSRF_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = env.int("DJANGO_HSTS_SECONDS", default=60 * 60 * 24 * 30)
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
-STORAGES["staticfiles"] = {  # noqa: F405
-    "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
-}
+STORAGES["staticfiles"] = {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"}
 
 if env("STORAGE_BACKEND", default="filesystem") == "s3":
     _s3 = {
@@ -23,7 +21,7 @@ if env("STORAGE_BACKEND", default="filesystem") == "s3":
         "signature_version": "s3v4",
         "file_overwrite": False,
     }
-    STORAGES["default"] = {  # noqa: F405
+    STORAGES["default"] = {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
             **_s3,
@@ -33,7 +31,7 @@ if env("STORAGE_BACKEND", default="filesystem") == "s3":
             "querystring_expire": 600,
         },
     }
-    STORAGES["renditions"] = {  # noqa: F405
+    STORAGES["renditions"] = {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
             **_s3,
@@ -43,6 +41,4 @@ if env("STORAGE_BACKEND", default="filesystem") == "s3":
             "object_parameters": {"CacheControl": "public, max-age=31536000, immutable"},
         },
     }
-    CONTENT_SECURITY_POLICY["DIRECTIVES"]["img-src"].append(  # noqa: F405
-        f"https://{env('S3_PUBLIC_DOMAIN')}"
-    )
+    CONTENT_SECURITY_POLICY["DIRECTIVES"]["img-src"].append(f"https://{env('S3_PUBLIC_DOMAIN')}")

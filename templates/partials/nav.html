@@ -1,0 +1,64 @@
+{% url "account_logout" as logout_url %}
+{# Desktop: floating glass sidebar. Nothing scrolls beneath it, so it has no refraction. #}
+<nav class="app-sidebar glass" aria-label="{% translate 'Main' %}">
+  <div class="sidebar-brand"><a class="wordmark" href="{% url 'core:dashboard' %}">{{ APP_NAME }}</a></div>
+  <div class="sidebar-nav">
+    {% for item in nav_items %}
+      <a class="nav-item" href="{{ item.url }}"{% if item.current %} aria-current="page"{% endif %}>
+        <c-icon :name="item.icon" />{{ item.label }}
+      </a>
+    {% endfor %}
+  </div>
+  <div class="sidebar-foot">
+    <button class="account-button" popovertarget="account-menu" style="anchor-name: --account-menu">
+      <span class="avatar" aria-hidden="true">{{ studio.name|slice:":1"|upper }}</span>
+      <span class="grid min-w-0 leading-tight">
+        <span class="truncate text-sm font-semibold">{{ studio.name }}</span>
+        <span class="truncate text-xs text-ink-2">{{ request.user.email }}</span>
+      </span>
+    </button>
+    <div id="account-menu" class="menu glass w-72" popover data-placement="top" style="position-anchor: --account-menu; position-area: top span-right; margin-bottom: 8px">
+      {% include "partials/theme_switch.html" with prefix="sidebar" %}
+      <div class="menu-sep"></div>
+      <form method="post" action="{{ logout_url }}">
+        {% csrf_token %}
+        <button class="menu-item" type="submit"><c-icon name="log-out" />{% translate "Sign out" %}</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+{# Phone and tablet: account button top right that morphs into its menu. #}
+<div class="account-fab glass" data-refract x-data="expander" :data-open="open" @keydown.escape.window="close" @click.outside="close">
+  <button class="account-fab-button" type="button" @click="toggle" :aria-expanded="open" aria-controls="account-fab-panel">
+    <span class="grid min-w-0 text-left leading-tight" x-show="open" x-cloak>
+      <span class="truncate text-sm font-semibold">{{ studio.name }}</span>
+      <span class="truncate text-xs text-ink-2">{{ request.user.email }}</span>
+    </span>
+    <span class="avatar" aria-hidden="true">{{ studio.name|slice:":1"|upper }}</span>
+    <span class="visually-hidden">{% translate "Account" %}</span>
+  </button>
+  <div id="account-fab-panel" class="grid gap-1 pt-2" x-show="open" x-cloak>
+    {% include "partials/theme_switch.html" with prefix="fab" %}
+    <div class="menu-sep"></div>
+    <form method="post" action="{{ logout_url }}">
+      {% csrf_token %}
+      <button class="menu-item" type="submit"><c-icon name="log-out" />{% translate "Sign out" %}</button>
+    </form>
+  </div>
+</div>
+<div class="scroll-edge scroll-edge-top" aria-hidden="true"></div>
+
+{# Tab bar: top-level sections only (HIG: tabs navigate, they don't act). Hidden until there are two. #}
+{% if nav_items|length > 1 %}
+  <nav class="app-tabbar glass" data-refract aria-label="{% translate 'Main' %}">
+    <div class="tabbar-items">
+      {% for item in nav_items|slice:":5" %}
+        <a class="tab" href="{{ item.url }}"{% if item.current %} aria-current="page"{% endif %}>
+          <c-icon :name="item.icon" />{{ item.label }}
+        </a>
+      {% endfor %}
+    </div>
+  </nav>
+  <div class="scroll-edge scroll-edge-bottom" aria-hidden="true"></div>
+{% endif %}

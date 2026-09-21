@@ -1,0 +1,480 @@
+@layer components {
+  /* ------------------------------------------------------------------ icons */
+  .icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .icon-sm {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* ---------------------------------------------------------------- buttons */
+  .btn {
+    --btn-h: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: var(--btn-h);
+    padding-inline: 1.25rem;
+    border-radius: var(--radius-full);
+    font-size: var(--text-sm);
+    font-weight: 560;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      transform 420ms var(--ease-spring),
+      background-color var(--dur-1) var(--ease-out),
+      color var(--dur-1) var(--ease-out),
+      box-shadow var(--dur-1) var(--ease-out);
+  }
+  /* Press: the button gives a little, then springs back on release. */
+  .btn:active {
+    transform: scale(0.955);
+    transition-duration: 90ms;
+    transition-timing-function: var(--ease-out);
+  }
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  .btn-primary:hover {
+    background: color-mix(in oklab, var(--accent) 86%, var(--surround));
+  }
+
+  .btn-secondary {
+    background: var(--raised);
+    color: var(--ink);
+    box-shadow:
+      inset 0 0 0 1px var(--line-soft),
+      var(--shadow-soft);
+  }
+  .btn-secondary:hover {
+    background: color-mix(in oklab, var(--raised) 85%, var(--ink));
+  }
+
+  .btn-quiet {
+    background: transparent;
+    color: var(--ink);
+  }
+  .btn-quiet:hover {
+    background: var(--line-soft);
+  }
+
+  .btn-danger {
+    background: transparent;
+    color: var(--danger);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--danger) 45%, transparent);
+  }
+  .btn-danger:hover {
+    background: color-mix(in oklab, var(--danger) 12%, transparent);
+  }
+
+  /* Glass button: lives on glass-clear toolbars over photos, or floats on its own. */
+  .btn-glass {
+    background: rgb(255 255 255 / 0.14);
+    color: #fff;
+    -webkit-backdrop-filter: blur(12px) saturate(170%);
+    backdrop-filter: blur(12px) saturate(170%);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.35),
+      inset 0 0 0 1px rgb(255 255 255 / 0.1),
+      0 4px 16px -6px rgb(0 0 0 / 0.4);
+  }
+  .btn-glass:hover {
+    background: rgb(255 255 255 / 0.22);
+  }
+  .btn-glass:active {
+    box-shadow:
+      inset 0 2px 1px rgb(255 255 255 / 0.2),
+      inset 0 0 0 1px rgb(255 255 255 / 0.14),
+      0 2px 8px -4px rgb(0 0 0 / 0.4);
+  }
+
+  .btn-sm {
+    --btn-h: 2.25rem;
+    padding-inline: 0.95rem;
+    font-size: var(--text-sm);
+  }
+  .btn-lg {
+    --btn-h: 3.25rem;
+    padding-inline: 1.6rem;
+    font-size: var(--text-base);
+  }
+  .btn-icon {
+    width: var(--btn-h);
+    padding-inline: 0;
+  }
+  .btn-block {
+    width: 100%;
+  }
+
+  .link {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in oklab, var(--ink) 35%, transparent);
+    transition: text-decoration-color var(--dur-1) var(--ease-out);
+  }
+  .link:hover {
+    text-decoration-color: currentColor;
+  }
+
+  /* ----------------------------------------------------------------- fields */
+  .field {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .field-label {
+    font-size: var(--text-sm);
+    font-weight: 560;
+    color: var(--ink);
+  }
+  .field-help {
+    font-size: var(--text-sm);
+    line-height: 1.4;
+    color: var(--ink-2);
+  }
+  .field-error {
+    display: flex;
+    gap: 0.4rem;
+    align-items: flex-start;
+    font-size: var(--text-sm);
+    line-height: 1.4;
+    color: var(--danger);
+  }
+
+  .input {
+    width: 100%;
+    height: 2.875rem;
+    padding-inline: 0.9rem;
+    border-radius: var(--radius-md);
+    background: var(--well);
+    color: var(--ink);
+    font-size: 1rem; /* 16px keeps iOS from zooming on focus */
+    border: 1px solid var(--line);
+    transition:
+      border-color var(--dur-1) var(--ease-out),
+      box-shadow var(--dur-1) var(--ease-out);
+  }
+  .input::placeholder {
+    color: var(--ink-3);
+  }
+  .input:hover {
+    border-color: var(--ink-3);
+  }
+  .input:focus {
+    outline: none;
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--ink) 22%, transparent);
+  }
+  .input[aria-invalid="true"] {
+    border-color: var(--danger);
+  }
+  textarea.input {
+    height: auto;
+    min-height: 7rem;
+    padding-block: 0.75rem;
+    line-height: 1.5;
+    resize: vertical;
+  }
+  select.input {
+    appearance: none;
+    padding-right: 2.5rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.85rem center;
+    background-size: 1rem;
+  }
+
+  .check {
+    display: flex;
+    gap: 0.65rem;
+    align-items: center;
+    font-size: var(--text-sm);
+    cursor: pointer;
+  }
+  .check input {
+    width: 1.125rem;
+    height: 1.125rem;
+    accent-color: var(--ink);
+  }
+
+  /* ------------------------------------------------- segmented control */
+  /* Equal segments; the thumb slides to the checked one with no JS (:has + nth-child). */
+  .segmented {
+    --seg-pad: 3px;
+    --seg-n: 2;
+    position: relative;
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    padding: var(--seg-pad);
+    border-radius: var(--radius-full);
+    background: var(--line-soft);
+    font-size: var(--text-sm);
+    font-weight: 560;
+  }
+  .segmented::before {
+    content: "";
+    position: absolute;
+    inset: var(--seg-pad) auto var(--seg-pad) var(--seg-pad);
+    width: calc((100% - 2 * var(--seg-pad)) / var(--seg-n));
+    border-radius: var(--radius-full);
+    background: var(--raised);
+    box-shadow: var(--shadow-soft);
+    translate: calc(var(--seg-i, 0) * 100%) 0;
+    transition: translate 380ms var(--ease-spring);
+  }
+  .segmented:has(> label:nth-child(3)) {
+    --seg-n: 3;
+  }
+  .segmented:has(> label:nth-child(4)) {
+    --seg-n: 4;
+  }
+  .segmented:has(> label:nth-child(5)) {
+    --seg-n: 5;
+  }
+  .segmented:has(> label:nth-child(2) input:checked) {
+    --seg-i: 1;
+  }
+  .segmented:has(> label:nth-child(3) input:checked) {
+    --seg-i: 2;
+  }
+  .segmented:has(> label:nth-child(4) input:checked) {
+    --seg-i: 3;
+  }
+  .segmented:has(> label:nth-child(5) input:checked) {
+    --seg-i: 4;
+  }
+  .segmented > label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-width: 0;
+    height: 2.25rem;
+    padding-inline: 0.6rem;
+    border-radius: var(--radius-full);
+    color: var(--ink-2);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color var(--dur-1) var(--ease-out);
+  }
+  .segmented > label:has(input:checked) {
+    color: var(--ink);
+  }
+  .segmented > label:has(input:focus-visible) {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+  .segmented input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ---------------------------------------------------------------- badges */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    height: 1.625rem;
+    padding-inline: 0.65rem;
+    border-radius: var(--radius-full);
+    background: var(--line-soft);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .badge-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--dot, var(--ink-2));
+  }
+
+  /* Calendar event chip: colour bar carries the type, text stays neutral for contrast. */
+  .event-chip {
+    display: flex;
+    gap: 0.6rem;
+    align-items: stretch;
+    padding: 0.55rem 0.75rem 0.55rem 0.6rem;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    font-size: var(--text-sm);
+    line-height: 1.35;
+  }
+  .event-chip::before {
+    content: "";
+    width: 3px;
+    border-radius: 2px;
+    background: var(--dot);
+  }
+
+  /* ----------------------------------------------------------------- cards */
+  /* Content layer: standard material, no glass. */
+  .panel {
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1px var(--line-soft);
+  }
+
+  /* --------------------------------------------------------------- dialogs */
+  dialog.modal {
+    margin: auto;
+    width: min(32rem, calc(100vw - 2rem));
+    max-height: calc(100dvh - 2rem);
+    padding: 1.75rem;
+    color: var(--ink);
+    opacity: 1;
+    scale: 1;
+    transition:
+      opacity var(--dur-2) var(--ease-out),
+      scale var(--dur-2) var(--ease-spring),
+      overlay var(--dur-2) allow-discrete,
+      display var(--dur-2) allow-discrete;
+  }
+  dialog.modal:not([open]) {
+    opacity: 0;
+    scale: 0.96;
+  }
+  @starting-style {
+    dialog.modal[open] {
+      opacity: 0;
+      scale: 0.96;
+    }
+  }
+  dialog.modal::backdrop {
+    background: rgb(0 0 0 / 0.45);
+    transition:
+      background-color var(--dur-2) var(--ease-out),
+      overlay var(--dur-2) allow-discrete,
+      display var(--dur-2) allow-discrete;
+  }
+  @starting-style {
+    dialog.modal[open]::backdrop {
+      background: rgb(0 0 0 / 0);
+    }
+  }
+
+  /* Popover menus (native Popover API). Anchored with CSS anchor positioning where supported,
+     positioned by static/js/popover.js elsewhere. */
+  .menu[popover] {
+    --glass-radius: var(--radius-lg);
+    margin: 0;
+    min-width: 13rem;
+    padding: 0.4rem;
+    color: var(--ink);
+    opacity: 1;
+    translate: 0 0;
+    transition:
+      opacity var(--dur-1) var(--ease-out),
+      translate var(--dur-2) var(--ease-spring),
+      overlay var(--dur-1) allow-discrete,
+      display var(--dur-1) allow-discrete;
+  }
+  .menu[popover]:not(:popover-open) {
+    opacity: 0;
+    translate: 0 -4px;
+  }
+  @starting-style {
+    .menu[popover]:popover-open {
+      opacity: 0;
+      translate: 0 -4px;
+    }
+  }
+  .menu-item {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.7rem;
+    height: 2.5rem;
+    padding-inline: 0.75rem;
+    border-radius: calc(var(--radius-lg) - 0.4rem);
+    font-size: var(--text-sm);
+    color: var(--ink);
+    text-decoration: none;
+    text-align: left;
+    cursor: pointer;
+  }
+  .menu-item:hover,
+  .menu-item:focus-visible {
+    background: var(--line-soft);
+    outline: none;
+  }
+  .menu-sep {
+    height: 1px;
+    margin: 0.35rem 0.5rem;
+    background: var(--line-soft);
+  }
+
+  /* ---------------------------------------------------------------- toasts */
+  /* Below the account button on phones, at the top edge on desktop. */
+  .toasts {
+    position: fixed;
+    z-index: 60;
+    inset: calc(var(--nav-inset) + env(safe-area-inset-top) + 3.25rem) var(--nav-inset) auto;
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    pointer-events: none;
+  }
+  .toast {
+    --glass-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    max-width: 32rem;
+    padding: 0.7rem 0.9rem 0.7rem 1.1rem;
+    font-size: var(--text-sm);
+    pointer-events: auto;
+    transition:
+      opacity var(--dur-2) var(--ease-out),
+      translate var(--dur-3) var(--ease-spring);
+  }
+  @media (min-width: 64rem) {
+    .toasts {
+      top: calc(var(--nav-inset) + env(safe-area-inset-top));
+    }
+  }
+  @starting-style {
+    .toast {
+      opacity: 0;
+      translate: 0 -12px;
+    }
+  }
+
+  /* ----------------------------------------------------------- empty state */
+  .empty {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: start;
+    padding: 2rem;
+    color: var(--ink-2);
+  }
+  .empty-title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    line-height: var(--text-xl--line-height);
+    color: var(--ink);
+  }
+}

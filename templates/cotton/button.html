@@ -1,0 +1,2 @@
+<c-vars variant="primary" size="" icon="" icon_only="" href="" type="button" class="" />
+{% if href %}<a href="{{ href }}"{% else %}<button type="{{ type }}"{% endif %} class="btn btn-{{ variant }}{% if size %} btn-{{ size }}{% endif %}{% if icon_only %} btn-icon{% endif %}{% if class %} {{ class }}{% endif %}" {{ attrs }}>{% if icon %}<c-icon :name="icon" />{% endif %}{{ slot }}{% if href %}</a>{% else %}</button>{% endif %}

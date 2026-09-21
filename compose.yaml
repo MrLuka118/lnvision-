@@ -31,10 +31,12 @@ services:
     <<: *app
     command: celery -A config beat -l info --schedule /data/celerybeat-schedule
 
+  # Polls instead of relying on file events, which do not cross the VM boundary on macOS.
   tailwind:
     <<: *app
-    command: python manage.py tailwind watch
-    tty: true
+    command: >-
+      sh -c 'exec /opt/tailwind/tailwindcss-linux-*
+      -i assets/css/app.css -o static/css/app.css --watch=always --poll=400'
     depends_on: []
 
   db:

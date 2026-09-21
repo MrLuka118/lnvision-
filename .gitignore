@@ -11,4 +11,4 @@ var/
 seed/cache/
 screenshots/
 .DS_Store
-*.mo
+.playwright-mcp/

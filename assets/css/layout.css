@@ -1,0 +1,287 @@
+@layer components {
+  /* =========================================================== app shell */
+  .app-main {
+    min-height: 100dvh;
+    padding: calc(env(safe-area-inset-top) + 4.75rem) 1.25rem
+      calc(var(--tabbar-h) + 2 * var(--nav-inset) + env(safe-area-inset-bottom) + 2rem);
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-size: var(--text-lg);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  /* Desktop: floating glass sidebar, inset from the window edges. */
+  .app-sidebar {
+    display: none;
+  }
+
+  /* Phone and tablet: floating tab bar within thumb reach, sections only. */
+  .app-tabbar {
+    --glass-radius: calc(var(--tabbar-h) / 2);
+    position: fixed;
+    z-index: 40;
+    left: var(--nav-inset);
+    right: var(--nav-inset);
+    bottom: calc(var(--nav-inset) + env(safe-area-inset-bottom));
+    view-transition-name: app-tabbar;
+  }
+  .tabbar-items {
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+    height: var(--tabbar-h);
+    padding: 6px;
+  }
+  .tab {
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 3px;
+    border-radius: calc(var(--tabbar-h) / 2 - 6px);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--ink-2);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      color var(--dur-1) var(--ease-out),
+      transform 380ms var(--ease-spring);
+  }
+  .tab:active {
+    transform: scale(0.92);
+    transition-duration: 90ms;
+  }
+  .tab[aria-current="page"] {
+    color: var(--ink);
+    background: var(--line-soft);
+  }
+
+  /* Account button, top right; the same glass shape grows into the account menu. */
+  .account-fab {
+    --glass-radius: 22px;
+    position: fixed;
+    z-index: 45;
+    top: calc(var(--nav-inset) + env(safe-area-inset-top));
+    right: var(--nav-inset);
+    padding: 4px;
+    view-transition-name: account-fab;
+  }
+  .account-fab[data-open] {
+    --glass-radius: var(--radius-xl);
+    width: min(20rem, calc(100vw - 2 * var(--nav-inset)));
+    padding: 0.5rem;
+  }
+  .account-fab-button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+  }
+  .account-fab[data-open] .account-fab-button {
+    padding: 0.25rem 0.25rem 0.25rem 0.5rem;
+  }
+
+  /* Scroll edge effect (HIG: scroll views): content softens where it meets floating controls. */
+  .scroll-edge {
+    position: fixed;
+    z-index: 35;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+  .scroll-edge-top {
+    top: 0;
+    height: calc(env(safe-area-inset-top) + 4.5rem);
+    background: linear-gradient(to bottom, color-mix(in srgb, var(--surround) 80%, transparent), transparent);
+    -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent);
+    mask-image: linear-gradient(to bottom, #000 45%, transparent);
+  }
+  .scroll-edge-bottom {
+    bottom: 0;
+    height: calc(var(--tabbar-h) + 2 * var(--nav-inset) + env(safe-area-inset-bottom) + 1.5rem);
+    background: linear-gradient(to top, color-mix(in srgb, var(--surround) 80%, transparent), transparent);
+    -webkit-mask-image: linear-gradient(to top, #000 55%, transparent);
+    mask-image: linear-gradient(to top, #000 55%, transparent);
+  }
+
+  @media (min-width: 64rem) {
+    .app-tabbar,
+    .account-fab,
+    .scroll-edge {
+      display: none;
+    }
+    .app-sidebar {
+      --glass-radius: var(--radius-xl);
+      position: fixed;
+      z-index: 40;
+      top: var(--nav-inset);
+      bottom: var(--nav-inset);
+      left: var(--nav-inset);
+      width: var(--sidebar-w);
+      display: flex;
+      flex-direction: column;
+      padding: 1.25rem 0.75rem 0.75rem;
+      view-transition-name: app-sidebar;
+    }
+    .app-main {
+      padding: 3rem clamp(2rem, 4vw, 4rem) 4rem;
+      margin-left: calc(var(--sidebar-w) + var(--nav-inset));
+    }
+  }
+
+  .sidebar-brand {
+    padding: 0.25rem 0.75rem 1.5rem;
+  }
+  .sidebar-nav {
+    display: grid;
+    gap: 2px;
+  }
+  /* 28px outer radius - 12px padding = 16px: concentric with the sidebar corner. */
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    height: 2.625rem;
+    padding-inline: 0.75rem;
+    border-radius: calc(var(--radius-xl) - 0.75rem);
+    font-size: var(--text-sm);
+    font-weight: 560;
+    color: var(--ink-2);
+    text-decoration: none;
+    transition:
+      background-color var(--dur-1) var(--ease-out),
+      color var(--dur-1) var(--ease-out);
+  }
+  .nav-item:hover {
+    color: var(--ink);
+    background: var(--line-soft);
+  }
+  .nav-item[aria-current="page"] {
+    color: var(--ink);
+    background: color-mix(in oklab, var(--ink) 11%, transparent);
+  }
+  .sidebar-foot {
+    margin-top: auto;
+  }
+  .account-button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.5rem;
+    border-radius: calc(var(--radius-xl) - 0.75rem);
+    text-align: left;
+    cursor: pointer;
+  }
+  .account-button:hover {
+    background: var(--line-soft);
+  }
+  .avatar {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: none;
+    border-radius: 50%;
+    background: var(--raised);
+    font-size: var(--text-sm);
+    font-weight: 650;
+    color: var(--ink);
+  }
+
+  /* ======================================================== page header */
+  .page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+  .page-title {
+    font-size: var(--text-2xl);
+    line-height: var(--text-2xl--line-height);
+  }
+  @media (min-width: 64rem) {
+    .page-title {
+      font-size: var(--text-3xl);
+      line-height: var(--text-3xl--line-height);
+    }
+  }
+
+  /* ========================================================== auth pages */
+  /* A photograph fills the screen; the form sits on a regular-glass sheet over it. */
+  .auth {
+    position: relative;
+    min-height: 100dvh;
+    display: grid;
+    align-items: end;
+  }
+  .auth-photo {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+  }
+  .auth-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--focus-x, 50%) var(--focus-y, 50%);
+  }
+  .auth-sheet {
+    --glass-radius: var(--radius-xl);
+    margin: 28dvh var(--nav-inset) calc(var(--nav-inset) + env(safe-area-inset-bottom));
+    padding: 1.75rem 1.5rem 1.5rem;
+  }
+  .auth-title {
+    font-size: var(--text-2xl);
+    line-height: var(--text-2xl--line-height);
+    margin: 1.5rem 0 0.6rem;
+  }
+  .auth-lede {
+    color: var(--ink-2);
+    margin-bottom: 1.75rem;
+  }
+  .auth-credit {
+    position: fixed;
+    left: 1.25rem;
+    top: calc(1rem + env(safe-area-inset-top));
+    font-size: var(--text-xs);
+    color: rgb(255 255 255 / 0.85);
+    text-shadow: 0 1px 2px rgb(0 0 0 / 0.5);
+  }
+  @media (min-width: 48rem) {
+    .auth {
+      align-items: center;
+      justify-items: end;
+      padding: 1.5rem;
+    }
+    .auth-sheet {
+      width: 26rem;
+      margin: 0;
+      padding: 2.25rem 2.25rem 2rem;
+    }
+    .auth-credit {
+      top: auto;
+      bottom: 1.25rem;
+    }
+  }
+  @media (min-width: 80rem) {
+    .auth {
+      padding: 2.5rem 4rem;
+    }
+  }
+}

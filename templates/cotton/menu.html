@@ -1,0 +1,2 @@
+<c-vars id placement="bottom" />
+<div id="{{ id }}" class="menu glass" popover data-placement="{{ placement }}" style="position-anchor: --{{ id }}; position-area: {% if placement == 'top' %}top{% else %}bottom{% endif %} span-right; margin-block: 8px" {{ attrs }}>{{ slot }}</div>

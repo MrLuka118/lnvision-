@@ -1,0 +1,9 @@
+{# Include with prefix="…" so the radio group name is unique on the page. #}
+<div class="px-1 py-1.5" x-data="themeSwitch">
+  <p class="px-2 pb-2 text-xs text-ink-2" id="{{ prefix }}-theme-label">{% translate "Appearance" %}</p>
+  <div class="segmented" role="radiogroup" aria-labelledby="{{ prefix }}-theme-label">
+    <label><input type="radio" name="{{ prefix }}-theme" value="dark" @change="choose"{% if theme == "dark" %} checked{% endif %}><c-icon name="moon" size="sm" />{% translate "Dark" %}</label>
+    <label><input type="radio" name="{{ prefix }}-theme" value="light" @change="choose"{% if theme == "light" %} checked{% endif %}><c-icon name="sun" size="sm" />{% translate "Light" %}</label>
+    <label><input type="radio" name="{{ prefix }}-theme" value="auto" @change="choose"{% if theme == "auto" %} checked{% endif %}><c-icon name="sun-moon" size="sm" />{% translate "Auto" %}</label>
+  </div>
+</div>

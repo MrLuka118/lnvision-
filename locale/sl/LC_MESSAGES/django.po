@@ -1,0 +1,476 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-21 17:41+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: sl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
+"n%100==4 ? 2 : 3);\n"
+
+#: apps/accounts/admin.py:15
+msgid "Personal info"
+msgstr "Osebni podatki"
+
+#: apps/accounts/admin.py:17
+msgid "Permissions"
+msgstr "Dovoljenja"
+
+#: apps/accounts/admin.py:20
+msgid "Important dates"
+msgstr "Pomembni datumi"
+
+#: apps/accounts/forms.py:10
+msgid "Studio name"
+msgstr "Ime studia"
+
+#: apps/accounts/forms.py:13
+msgid "Shown to your clients. You can change it later."
+msgstr "Vidijo ga vaše stranke. Kasneje ga lahko spremenite."
+
+#: apps/accounts/models.py:32
+msgid "email address"
+msgstr "e-poštni naslov"
+
+#: apps/core/management/commands/seed_demo.py:15
+msgid "Create or update demo user and studio for testing"
+msgstr "Ustvari ali posodobi demo uporabnika in studio za testiranje"
+
+#: apps/core/models.py:20
+msgid "studio name"
+msgstr "ime studia"
+
+#: apps/core/models.py:22
+msgid "portfolio address"
+msgstr "naslov portfolia"
+
+#: apps/core/models.py:25
+msgid "Your public portfolio lives at /p/<address>/."
+msgstr "Vaš javni portfolio je na /p/<address>/."
+
+#: apps/core/models.py:27
+msgid "contact email"
+msgstr "kontaktni e-poštni naslov"
+
+#: apps/core/models.py:28
+msgid "phone"
+msgstr "telefon"
+
+#: apps/core/models.py:29
+msgid "address"
+msgstr "naslov"
+
+#: apps/core/models.py:30
+msgid "tax number"
+msgstr "davčna številka"
+
+#: apps/core/models.py:31
+msgid "IBAN"
+msgstr "IBAN"
+
+#: apps/core/models.py:32
+msgid "VAT registered"
+msgstr "zavezanec za DDV"
+
+#: apps/core/models.py:34
+msgid "default VAT rate (%)"
+msgstr "privzeta stopnja DDV (%)"
+
+#: apps/core/models.py:41
+msgid "studio"
+msgstr "studio"
+
+#: apps/core/models.py:42
+msgid "studios"
+msgstr "studii"
+
+#: apps/core/navigation.py:16 templates/core/dashboard.html:2
+msgid "Overview"
+msgstr "Pregled"
+
+#: apps/core/navigation.py:17
+msgid "Calendar"
+msgstr "Koledar"
+
+#: apps/core/navigation.py:18
+msgid "Clients"
+msgstr "Stranke"
+
+#: apps/core/navigation.py:19
+msgid "Galleries"
+msgstr "Galerije"
+
+#: apps/core/navigation.py:20
+msgid "Finance"
+msgstr "Finance"
+
+#: apps/core/views.py:41
+msgid "Shoot"
+msgstr "Fotografiranje"
+
+#: apps/core/views.py:42
+msgid "Client meeting"
+msgstr "Sestanek s stranko"
+
+#: apps/core/views.py:43
+msgid "Editing deadline"
+msgstr "Rok za obdelavo"
+
+#: apps/core/views.py:44
+msgid "Delivery deadline"
+msgstr "Rok za dostavo"
+
+#: apps/core/views.py:45
+msgid "Personal"
+msgstr "Osebno"
+
+#: apps/core/views.py:48
+msgid "Inquiry"
+msgstr "Povpraševanje"
+
+#: apps/core/views.py:49
+msgid "Confirmed"
+msgstr "Potrjeno"
+
+#: apps/core/views.py:50
+msgid "Shot"
+msgstr "Fotografirano"
+
+#: apps/core/views.py:51
+msgid "Editing"
+msgstr "V obdelavi"
+
+#: apps/core/views.py:52
+msgid "Delivered"
+msgstr "Dostavljeno"
+
+#: apps/core/views.py:53
+msgid "Paid"
+msgstr "Plačano"
+
+#: apps/core/views.py:56
+msgid "Bright photo, dimming on"
+msgstr "Svetla fotografija, zatemnitev vklopljena"
+
+#: apps/core/views.py:57
+msgid "Busy photo"
+msgstr "Razgibana fotografija"
+
+#: apps/core/views.py:58
+msgid "Dark photo"
+msgstr "Temna fotografija"
+
+#: apps/core/views.py:97
+msgid "Client name"
+msgstr "Ime stranke"
+
+#: apps/core/views.py:98
+msgid "Email"
+msgstr "E-pošta"
+
+#: apps/core/views.py:98
+msgid "The gallery link is sent here."
+msgstr "Na ta naslov pošljemo povezavo do galerije."
+
+#: apps/core/views.py:100
+msgid "Package"
+msgstr "Paket"
+
+#: apps/core/views.py:104
+msgid "Notes"
+msgstr "Opombe"
+
+#: apps/core/views.py:105
+msgid "Send a reminder a day before"
+msgstr "Pošlji opomnik en dan prej"
+
+#: config/settings/base.py:167
+msgid "Slovenian"
+msgstr "Slovenščina"
+
+#: templates/allauth/elements/provider.html:1
+#, python-format
+msgid "Continue with %(name)s"
+msgstr "Nadaljuj z računom %(name)s"
+
+#: templates/core/dashboard.html:6
+#, python-format
+msgid "Good day, %(name)s."
+msgstr "Dober dan, %(name)s."
+
+#: templates/core/dashboard.html:6
+msgid "Good day."
+msgstr "Dober dan."
+
+#: templates/core/dashboard.html:13
+msgid "Next 7 days"
+msgstr "Naslednjih 7 dni"
+
+#: templates/core/dashboard.html:15
+msgid "Your week will appear here"
+msgstr "Tukaj se bo pokazal vaš teden"
+
+#: templates/core/dashboard.html:16
+msgid ""
+"Shoots, client meetings and editing and delivery deadlines for the next "
+"seven days, in order."
+msgstr ""
+"Fotografiranja, sestanki s strankami ter roki za obdelavo in dostavo za "
+"naslednjih sedem dni, po vrstnem redu."
+
+#: templates/core/styleguide.html:3 templates/core/styleguide.html:5
+msgid "Design system"
+msgstr "Oblikovni sistem"
+
+#: templates/core/styleguide.html:5
+msgid ""
+"The interface stays neutral grey so it never shifts how the colours in a "
+"photograph are perceived. Colour comes from the photographs."
+msgstr ""
+"Vmesnik ostaja nevtralno siv, da nikoli ne vpliva na zaznavanje barv na "
+"fotografiji. Barve prihajajo iz fotografij."
+
+#: templates/core/styleguide.html:11
+msgid "Colour"
+msgstr "Barve"
+
+#: templates/core/styleguide.html:14
+msgid "Darkroom"
+msgstr "Temnica"
+
+#: templates/core/styleguide.html:25
+msgid "Light table"
+msgstr "Svetlomiza"
+
+#: templates/core/styleguide.html:37
+msgid ""
+"Event types take their colour from the ColorChecker Classic chart "
+"photographers calibrate with. The colour sits in a bar; text stays neutral, "
+"so contrast never depends on the hue."
+msgstr "Vrste dogodkov dobijo barve iz tablice ColorChecker Classic, s katero fotografi umerjajo barve. Barva je v pasu ob robu, besedilo ostane nevtralno, zato kontrast ni nikoli odvisen od odtenka."
+
+#: templates/core/styleguide.html:50
+msgid "Typography"
+msgstr "Tipografija"
+
+#: templates/core/styleguide.html:59
+msgid "for display, Hanken Grotesk for the interface."
+msgstr "za naslove, Hanken Grotesk za vmesnik."
+
+#: templates/core/styleguide.html:61
+msgid ""
+"Secondary text, 14 px. Used for supporting details, never for anything that "
+"has to be read to act."
+msgstr "Drugotno besedilo, 14 px. Za dodatne podrobnosti, nikoli za nekaj, kar morate prebrati, da lahko ukrepate."
+
+#: templates/core/styleguide.html:64
+msgid "Tabular figures line up in columns"
+msgstr "Številke enake širine se poravnajo v stolpce"
+
+#: templates/core/styleguide.html:69
+msgid "Total"
+msgstr "Skupaj"
+
+#: templates/core/styleguide.html:77
+msgid "Glass"
+msgstr "Steklo"
+
+#: templates/core/styleguide.html:78
+msgid ""
+"Regular glass for navigation, popovers and sheets. Clear glass only for "
+"controls floating over photos, with a dimming layer when the photo is bright."
+msgstr "Navadno steklo za navigacijo, menije in spodnje liste. Prozorno steklo samo za kontrolnike nad fotografijami; nad svetlimi fotografijami dobi zatemnitev."
+
+#: templates/core/styleguide.html:88
+msgid "Back"
+msgstr "Nazaj"
+
+#: templates/core/styleguide.html:90
+msgid "Favourite"
+msgstr "Priljubljena"
+
+#: templates/core/styleguide.html:91
+msgid "Download"
+msgstr "Prenesi"
+
+#: templates/core/styleguide.html:92
+msgid "Share"
+msgstr "Deli"
+
+#: templates/core/styleguide.html:106
+msgid "Buttons"
+msgstr "Gumbi"
+
+#: templates/core/styleguide.html:108
+msgid "New shoot"
+msgstr "Novo fotografiranje"
+
+#: templates/core/styleguide.html:109
+msgid "Upload photos"
+msgstr "Naloži fotografije"
+
+#: templates/core/styleguide.html:110 templates/core/styleguide.html:127
+msgid "Cancel"
+msgstr "Prekliči"
+
+#: templates/core/styleguide.html:111 templates/core/styleguide.html:155
+#: templates/core/styleguide.html:157 templates/core/styleguide.html:162
+msgid "Delete gallery"
+msgstr "Izbriši galerijo"
+
+#: templates/core/styleguide.html:112
+msgid "Unavailable"
+msgstr "Ni na voljo"
+
+#: templates/core/styleguide.html:115
+msgid "Send gallery"
+msgstr "Pošlji galerijo"
+
+#: templates/core/styleguide.html:116 templates/core/styleguide.html:151
+msgid "Copy link"
+msgstr "Kopiraj povezavo"
+
+#: templates/core/styleguide.html:117
+msgid "Search"
+msgstr "Išči"
+
+#: templates/core/styleguide.html:118
+msgid "Text link"
+msgstr "Besedilna povezava"
+
+#: templates/core/styleguide.html:124
+msgid "Forms"
+msgstr "Obrazci"
+
+#: templates/core/styleguide.html:127
+msgid "Save"
+msgstr "Shrani"
+
+#: templates/core/styleguide.html:133
+msgid "Controls"
+msgstr "Kontrolniki"
+
+#: templates/core/styleguide.html:134
+msgid "Calendar view"
+msgstr "Koledarski pogled"
+
+#: templates/core/styleguide.html:135
+msgid "Month"
+msgstr "Mesec"
+
+#: templates/core/styleguide.html:136
+msgid "Week"
+msgstr "Teden"
+
+#: templates/core/styleguide.html:137
+msgid "Day"
+msgstr "Dan"
+
+#: templates/core/styleguide.html:138
+msgid "List"
+msgstr "Seznam"
+
+#: templates/core/styleguide.html:147
+msgid "Popovers and dialogs"
+msgstr "Meniji in pogovorna okna"
+
+#: templates/core/styleguide.html:149
+msgid "Gallery actions"
+msgstr "Dejanja galerije"
+
+#: templates/core/styleguide.html:152
+msgid "Send to client"
+msgstr "Pošlji stranki"
+
+#: templates/core/styleguide.html:153
+msgid "Set password"
+msgstr "Nastavi geslo"
+
+#: templates/core/styleguide.html:158
+msgid "Delete this gallery?"
+msgstr "Želite izbrisati to galerijo?"
+
+#: templates/core/styleguide.html:159
+msgid ""
+"480 photos and 12 favourites will be removed. The client link stops working "
+"immediately."
+msgstr ""
+"Odstranjenih bo 480 fotografij in 12 priljubljenih. Povezava za stranko "
+"takoj preneha delovati."
+
+#: templates/core/styleguide.html:161
+msgid "Keep gallery"
+msgstr "Obdrži galerijo"
+
+#: templates/core/styleguide.html:167
+msgid "Gallery sent to Ana Novak."
+msgstr "Galerija poslana Ani Novak."
+
+#: templates/core/styleguide.html:173
+msgid "Figures"
+msgstr "Številke"
+
+#: templates/core/styleguide.html:175
+msgid "Income this month"
+msgstr "Prihodki ta mesec"
+
+#: templates/core/styleguide.html:176
+msgid "Shoots this year"
+msgstr "Fotografiranja letos"
+
+#: templates/core/styleguide.html:177
+msgid "Galleries delivered"
+msgstr "Dostavljene galerije"
+
+#: templates/core/styleguide.html:183
+msgid "Icons"
+msgstr "Ikone"
+
+#: templates/cotton/field.html:7
+msgid "optional"
+msgstr "neobvezno"
+
+#: templates/partials/messages.html:6
+msgid "Dismiss"
+msgstr "Zapri"
+
+#: templates/partials/nav.html:3 templates/partials/nav.html:54
+msgid "Main"
+msgstr "Glavna navigacija"
+
+#: templates/partials/nav.html:25 templates/partials/nav.html:46
+msgid "Sign out"
+msgstr "Odjava"
+
+#: templates/partials/nav.html:39
+msgid "Account"
+msgstr "Račun"
+
+#: templates/partials/theme_switch.html:3
+msgid "Appearance"
+msgstr "Videz"
+
+#: templates/partials/theme_switch.html:5
+msgid "Dark"
+msgstr "Temno"
+
+#: templates/partials/theme_switch.html:6
+msgid "Light"
+msgstr "Svetlo"
+
+#: templates/partials/theme_switch.html:7
+msgid "Auto"
+msgstr "Samodejno"
+
+#~ msgid "More"
+#~ msgstr "Več"

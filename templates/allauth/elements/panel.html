@@ -1,0 +1,6 @@
+{% load allauth %}
+<section class="panel mt-6 grid gap-4 p-6">
+  <h2 class="text-xl">{% slot title %}{% endslot %}</h2>
+  {% slot body %}{% endslot %}
+  {% if slots.actions %}<div class="flex flex-wrap gap-2">{% for action in slots.actions %}{{ action }}{% endfor %}</div>{% endif %}
+</section>

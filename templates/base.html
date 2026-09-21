@@ -1,0 +1,33 @@
+<!doctype html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}" data-theme="{{ theme }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="{% if theme == 'light' %}#e9e9e9{% else %}#262626{% endif %}">
+  <meta name="htmx-config" content='{"includeIndicatorStyles": false, "allowEval": false, "allowScriptTags": false}'>
+  <title>{% block title %}{% endblock %} – {{ APP_NAME }}</title>
+  <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+  <link rel="preload" href="{% static 'fonts/hanken-grotesk-latin-wght-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'fonts/bodoni-moda-latin-standard-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  <script type="importmap" nonce="{{ CSP_NONCE }}">
+    {
+      "imports": {
+        "htmx": "{% static 'vendor/htmx-2.0.10.esm.js' %}",
+        "alpine": "{% static 'vendor/alpine-csp-3.17.4.esm.min.js' %}",
+        "app/components": "{% static 'js/components.js' %}",
+        "app/popover": "{% static 'js/popover.js' %}",
+        "app/refraction": "{% static 'js/refraction.js' %}"
+      }
+    }
+  </script>
+  <script type="module" src="{% static 'js/app.js' %}"></script>
+  {% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  {% block body %}{% endblock %}
+  {% block extra_body %}{% endblock %}
+</body>
+</html>

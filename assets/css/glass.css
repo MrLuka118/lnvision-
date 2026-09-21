@@ -1,0 +1,106 @@
+/*
+ * Liquid Glass, translated to the web (HIG: Materials > Liquid Glass).
+ *
+ * - Only for controls and floating layers (navigation, toolbars, popovers, sheets, modals).
+ *   Never for content or long text, and never glass on glass.
+ * - `.glass` is the "regular" variant: blurs and pulls the luminosity of what is behind it
+ *   towards the tint, so text on it stays legible over any photograph.
+ * - `.glass-clear` is for controls floating over photos: highly translucent. Add `data-dim`
+ *   when the photo underneath is bright (photos store their luminance) for the 35% dimming layer.
+ * - Refraction (SVG displacement at the edges) is progressive: Chromium only, set up by
+ *   static/js/refraction.js on elements with `data-refract`.
+ */
+
+@layer components {
+  .glass,
+  .glass-clear {
+    position: relative;
+    isolation: isolate;
+    border-radius: var(--glass-radius, var(--radius-xl));
+    background: var(--glass-tint);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat)) var(--glass-lum);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat)) var(--glass-lum);
+    box-shadow: var(--shadow-float);
+    --ink-2: var(--glass-ink-2);
+  }
+
+  /* Specular edge: bright along the top where light would catch, fading down the sides. */
+  .glass::before,
+  .glass-clear::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      var(--glass-spec) 0%,
+      var(--glass-rim) 32%,
+      var(--glass-rim) 72%,
+      color-mix(in srgb, var(--glass-spec) 45%, transparent) 100%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+  }
+
+  .glass-clear {
+    --glass-tint: rgb(40 40 40 / 0.16);
+    --glass-blur: 10px;
+    --glass-sat: 160%;
+    --glass-lum: brightness(1);
+    --glass-spec: rgb(255 255 255 / 0.4);
+    --glass-rim: rgb(255 255 255 / 0.12);
+    color: #fff;
+    --ink: #fff;
+    --ink-2: rgb(255 255 255 / 0.82);
+  }
+
+  .glass-clear[data-dim] {
+    background:
+      linear-gradient(rgb(0 0 0 / 0.35), rgb(0 0 0 / 0.35)),
+      var(--glass-tint);
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: var(--surface);
+  }
+  .glass-clear {
+    background: rgb(24 24 24 / 0.72);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass-clear {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .glass {
+    background: var(--surface);
+  }
+  .glass-clear {
+    background: rgb(24 24 24 / 0.86);
+  }
+}
+
+@media (prefers-contrast: more) {
+  .glass {
+    background: var(--surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    outline: 1px solid var(--ink-2);
+  }
+  .glass-clear {
+    background: rgb(16 16 16 / 0.9);
+    outline: 1px solid rgb(255 255 255 / 0.6);
+  }
+}

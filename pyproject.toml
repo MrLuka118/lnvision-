@@ -53,4 +53,4 @@ known-first-party = ["apps", "config"]
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings.test"
 python_files = ["tests.py", "test_*.py"]
-addopts = "-ra --strict-markers"
+addopts = "-ra --strict-markers --ds=config.settings.test"

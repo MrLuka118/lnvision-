@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block body %}
+  {% include "partials/messages.html" %}
+  <div class="auth">
+    <picture class="auth-photo" style="--focus-x: 38%; --focus-y: 40%">
+      <source type="image/avif" srcset="{% static 'img/samples/portrait-800.avif' %} 800w, {% static 'img/samples/portrait-1600.avif' %} 1600w, {% static 'img/samples/portrait-2400.avif' %} 2400w" sizes="100vw">
+      <img src="{% static 'img/samples/portrait-1600.jpg' %}" srcset="{% static 'img/samples/portrait-800.jpg' %} 800w, {% static 'img/samples/portrait-1600.jpg' %} 1600w, {% static 'img/samples/portrait-2400.jpg' %} 2400w" sizes="100vw" alt="" fetchpriority="high">
+    </picture>
+    <section class="auth-sheet glass" aria-labelledby="auth-title">
+      <a class="wordmark" href="/">{{ APP_NAME }}</a>
+      {% block content %}{% endblock %}
+    </section>
+  </div>
+{% endblock %}
