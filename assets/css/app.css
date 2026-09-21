@@ -6,6 +6,7 @@
 @import "./components.css";
 @import "./layout.css";
 @import "./calendar.css";
+@import "./photos.css";
 
 @source not "../../docs";
 @source not "../../staticfiles";

@@ -58,6 +58,37 @@ def _register_url_cases():
         ("scheduling:move", ("patch",)),
     ]:
         register_url(TenantURLCase(name, Event, methods=methods))
+    from apps.galleries.models import Gallery
+    from apps.photos.models import UploadSession
+
+    for name, methods in [
+        ("galleries:editor", ("get",)),
+        ("galleries:settings", ("get", "post")),
+        ("galleries:delete", ("get", "post")),
+        ("galleries:section_create", ("post",)),
+        ("photos:upload_start", ("post",)),
+    ]:
+        kwargs = (lambda o: {"gallery_pk": o.pk}) if name.startswith("photos") else None
+        register_url(
+            TenantURLCase(name, Gallery, methods=methods, kwargs=kwargs or (lambda o: {"pk": o.pk}))
+        )
+    register_url(
+        TenantURLCase(
+            "galleries:action",
+            Gallery,
+            methods=("post",),
+            kwargs=lambda o: {"pk": o.pk, "action": "publish"},
+        )
+    )
+    register_url(
+        TenantURLCase(
+            "photos:upload_chunk",
+            UploadSession,
+            methods=("get", "put"),
+            kwargs=lambda o: {"uuid": o.uuid},
+        )
+    )
+
     for name, model in [
         ("shoots:package_update", Package),
         ("shoots:package_delete", Package),

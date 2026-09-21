@@ -1,0 +1,111 @@
+{% extends "layouts/app.html" %}
+{% block title %}{{ object.title }}{% endblock %}
+{% block content %}
+  <div x-data="uploader" data-start-url="{% url 'photos:upload_start' object.pk %}" data-summary="{% translate '%(done)s of %(total)s uploaded' %}"
+       @dragover.window="dragover" @dragleave.window="dragleave" @drop.window="drop">
+    <a class="back-link" href="{% url 'galleries:list' %}"><c-icon name="chevron-left" size="sm" />{% translate "Galleries" %}</a>
+    <header class="page-header">
+      <div class="grid gap-2">
+        <h1 class="page-title">{{ object.title }}</h1>
+        <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-md text-ink-2">
+          {% if object.client %}<a class="link" href="{{ object.client.get_absolute_url }}">{{ object.client.display_name }}</a>{% endif %}
+          {% if object.event_date %}<span>{{ object.event_date|date:"j. n. Y" }}</span>{% endif %}
+          {% if object.is_expired %}<c-badge dot="var(--ink-3)">{% translate "Expired" %}</c-badge>
+          {% elif object.is_published %}<c-badge dot="var(--color-cc-yellow-green)">{% translate "Published" %}</c-badge>
+          {% else %}<c-badge dot="var(--ink-3)">{% translate "Draft" %}</c-badge>{% endif %}
+          {% if object.has_password %}<c-badge><c-icon name="lock" size="sm" />{% translate "Password" %}</c-badge>{% endif %}
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <c-button variant="secondary" href="{% url 'galleries:settings' object.pk %}" icon="sliders-horizontal">{% translate "Settings" %}</c-button>
+        <button class="btn btn-primary" type="button" commandfor="share-dialog" command="show-modal"><c-icon name="share-2" />{% translate "Share" %}</button>
+      </div>
+    </header>
+
+    <section aria-labelledby="upload-title" class="mb-10 grid gap-4">
+      <h2 id="upload-title" class="visually-hidden">{% translate "Upload" %}</h2>
+      <div class="dropzone" :class="dragging && 'is-dragging'">
+        <c-icon name="upload" class="h-6 w-6" />
+        <p>{% translate "Drop photos anywhere on this page, or" %}</p>
+        <div class="flex flex-wrap items-center justify-center gap-2">
+          <button class="btn btn-secondary" type="button" @click="pick">{% translate "Choose photos" %}</button>
+          {% if sections %}
+            <label class="visually-hidden" for="upload-section">{% translate "Upload into" %}</label>
+            <select id="upload-section" class="input w-auto" x-ref="section">
+              <option value="">{% translate "No section" %}</option>
+              {% for section in sections %}<option value="{{ section.pk }}">{{ section.title }}</option>{% endfor %}
+            </select>
+          {% endif %}
+        </div>
+        <p class="text-sm text-ink-3">{% translate "JPEG, PNG, TIFF, WebP or AVIF, up to 150 MB each. Originals are kept; clients see web-size copies." %}</p>
+        <input class="visually-hidden" type="file" multiple accept="image/*,.tif,.tiff,.avif" x-ref="input" @change="chosen" tabindex="-1">
+      </div>
+      <form class="flex max-w-md gap-2" method="post" action="{% url 'galleries:section_create' object.pk %}">
+        {% csrf_token %}
+        <label class="visually-hidden" for="id_title">{% translate "New section" %}</label>
+        <input class="input" id="id_title" name="title" required maxlength="120" placeholder="{% translate 'New section, e.g. Ceremony' %}">
+        <button class="btn btn-secondary" type="submit"><c-icon name="plus" size="sm" />{% translate "Add" %}</button>
+      </form>
+    </section>
+
+    {% include "galleries/_photo_grid.html" %}
+
+    {% if not counts.total %}
+      <div class="panel max-w-3xl">
+        <c-empty icon="images" title="{% translate 'No photos yet' %}">
+          {% translate "Upload the edited photos. They are processed in the background; you can keep working meanwhile." %}
+        </c-empty>
+      </div>
+    {% endif %}
+
+    {# Floating progress while uploading. #}
+    <aside class="upload-tray glass" x-show="open" x-cloak aria-live="polite" aria-label="{% translate 'Uploads' %}">
+      <div class="mb-3 flex items-center justify-between gap-3">
+        <p class="text-sm font-semibold"><span x-text="summary"></span> <span class="tnum text-ink-2" x-text="percent"></span></p>
+        <button class="btn btn-quiet btn-sm btn-icon" type="button" @click="close" :disabled="busy" aria-label="{% translate 'Close' %}"><c-icon name="x" /></button>
+      </div>
+      <ul class="grid gap-2.5 overflow-y-auto pr-1">
+        <template x-for="item in items" :key="item.key">
+          <li class="grid gap-1 text-sm">
+            <div class="flex justify-between gap-3">
+              <span class="truncate" x-text="item.name"></span>
+              <span class="shrink-0 text-ink-2" x-show="item.state === 'done'">{% translate "Uploaded" %}</span>
+              <span class="shrink-0 text-danger" x-show="item.state === 'failed'" x-text="item.error"></span>
+            </div>
+            <div class="upload-bar"><span :style="{ width: item.width }"></span></div>
+          </li>
+        </template>
+      </ul>
+    </aside>
+  </div>
+
+  <dialog id="share-dialog" class="modal glass" aria-labelledby="share-title" closedby="any">
+    <h2 id="share-title" class="text-xl">{% translate "Share with your client" %}</h2>
+    {% if object.is_published %}
+      <p class="mt-3 text-ink-2">{% translate "Anyone with this link can open the gallery. Send it to your client by email or message." %}</p>
+    {% else %}
+      <p class="mt-3 text-ink-2">{% translate "The gallery is a draft. Publish it and the link starts working." %}</p>
+    {% endif %}
+    <div class="mt-5 flex gap-2" x-data="copy" data-copied="{% translate 'Copied' %}">
+      <label class="visually-hidden" for="public-url">{% translate "Gallery link" %}</label>
+      <input id="public-url" class="input" type="text" readonly value="{{ public_url }}" x-ref="value">
+      <button class="btn btn-secondary" type="button" @click="copy"><span x-text="label">{% translate "Copy" %}</span></button>
+    </div>
+    {% if object.has_password %}<p class="mt-3 flex items-center gap-2 text-sm text-ink-2"><c-icon name="lock" size="sm" />{% translate "Protected with a password. Send it separately." %}</p>{% endif %}
+    {% if object.expires_at %}<p class="mt-2 text-sm text-ink-2">{% blocktranslate with date=object.expires_at|date:"j. n. Y" %}Available until {{ date }}.{% endblocktranslate %}</p>{% endif %}
+    <div class="mt-7 flex flex-wrap items-center justify-between gap-2">
+      <form method="post" action="{% url 'galleries:action' object.pk 'new-link' %}">
+        {% csrf_token %}
+        <button class="btn btn-quiet btn-sm" type="submit">{% translate "Create new link" %}</button>
+      </form>
+      <div class="flex gap-2">
+        {% if object.is_published %}
+          <a class="btn btn-secondary btn-sm" href="{{ object.get_public_url }}" target="_blank" rel="noopener"><c-icon name="external-link" size="sm" />{% translate "Open" %}</a>
+          <form method="post" action="{% url 'galleries:action' object.pk 'hide' %}">{% csrf_token %}<button class="btn btn-secondary btn-sm" type="submit">{% translate "Unpublish" %}</button></form>
+        {% else %}
+          <form method="post" action="{% url 'galleries:action' object.pk 'publish' %}">{% csrf_token %}<button class="btn btn-primary btn-sm" type="submit">{% translate "Publish" %}</button></form>
+        {% endif %}
+      </div>
+    </div>
+  </dialog>
+{% endblock %}

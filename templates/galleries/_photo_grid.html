@@ -1,0 +1,33 @@
+{# Polls every 2 s while photos are processing; the swapped-in copy drops the poll when done. #}
+<div id="photo-grid" hx-get="{% url 'galleries:editor' object.pk %}" hx-target="this" hx-swap="outerHTML"
+     hx-trigger="grid:refresh from:body{% if counts.busy %}, every 2s{% endif %}">
+  {% if counts.total %}
+    <p class="mb-4 text-sm text-ink-2" aria-live="polite">
+      {% blocktranslate count counter=counts.total trimmed %}{{ counter }} photo{% plural %}{{ counter }} photos{% endblocktranslate %}{% if counts.busy %}, {% blocktranslate count counter=counts.busy trimmed %}{{ counter }} still processing{% plural %}{{ counter }} still processing{% endblocktranslate %}{% endif %}{% if counts.failed %}, <span class="text-danger">{% blocktranslate count counter=counts.failed trimmed %}{{ counter }} failed{% plural %}{{ counter }} failed{% endblocktranslate %}</span>{% endif %}
+    </p>
+    <div class="grid gap-10">
+      {% for group in groups %}
+        {% if group.section or group.photos %}
+          <section class="grid gap-3">
+            {% if group.section %}
+              <div class="flex items-center justify-between gap-4">
+                <h2 class="text-xl">{{ group.section.title }} <span class="font-sans text-sm text-ink-2">{{ group.photos|length }}</span></h2>
+                <form method="post" action="{% url 'galleries:section_delete' object.pk group.section.pk %}">
+                  {% csrf_token %}
+                  <button class="btn btn-quiet btn-sm" type="submit"><c-icon name="x" size="sm" />{% translate "Remove section" %}</button>
+                </form>
+              </div>
+            {% endif %}
+            {% if group.photos %}
+              <div class="justified">
+                {% for photo in group.photos %}{% include "galleries/_tile.html" %}{% endfor %}
+              </div>
+            {% else %}
+              <p class="text-sm text-ink-2">{% translate "No photos in this section yet. Upload into it, or move photos here from their menu." %}</p>
+            {% endif %}
+          </section>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>

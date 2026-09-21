@@ -23,9 +23,15 @@ services:
     ports:
       - "8000:8000"
 
+  # Restarts on code changes in development (Celery has no reloader of its own).
   worker:
     <<: *app
-    command: celery -A config worker -Q default,images,zips -l info --concurrency 4
+    command: >-
+      watchfiles --filter python
+      "celery -A config worker -Q default,images,zips -l info --concurrency 4" apps config
+    environment:
+      DATA_DIR: /data
+      WATCHFILES_FORCE_POLLING: "true"
 
   beat:
     <<: *app

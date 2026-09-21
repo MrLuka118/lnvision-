@@ -218,6 +218,7 @@ def seed_studio(studio) -> dict[str, int]:
     clients = seed_clients(studio, rng)
     shoots = seed_shoots(studio, clients, locations, packages, rng)
     others = seed_other_events(studio, clients, rng)
+    galleries = seed_galleries(studio)
     return {
         "locations": len(locations),
         "packages": sum(len(p) for p in packages.values()),
@@ -225,4 +226,93 @@ def seed_studio(studio) -> dict[str, int]:
         "shoots": len(shoots),
         "events": Event.objects.for_studio(studio).count(),
         "other events": others,
+        "galleries": galleries,
     }
+
+
+# --- galleries -----------------------------------------------------------------------------
+
+# Picsum (Unsplash licence) photos with people and light that read as a real delivery.
+DEMO_PHOTO_IDS = [
+    64, 65, 91, 177, 399, 338, 342, 373, 1011, 1012, 1027, 1039, 1043, 1050, 1062, 1074,
+]  # fmt: skip
+
+
+def _demo_photo_files() -> list:
+    """Cached demo photos; downloaded once, generated when offline."""
+    import urllib.request
+    from pathlib import Path
+
+    import pyvips
+    from django.conf import settings
+
+    cache = Path(settings.BASE_DIR) / "seed" / "cache"
+    cache.mkdir(parents=True, exist_ok=True)
+    files = []
+    for index, photo_id in enumerate(DEMO_PHOTO_IDS):
+        path = cache / f"{photo_id}.jpg"
+        if not path.exists() or path.stat().st_size < 1000:
+            url = f"https://picsum.photos/id/{photo_id}/3000/2000"
+            try:
+                with urllib.request.urlopen(url, timeout=20) as response:
+                    path.write_bytes(response.read())
+            except OSError:
+                hue = [(40 + index * 13) % 255, 90, (200 - index * 11) % 255]
+                image = pyvips.Image.black(3000, 2000, bands=3).linear([1, 1, 1], hue)
+                image.cast("uchar").write_to_file(str(path), Q=85)
+        files.append(path)
+    return files
+
+
+def seed_galleries(studio) -> int:
+    from django.core.files import File
+
+    from apps.galleries.models import Gallery, GallerySection
+    from apps.photos import services as photo_services
+    from apps.photos.models import Photo
+
+    files = _demo_photo_files()
+    paid = Shoot.objects.for_studio(studio).filter(status=Shoot.Status.PAID).with_dates()
+    wedding = paid.filter(title__startswith="Poroka").order_by("-starts_at").first()
+    portrait = paid.filter(title__startswith="Portret").order_by("-starts_at").first()
+    plans = [
+        (wedding, ["Priprave", "Obred", "Zabava"], files[:12], Gallery.Theme.DARKROOM),
+        (portrait, [], files[12:], Gallery.Theme.LIGHT_TABLE),
+    ]
+    created = 0
+    for shoot, section_names, photo_files, theme in plans:
+        if shoot is None:
+            continue
+        gallery = Gallery.objects.create(
+            studio=studio,
+            shoot=shoot,
+            client=shoot.client,
+            title=shoot.title,
+            intro="Hvala, da sva lahko bila del vajinega dne.",
+            event_date=timezone.localdate(shoot.starts_at) if shoot.starts_at else None,
+            theme=theme,
+            is_published=True,
+            published_at=timezone.now(),
+        )
+        sections = [
+            GallerySection.objects.create(studio=studio, gallery=gallery, title=name, position=i)
+            for i, name in enumerate(section_names)
+        ]
+        for position, path in enumerate(photo_files):
+            section = sections[position * len(sections) // len(photo_files)] if sections else None
+            photo = Photo(
+                studio=studio,
+                gallery=gallery,
+                section=section,
+                original_name=f"DSC_{4000 + position}.jpg",
+                position=position,
+                size_bytes=path.stat().st_size,
+            )
+            with path.open("rb") as fh:
+                photo.original.save(photo.original_name, File(fh), save=False)
+            photo.save()
+            photo_services.process(photo)
+        gallery.cover_photo = gallery.photos.order_by("position").first()
+        gallery.save(update_fields=["cover_photo"])
+        created += 1
+    return created

@@ -1,0 +1,195 @@
+@layer components {
+  /* A photo box that holds its shape before the image arrives (no layout shift). */
+  .photo {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: var(--ar, 1.5);
+    background-size: cover;
+    background-position: center;
+  }
+  .photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity var(--dur-3) var(--ease-out);
+  }
+  .photo img.is-loaded {
+    opacity: 1;
+  }
+  @media (scripting: none) {
+    .photo img {
+      opacity: 1;
+    }
+  }
+
+  /* Justified rows without JavaScript: each tile grows in proportion to its aspect ratio. */
+  .justified {
+    --row: 11rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .justified::after {
+    content: "";
+    flex-grow: 1000000;
+  }
+  .justified > * {
+    flex-grow: calc(var(--ar) * 100);
+    flex-basis: calc(var(--ar) * var(--row));
+    min-width: 0;
+  }
+  @media (max-width: 40rem) {
+    .justified {
+      --row: 7rem;
+      gap: 3px;
+    }
+  }
+
+  /* Gallery cards on the galleries page: the cover leads, the words stay small. */
+  .gallery-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+    gap: 2rem 1.25rem;
+  }
+  .gallery-card {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+  .gallery-card-cover {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .gallery-card-cover .photo {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+  .gallery-card-cover img {
+    transition:
+      opacity var(--dur-3) var(--ease-out),
+      scale var(--dur-3) var(--ease-out);
+  }
+  .gallery-card:hover .gallery-card-cover img {
+    scale: 1.02;
+  }
+
+  /* Editor tiles. */
+  .tile {
+    position: relative;
+    border-radius: var(--radius-xs);
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .tile .photo {
+    width: 100%;
+    height: 100%;
+  }
+  .tile-state {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 0.4rem;
+    padding: 0.5rem;
+    font-size: var(--text-xs);
+    text-align: center;
+    color: var(--ink-2);
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+  }
+  .tile-state.is-failed {
+    color: var(--danger);
+  }
+  .tile-menu-button {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    opacity: 0;
+    transition: opacity var(--dur-1) var(--ease-out);
+  }
+  .tile:hover .tile-menu-button,
+  .tile:focus-within .tile-menu-button,
+  .tile-menu-button[aria-expanded="true"] {
+    opacity: 1;
+  }
+  @media (hover: none) {
+    .tile-menu-button {
+      opacity: 1;
+    }
+  }
+  .tile-cover-mark {
+    position: absolute;
+    left: 6px;
+    bottom: 6px;
+  }
+
+  .spinner {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    border: 2px solid var(--line);
+    border-top-color: var(--ink);
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      rotate: 1turn;
+    }
+  }
+
+  /* Upload drop zone and the floating progress tray. */
+  .dropzone {
+    display: grid;
+    justify-items: center;
+    gap: 0.6rem;
+    padding: 2rem 1.5rem;
+    border-radius: var(--radius-lg);
+    border: 1.5px dashed var(--line);
+    text-align: center;
+    color: var(--ink-2);
+    transition:
+      border-color var(--dur-1) var(--ease-out),
+      background-color var(--dur-1) var(--ease-out);
+  }
+  .dropzone.is-dragging {
+    border-color: var(--ink);
+    background: var(--line-soft);
+  }
+  .upload-tray {
+    --glass-radius: var(--radius-xl);
+    position: fixed;
+    z-index: 50;
+    right: var(--nav-inset);
+    left: var(--nav-inset);
+    bottom: calc(var(--tabbar-h) + 2 * var(--nav-inset) + env(safe-area-inset-bottom));
+    max-height: 50dvh;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    padding: 0.9rem 1rem;
+  }
+  @media (min-width: 64rem) {
+    .upload-tray {
+      left: auto;
+      bottom: var(--nav-inset);
+      width: 24rem;
+    }
+  }
+  .upload-bar {
+    height: 3px;
+    border-radius: 2px;
+    background: var(--line);
+    overflow: hidden;
+  }
+  .upload-bar > span {
+    display: block;
+    height: 100%;
+    background: var(--ink);
+    transition: width var(--dur-2) var(--ease-out);
+  }
+}

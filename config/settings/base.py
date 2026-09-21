@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     "apps.clients",
     "apps.shoots",
     "apps.scheduling",
+    "apps.photos",
+    "apps.galleries",
 ]
 
 MIDDLEWARE = [
@@ -253,4 +255,5 @@ LOGGING = {
     "disable_existing_loggers": False,
     "handlers": {"console": {"class": "logging.StreamHandler"}},
     "root": {"handlers": ["console"], "level": "INFO"},
+    "loggers": {"pyvips": {"level": "WARNING"}},
 }
