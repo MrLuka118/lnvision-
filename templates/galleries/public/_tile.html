@@ -1,0 +1,15 @@
+{# One photo on the client's page. Expects: photo, gallery, favorite_ids, sizes. #}
+<figure class="g-tile reveal{% if photo.pk in favorite_ids %} is-favorite{% endif %}{% if photo.aspect_ratio < 1 %} is-portrait{% endif %}" style="--ar: {{ photo.aspect_ratio|stringformat:'.4f' }}" data-uuid="{{ photo.uuid }}">
+  <a class="g-link" href="{{ photo.display_src }}"
+     data-pswp-width="{{ photo.display_width }}" data-pswp-height="{{ photo.display_height }}"
+     data-pswp-srcset="{{ photo.srcset_jpg }}" data-uuid="{{ photo.uuid }}"
+     data-bright="{% if photo.is_bright %}1{% else %}0{% endif %}" data-name="{{ photo.original_name }}">
+    <c-photo :photo="photo" :sizes="sizes" alt="" />
+    <span class="visually-hidden">{% blocktranslate with name=photo.original_name %}Open {{ name }}{% endblocktranslate %}</span>
+  </a>
+  {% if gallery.allow_favorites %}
+    <button class="g-heart" type="button" data-heart="{{ photo.uuid }}" aria-pressed="{% if photo.pk in favorite_ids %}true{% else %}false{% endif %}"
+            aria-label="{% blocktranslate with name=photo.original_name %}Favourite: {{ name }}{% endblocktranslate %}"><c-icon name="heart" /></button>
+  {% endif %}
+  {% if gallery.theme == "contact-sheet" %}<figcaption class="g-frame tnum">{{ photo.frame }}</figcaption>{% endif %}
+</figure>

@@ -100,17 +100,19 @@
   --text-md--line-height: 1.5;
   --text-lg: 1.3125rem;
   --text-lg--line-height: 1.35;
-  --text-xl: 1.5rem;
+  /* From xl up the sizes are fluid: they grow with the window between 360 and 1440 px and
+     reach the scale's value at 1440. The rem bounds keep browser zoom working. */
+  --text-xl: clamp(1.25rem, 1.167rem + 0.37vw, 1.5rem);
   --text-xl--line-height: 1.25;
-  --text-2xl: 2.25rem;
+  --text-2xl: clamp(1.75rem, 1.583rem + 0.74vw, 2.25rem);
   --text-2xl--line-height: 1.1;
-  --text-3xl: 3rem;
+  --text-3xl: clamp(2.125rem, 1.833rem + 1.296vw, 3rem);
   --text-3xl--line-height: 1.04;
-  --text-4xl: 3.75rem;
+  --text-4xl: clamp(2.5rem, 2.083rem + 1.852vw, 3.75rem);
   --text-4xl--line-height: 1;
-  --text-5xl: 4.5rem;
+  --text-5xl: clamp(2.75rem, 2.167rem + 2.593vw, 4.5rem);
   --text-5xl--line-height: 0.98;
-  --text-6xl: 6rem;
+  --text-6xl: clamp(3rem, 2rem + 4.444vw, 6rem);
   --text-6xl--line-height: 0.94;
 
   /* Radii step down by the padding between nested shapes, so corners stay concentric. */

@@ -1,0 +1,7 @@
+{% load i18n %}{% blocktranslate with title=gallery.title %}The photos from “{{ title }}” are packed and ready.{% endblocktranslate %}
+
+{{ link }}
+
+{% blocktranslate with size=size_mb date=expires_at|date:"j. n. Y" %}The file is about {{ size }} MB. The link works until {{ date }}.{% endblocktranslate %}
+
+{{ studio.name }}

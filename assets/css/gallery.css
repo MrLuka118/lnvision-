@@ -1,0 +1,525 @@
+/*
+ * The client's gallery. Four looks share one structure:
+ *   darkroom       neutral grey surround, justified rows, tight gaps
+ *   light-table    near-white, photos as prints with a white border, in columns
+ *   photobook      white page, one landscape or two portraits per row, wide margins
+ *   contact-sheet  dark, dense uniform frames with their numbers, for choosing
+ * The accent (--accent) comes from the cover photo; see public_views._page_context.
+ */
+
+@layer components {
+  .g {
+    --g-gap: 6px;
+    --g-pad: clamp(1rem, 4vw, 3rem);
+    background: var(--surround);
+  }
+  .gtheme-light-table {
+    --surround: #eeeeee;
+    --g-gap: 2rem;
+  }
+  .gtheme-photobook {
+    --surround: #fbfbfb;
+    --surface: #ffffff;
+    --g-gap: clamp(1rem, 3vw, 2.5rem);
+  }
+  .gtheme-contact-sheet {
+    --surround: #1f1f1f;
+    --g-gap: 10px;
+  }
+
+  /* ------------------------------------------------------------------ cover */
+  .g-cover {
+    position: relative;
+    height: 100svh;
+    min-height: 32rem;
+    overflow: hidden;
+    color: #fff;
+    background: #111;
+  }
+  .g-cover-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    will-change: transform;
+  }
+  /* A scrim only under the words, so the title reads on any photo. Stronger on bright covers. */
+  .g-cover::after {
+    content: "";
+    position: absolute;
+    inset: 45% 0 0;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.55), rgb(0 0 0 / 0));
+    pointer-events: none;
+  }
+  .g-cover.is-bright::after {
+    inset: 30% 0 0;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.68), rgb(0 0 0 / 0));
+  }
+  .g-cover-text {
+    position: absolute;
+    z-index: 1;
+    left: var(--g-pad);
+    right: var(--g-pad);
+    bottom: calc(var(--g-pad) + 4.5rem);
+    display: grid;
+    gap: 0.6rem;
+    max-width: 60rem;
+  }
+  .g-cover-studio {
+    font-size: var(--text-sm);
+    font-weight: 560;
+    letter-spacing: 0.02em;
+    opacity: 0.9;
+  }
+  .g-title {
+    font-size: clamp(3rem, 9vw, 7.5rem);
+    line-height: 0.95;
+    font-weight: 450;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .g-cover-date {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    opacity: 0.92;
+  }
+  .g-cover-next {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    bottom: var(--g-pad);
+    translate: -50% 0;
+  }
+
+  /* Password and "no longer available" pages. */
+  .g-veil {
+    position: fixed;
+    inset: -40px;
+    z-index: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(40px) saturate(120%);
+    transform: scale(1.1);
+  }
+  .g-veil::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgb(0 0 0 / 0.25);
+  }
+  .g-gate {
+    position: relative;
+    z-index: 1;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: var(--nav-inset);
+  }
+  .g-gate-sheet {
+    --glass-radius: var(--radius-xl);
+    display: grid;
+    gap: 1.1rem;
+    width: min(26rem, 100%);
+    padding: 2rem;
+  }
+
+  .g-preview {
+    --glass-radius: var(--radius-full);
+    position: fixed;
+    z-index: 60;
+    top: var(--nav-inset);
+    left: 50%;
+    translate: -50% 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1rem;
+    font-size: var(--text-sm);
+    white-space: nowrap;
+  }
+
+  /* -------------------------------------------------------------- the bar */
+  .g-bar {
+    --glass-radius: var(--radius-full);
+    position: sticky;
+    z-index: 40;
+    top: calc(var(--nav-inset) + env(safe-area-inset-top));
+    margin: calc(-1 * (2.75rem + var(--nav-inset))) auto 0;
+    width: fit-content;
+    max-width: calc(100vw - 2 * var(--nav-inset));
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.3rem 0.3rem 0.3rem 1.1rem;
+    font-size: var(--text-sm);
+    color: var(--ink);
+  }
+  .g-bar-title {
+    font-family: var(--font-display);
+    font-size: var(--text-md);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 16rem;
+    margin-right: 0.5rem;
+  }
+  .g-bar-chapters {
+    display: none;
+    gap: 0.1rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .g-bar-chapters a {
+    padding: 0.45rem 0.7rem;
+    border-radius: var(--radius-full);
+    color: var(--ink-2);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .g-bar-chapters a:hover {
+    color: var(--ink);
+    background: var(--line-soft);
+  }
+  .g-bar-actions {
+    display: flex;
+    gap: 0.2rem;
+    margin-left: auto;
+  }
+  .g-bar-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    height: 2.5rem;
+    padding-inline: 0.85rem;
+    border-radius: var(--radius-full);
+    font-weight: 560;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-1) var(--ease-out),
+      transform 380ms var(--ease-spring);
+  }
+  .g-bar-button:hover {
+    background: var(--line-soft);
+  }
+  .g-bar-button:active {
+    transform: scale(0.95);
+    transition-duration: 90ms;
+  }
+  .g-bar-button[aria-pressed="true"] {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  .g-bar-label {
+    display: none;
+  }
+  @media (min-width: 48rem) {
+    .g-bar-chapters {
+      display: flex;
+    }
+    .g-bar-label {
+      display: inline;
+    }
+  }
+
+  /* ---------------------------------------------------------------- content */
+  .g-main {
+    padding: calc(var(--g-pad) + 3rem) var(--g-pad) var(--g-pad);
+  }
+  .g-intro {
+    max-width: 34rem;
+    margin: 1rem auto 4rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--text-xl);
+    line-height: 1.45;
+    text-align: center;
+    color: var(--ink-2);
+    text-wrap: balance;
+  }
+  .g-section + .g-section {
+    margin-top: clamp(3rem, 8vw, 6rem);
+  }
+  .g-section-title {
+    margin-bottom: 1.5rem;
+    font-size: var(--text-2xl);
+    scroll-margin-top: 6rem;
+  }
+  .g-empty-favorites {
+    padding: 4rem 0;
+    text-align: center;
+    color: var(--ink-2);
+  }
+
+  /* Tiles, shared. */
+  .g-tile {
+    position: relative;
+    margin: 0;
+  }
+  .g-link {
+    display: block;
+    cursor: zoom-in;
+  }
+  .g-link .photo {
+    width: 100%;
+  }
+  .g-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .g-heart {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    color: #fff;
+    background: rgb(0 0 0 / 0.28);
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    backdrop-filter: blur(10px) saturate(160%);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3);
+    opacity: 0;
+    cursor: pointer;
+    transition:
+      opacity var(--dur-1) var(--ease-out),
+      transform 420ms var(--ease-spring);
+  }
+  .g-tile:hover .g-heart,
+  .g-heart:focus-visible,
+  .g-tile.is-favorite .g-heart {
+    opacity: 1;
+  }
+  @media (hover: none) {
+    .g-heart {
+      opacity: 1;
+      width: 2.25rem;
+      height: 2.25rem;
+    }
+  }
+  .g-heart:active {
+    transform: scale(0.85);
+    transition-duration: 90ms;
+  }
+  .g-tile.is-favorite .g-heart .icon {
+    fill: var(--accent);
+    stroke: var(--accent);
+  }
+  .g-heart.is-popping {
+    animation: g-pop 420ms var(--ease-spring);
+  }
+  @keyframes g-pop {
+    40% {
+      transform: scale(1.25);
+    }
+  }
+  .show-favorites .g-tile:not(.is-favorite) {
+    display: none;
+  }
+
+  /* darkroom: justified rows (see .justified in photos.css) */
+  .g-justified {
+    --row: clamp(8rem, 18vw, 16rem);
+    gap: var(--g-gap);
+  }
+  @media (max-width: 40rem) {
+    .g-justified {
+      --row: 6.5rem; /* two landscapes side by side on a phone */
+    }
+  }
+
+  /* light-table: prints, each with a white border and a soft shadow, laid out in columns */
+  .g-prints {
+    columns: 3 18rem;
+    column-gap: var(--g-gap);
+  }
+  .g-prints .g-tile {
+    break-inside: avoid;
+    margin-bottom: var(--g-gap);
+    padding: clamp(6px, 1vw, 12px);
+    background: #fff;
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.08),
+      0 12px 30px -16px rgb(0 0 0 / 0.3);
+  }
+
+  /* photobook: spreads */
+  .g-book {
+    display: grid;
+    gap: var(--g-gap);
+    max-width: 78rem;
+    margin-inline: auto;
+  }
+  .g-book-row {
+    display: grid;
+    gap: var(--g-gap);
+    justify-items: center;
+  }
+  .g-book-row.is-pair {
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+  }
+  .g-book-row:not(.is-pair) .g-tile.is-portrait {
+    width: min(100%, 36rem);
+  }
+  .g-book-row .g-tile {
+    width: 100%;
+  }
+  .gtheme-photobook .g-section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: var(--text-3xl);
+  }
+
+  /* contact-sheet: equal frames, numbered, for picking */
+  .g-sheet {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(30%, 11rem), 1fr));
+    gap: 1.5rem var(--g-gap);
+  }
+  .g-sheet .g-link {
+    aspect-ratio: 3 / 2;
+    display: grid;
+    place-items: center;
+    background: #151515;
+  }
+  .g-sheet .photo {
+    max-height: 100%;
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+  }
+  .g-frame {
+    margin-top: 0.4rem;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+  .g-sheet .g-tile.is-favorite .g-frame {
+    color: var(--accent);
+  }
+
+  .g-footer {
+    display: grid;
+    justify-items: center;
+    gap: 0.4rem;
+    padding: 5rem var(--g-pad) calc(4rem + env(safe-area-inset-bottom));
+    text-align: center;
+    color: var(--ink-2);
+  }
+  .g-footer .font-display {
+    color: var(--ink);
+  }
+
+  /* Reveal (set up by gallery.js only when motion is welcome). */
+  .g-reveal-ready .reveal {
+    opacity: 0;
+  }
+
+}
+
+/* Lightbox skin: unlayered on purpose, so it wins over photoswipe.css (also unlayered). */
+/* ------------------------------------------------------ lightbox skin */
+/* PhotoSwipe, dressed in clear glass: the photo leads, controls float over it. */
+.pswp {
+  --pswp-bg: #0d0d0d;
+  --pswp-icon-color: #fff;
+  --pswp-icon-color-secondary: rgb(0 0 0 / 0.2);
+  --pswp-icon-stroke-color: transparent;
+  --pswp-icon-stroke-width: 0;
+  font-family: var(--font-sans);
+}
+.pswp .pswp__top-bar {
+  top: calc(var(--nav-inset) + env(safe-area-inset-top));
+  left: var(--nav-inset);
+  right: var(--nav-inset);
+  width: auto;
+  height: 3.25rem;
+  padding: 0 0.3rem;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: var(--radius-full);
+  background: rgb(40 40 40 / 0.18);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.25),
+    inset 0 0 0 1px rgb(255 255 255 / 0.08);
+}
+.pswp[data-dim="1"] .pswp__top-bar {
+  background:
+    linear-gradient(rgb(0 0 0 / 0.35), rgb(0 0 0 / 0.35)),
+    rgb(40 40 40 / 0.18);
+}
+.pswp .pswp__counter {
+  margin: 0 0.75rem;
+  font-size: var(--text-sm);
+  font-weight: 560;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.9;
+  text-shadow: none;
+}
+.pswp .pswp__button {
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: 0;
+  border-radius: 50%;
+  opacity: 1;
+  display: grid;
+  place-items: center;
+}
+.pswp .pswp__button:hover {
+  background: rgb(255 255 255 / 0.14);
+}
+/* PhotoSwipe's own icons (zoom, close, arrows) sit in the same centred grid as ours. */
+.pswp .pswp__button .pswp__icn {
+  position: static;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.pswp .pswp__button--arrow .pswp__icn {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.pswp .pswp__button .icon {
+  width: 1.3rem;
+  height: 1.3rem;
+  color: #fff;
+}
+.pswp .pswp__button--heart[aria-pressed="true"] .icon {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+.pswp .pswp__button--arrow {
+  width: 3rem;
+  height: 3rem;
+  margin-top: -1.5rem;
+  background: rgb(40 40 40 / 0.18);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.25);
+}
+.pswp .pswp__button--arrow--prev {
+  left: var(--nav-inset);
+}
+.pswp .pswp__button--arrow--next {
+  right: var(--nav-inset);
+}
+@media (max-width: 40rem) {
+  .pswp .pswp__button--arrow {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .pswp__top-bar,
+  .pswp__button--arrow,
+  .g-heart {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background: rgb(20 20 20 / 0.85) !important;
+  }
+}

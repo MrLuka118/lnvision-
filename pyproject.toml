@@ -31,6 +31,7 @@ dev = [
     "factory-boy>=3.3",
     "ruff>=0.8",
     "watchfiles>=1.0",
+    "polib>=1.2.0",
 ]
 
 [tool.uv]

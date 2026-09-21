@@ -211,15 +211,10 @@
     gap: 1rem 2rem;
     margin-bottom: 2.5rem;
   }
+  /* One fluid size instead of a jump at a breakpoint. */
   .page-title {
-    font-size: var(--text-2xl);
-    line-height: var(--text-2xl--line-height);
-  }
-  @media (min-width: 64rem) {
-    .page-title {
-      font-size: var(--text-3xl);
-      line-height: var(--text-3xl--line-height);
-    }
+    font-size: var(--text-3xl);
+    line-height: var(--text-3xl--line-height);
   }
 
   /* ========================================================== auth pages */

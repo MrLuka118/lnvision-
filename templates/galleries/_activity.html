@@ -1,0 +1,50 @@
+{# What clients did in the gallery. Shown only once there is something to show. #}
+{% if activity.views or activity.selections or activity.comments %}
+  <section aria-labelledby="activity-title" class="mb-12 grid gap-6">
+    <h2 id="activity-title" class="text-2xl">{% translate "Clients' choices" %}</h2>
+    <div class="grid max-w-3xl grid-cols-3 gap-6">
+      <c-stat label="{% translate 'Visits' %}" :value="activity.views" />
+      <c-stat label="{% translate 'People' %}" :value="activity.visitors" />
+      <c-stat label="{% translate 'Downloads' %}" :value="activity.downloads" />
+    </div>
+
+    {% for visitor in activity.selections %}
+      <article class="panel grid gap-4 p-5">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div class="grid">
+            <p class="font-semibold">{{ visitor.name }}</p>
+            <p class="text-sm text-ink-2">{% if visitor.email %}<a class="link" href="mailto:{{ visitor.email }}">{{ visitor.email }}</a>, {% endif %}{% blocktranslate count counter=visitor.picked|length trimmed %}{{ counter }} favourite{% plural %}{{ counter }} favourites{% endblocktranslate %}</p>
+          </div>
+          <div x-data="copy" data-copied="{% translate 'Copied' %}">
+            <input type="hidden" x-ref="value" value="{{ visitor.filenames }}">
+            <button class="btn btn-secondary btn-sm" type="button" @click="copy" title="{% translate 'Paste into Lightroom: Library filter, Text, File Name, Contains' %}"><c-icon name="link" size="sm" /><span x-text="label">{% translate "Copy file names for Lightroom" %}</span></button>
+          </div>
+        </div>
+        <div class="flex gap-1.5 overflow-x-auto pb-1">
+          {% for photo in visitor.picked %}
+            <div class="w-24 flex-none overflow-hidden rounded-[var(--radius-xs)]" title="{{ photo.original_name }}">
+              <c-photo :photo="photo" sizes="96px" :alt="photo.original_name" />
+            </div>
+          {% endfor %}
+        </div>
+      </article>
+    {% endfor %}
+
+    {% if activity.comments %}
+      <div class="grid max-w-3xl gap-3">
+        <h3 class="font-sans text-sm font-semibold text-ink-2">{% translate "Notes" %}</h3>
+        {% for comment in activity.comments %}
+          <div class="panel grid gap-1 p-4">
+            <p class="flex flex-wrap items-center gap-2 text-sm">
+              <span class="font-semibold">{{ comment.visitor.name }}</span>
+              <span class="text-ink-2">{{ comment.created_at|date:"j. n. Y, H:i" }}</span>
+              {% if comment.photo %}<span class="text-ink-2">{{ comment.photo.original_name }}</span>{% endif %}
+              {% if comment.is_new %}<c-badge dot="var(--accent)">{% translate "New" %}</c-badge>{% endif %}
+            </p>
+            <p>{{ comment.body|linebreaksbr }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </section>
+{% endif %}

@@ -223,7 +223,11 @@ CELERY_TASK_ROUTES = {
 CELERY_TASK_ACKS_LATE = True
 CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 CELERY_TIMEZONE = TIME_ZONE
-CELERY_BEAT_SCHEDULE = {}
+CELERY_BEAT_SCHEDULE = {
+    "galleries-clean-up": {"task": "apps.galleries.tasks.clean_up", "schedule": 60 * 60},
+}
+# Absolute links in e-mails (ZIP ready, invitations).
+SITE_URL = env("SITE_URL", default="http://localhost:8000")
 
 # --- Security ------------------------------------------------------------------------------
 SESSION_COOKIE_HTTPONLY = True
