@@ -1,6 +1,7 @@
 """Forms for the portfolio module: public page, categories and stories."""
 
 from django import forms
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.forms import DateInput, StudioModelForm
@@ -89,6 +90,27 @@ class PortfolioForm(StudioModelForm):
         )
 
 
+def _clean_unique_slug(form, source_field):
+    """Fill an empty slug from `source_field` and keep it unique within the studio.
+
+    The (studio, slug) constraint is not checked by the ModelForm because `studio` is not a form
+    field, so without this a duplicate would reach the database as an IntegrityError.
+    """
+    cleaned = form.cleaned_data
+    max_length = form._meta.model._meta.get_field("slug").max_length
+    slug = slugify(cleaned.get("slug") or cleaned.get(source_field) or "")[:max_length].strip("-")
+    if not slug:
+        if source_field in cleaned:
+            form.add_error("slug", _("Enter an address."))
+        return
+    cleaned["slug"] = slug
+    taken = form._meta.model.objects.filter(studio=form.studio, slug=slug)
+    if form.instance.pk:
+        taken = taken.exclude(pk=form.instance.pk)
+    if taken.exists():
+        form.add_error("slug", _("You already use this address."))
+
+
 # ---------------------------------------------------------------------------
 # CategoryForm
 # ---------------------------------------------------------------------------
@@ -118,13 +140,16 @@ class CategoryForm(StudioModelForm):
             self.studio,
             empty_label=_("No cover photo"),
         )
+        self.fields["slug"].required = False
         self.fields["slug"].help_text = _(
-            "Used in the URL, e.g. /weddings/. Only lowercase letters, digits and hyphens."
+            "Used in the URL, e.g. /weddings/. Leave empty to make it from the name."
         )
         self.fields["position"].help_text = _("Categories with a lower number appear first.")
 
-    def clean_slug(self):
-        return self.cleaned_data["slug"].lower()
+    def clean(self):
+        cleaned = super().clean()
+        _clean_unique_slug(self, "name")
+        return cleaned
 
 
 # ---------------------------------------------------------------------------
@@ -197,9 +222,8 @@ class StoryForm(StudioModelForm):
             empty_label=_("No cover photo"),
         )
 
-        self.fields["slug"].help_text = _(
-            "Used in the URL. Only lowercase letters, digits and hyphens."
-        )
+        self.fields["slug"].required = False
+        self.fields["slug"].help_text = _("Used in the URL. Leave empty to make it from the title.")
         self.fields["position"].help_text = _(
             "Stories with a lower number appear first within the category."
         )
@@ -207,5 +231,7 @@ class StoryForm(StudioModelForm):
             "Featured stories appear on the portfolio front page."
         )
 
-    def clean_slug(self):
-        return self.cleaned_data["slug"].lower()
+    def clean(self):
+        cleaned = super().clean()
+        _clean_unique_slug(self, "title")
+        return cleaned

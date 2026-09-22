@@ -9,6 +9,7 @@ from django.core.cache import cache
 from django.test import Client as HttpClient
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import gettext
 
 from apps.clients.models import Client
 from apps.clients.tests.factories import ClientFactory
@@ -230,7 +231,8 @@ def test_inquiries_are_rate_limited(client, portfolio, studio):
     assert codes == [400] * 5
     blocked = send(client, studio)  # even a good one waits
     assert blocked.status_code == 400
-    assert "Too many messages" in blocked.content.decode()
+    limit = gettext("Too many messages from here. Try again in an hour, or write by e-mail.")
+    assert limit in blocked.content.decode()
     assert not Inquiry.objects.exists()
 
 

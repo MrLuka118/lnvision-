@@ -35,7 +35,7 @@
       <span class="avatar" aria-hidden="true"><c-icon name="image-plus" size="sm" /></span>
       <span class="grid min-w-0">
         <span class="row-title">{% translate 'Stories' %}</span>
-        <span class="row-meta">{{ published_story_count }}/{{ story_count }} {% if story_count == 1 %}{% translate 'story' %}{% else %}{% translate 'stories' %}{% endif %} (published)</span>
+        <span class="row-meta">{% blocktranslate count total=story_count with published=published_story_count trimmed %}{{ published }} of {{ total }} story published{% plural %}{{ published }} of {{ total }} stories published{% endblocktranslate %}</span>
       </span>
       <c-icon name="chevron-right" class="text-ink-3" />
     </a>

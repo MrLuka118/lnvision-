@@ -54,6 +54,7 @@ ICONS = [
     "aperture",
     "sliders-horizontal",
     "sun-moon",
+    "image-plus",
 ]
 
 URL = "https://cdn.jsdelivr.net/npm/lucide-static@{v}/icons/{n}.svg"

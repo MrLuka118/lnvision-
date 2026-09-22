@@ -165,7 +165,7 @@ class StoryListView(StudioListView):
             .get_queryset()
             .select_related("category", "cover_photo")
             .annotate(photo_count=Count("entries"))
-            .order_by("-position", "-story_date", "-created_at")
+            .order_by("position", "-story_date", "-created_at")
         )
 
 
@@ -224,18 +224,18 @@ class StoryDeleteView(StudioDeleteView):
 class StoryPhotosView(StudioScopedMixin, View):
     template_name = "portfolio/manage/story_photos.html"
 
+    @staticmethod
+    def allowed_photos(story):
+        """Ready photos of the story's gallery. A story without a gallery offers none."""
+        if not story.gallery_id:
+            return Photo.objects.none()
+        return Photo.objects.filter(
+            studio=story.studio_id, gallery=story.gallery_id, status=Photo.Status.READY
+        )
+
     def get(self, request, pk):
         story = get_object_or_404(PortfolioStory.objects.for_studio(request.studio), pk=pk)
-        if story.gallery_id:
-            photos = Photo.objects.filter(
-                gallery=story.gallery_id,
-                status=Photo.Status.READY,
-            ).order_by("position", "id")
-        else:
-            photos = Photo.objects.filter(
-                studio=request.studio,
-                status=Photo.Status.READY,
-            ).order_by("-created_at")
+        photos = self.allowed_photos(story).order_by("position", "id")
 
         selected_ids = set(story.entries.values_list("photo_id", flat=True))
         return render(
@@ -253,16 +253,7 @@ class StoryPhotosView(StudioScopedMixin, View):
         story = get_object_or_404(PortfolioStory.objects.for_studio(request.studio), pk=pk)
         raw_ids = request.POST.getlist("photos")
 
-        if story.gallery_id:
-            allowed_qs = Photo.objects.filter(
-                gallery=story.gallery_id,
-                status=Photo.Status.READY,
-            )
-        else:
-            allowed_qs = Photo.objects.filter(
-                studio=request.studio,
-                status=Photo.Status.READY,
-            )
+        allowed_qs = self.allowed_photos(story)
 
         valid_ids = [int(pid) for pid in raw_ids if pid.isdigit()]
         allowed_set = set(allowed_qs.filter(id__in=valid_ids).values_list("id", flat=True))
@@ -282,8 +273,9 @@ class StoryPhotosView(StudioScopedMixin, View):
             ]
             PortfolioStoryPhoto.objects.bulk_create(entries)
 
-            if story.cover_photo_id is None and chosen_ids:
-                story.cover_photo_id = chosen_ids[0]
+            # The cover must be one of the story's photos; fall back to the first one.
+            if story.cover_photo_id not in chosen_ids:
+                story.cover_photo_id = chosen_ids[0] if chosen_ids else None
                 story.save(update_fields=["cover_photo", "updated_at"])
 
         messages.success(request, _("Photos saved."))

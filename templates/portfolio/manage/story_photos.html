@@ -3,7 +3,7 @@
 {% block content %}
   {% url "portfolio:story_list" as story_list_url %}
   <a class="back-link" href="{{ story_list_url }}"><c-icon name="chevron-left" size="sm" />{% translate 'Stories' %}</a>
-  <c-page-header :title="story.title" lede="{% translate 'Choose the photos for this story, in the order they should appear.' %}" />
+  <c-page-header :title="story.title" lede="{% translate 'Choose the photos for this story. They appear in the same order as in the gallery.' %}" />
 
   {% if not story.gallery %}
     <div class="max-w-3xl">
@@ -21,8 +21,9 @@
         {% csrf_token %}
         <div class="justified">
           {% for photo in available_photos %}
-            <label class="tile" style="--ar: {{ photo.aspect_ratio|stringformat:'.4f' }}">
-              <input type="checkbox" name="photos" value="{{ photo.pk }}" class="absolute left-2 top-2 h-5 w-5" {% if photo.pk in selected_ids %}checked{% endif %}>
+            <label class="tile tile-pick" style="--ar: {{ photo.aspect_ratio|stringformat:'.4f' }}">
+              <input type="checkbox" name="photos" value="{{ photo.pk }}" aria-label="{% blocktranslate with n=forloop.counter %}Photo {{ n }}{% endblocktranslate %}" {% if photo.pk in selected_ids %}checked{% endif %}>
+              <span class="tile-pick-mark" aria-hidden="true"><c-icon name="check" size="sm" /></span>
               <c-photo :photo="photo" sizes="(min-width: 64rem) 18vw, 45vw" alt="" />
             </label>
           {% endfor %}
