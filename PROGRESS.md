@@ -14,7 +14,7 @@ Stack starts, `check` clean, no pending migrations, ruff clean, 171 tests green.
 | 3a Upload pipeline, gallery editor | ✅ |
 | 3b Client gallery | ✅ |
 | 4 Public portfolio + inquiry | ✅ merged 2026-09-22 |
-| 5 Finance | 🟡 001 models done (DeepSeek V4 Pro via aider); 002–005 next |
+| 5 Finance | 🟡 001 models + 002 recurring done; 003–005 next |
 | 6 Polish (a11y, Lighthouse, security review, README) | ⬜ |
 
 Decisions:

@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import environ
+from celery.schedules import crontab
 from csp.constants import NONCE, NONE, SELF, UNSAFE_INLINE
 from django.utils.translation import gettext_lazy as _
 
@@ -227,6 +228,10 @@ CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_BEAT_SCHEDULE = {
     "galleries-clean-up": {"task": "apps.galleries.tasks.clean_up", "schedule": 60 * 60},
+    "finance-recurring": {
+        "task": "apps.finance.tasks.generate_recurring_expenses",
+        "schedule": crontab(hour=5, minute=30),
+    },
 }
 # Absolute links in e-mails (ZIP ready, invitations).
 SITE_URL = env("SITE_URL", default="http://localhost:8000")
