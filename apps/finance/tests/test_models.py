@@ -78,3 +78,20 @@ def test_receipt_path_keeps_only_short_lowercase_suffix():
     path_no_ext = receipt_path(MockInstance(), "invoice")
     assert path_no_ext.startswith("receipts/1/")
     assert "invoice" not in path_no_ext
+
+
+def test_seed_existing_studios(studio):
+    # Remove any existing categories for this studio.
+    ExpenseCategory.objects.filter(studio=studio).delete()
+
+    import importlib
+
+    from django.apps import apps
+
+    migration_mod = importlib.import_module("apps.finance.migrations.0002_seed_default_categories")
+    migration_mod.seed_existing_studios(apps, None)
+    assert ExpenseCategory.objects.for_studio(studio).count() == 6
+
+    # Calling again must not add more.
+    migration_mod.seed_existing_studios(apps, None)
+    assert ExpenseCategory.objects.for_studio(studio).count() == 6

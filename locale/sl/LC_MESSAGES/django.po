@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-22 15:48+0200\n"
+"POT-Creation-Date: 2026-09-22 16:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,7 +15,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
+"n%100==4 ? 2 : 3);\n"
 
 #: apps/accounts/admin.py:15
 msgid "Personal info"
@@ -51,6 +52,7 @@ msgid "For invoices"
 msgstr "Za račune"
 
 #: apps/clients/forms.py:14 apps/clients/models.py:13
+#: apps/finance/defaults.py:9 apps/finance/models.py:234
 msgid "Other"
 msgstr "Drugo"
 
@@ -96,9 +98,8 @@ msgstr "e-pošta"
 msgid "phone"
 msgstr "telefon"
 
-#: apps/clients/models.py:26 apps/core/models.py:29
-#: apps/portfolio/models.py:56 apps/portfolio/models.py:101
-#: apps/shoots/models.py:14
+#: apps/clients/models.py:26 apps/core/models.py:29 apps/portfolio/models.py:56
+#: apps/portfolio/models.py:101 apps/shoots/models.py:14
 msgid "address"
 msgstr "naslov"
 
@@ -110,12 +111,14 @@ msgstr "davčna številka"
 msgid "came from"
 msgstr "vir"
 
-#: apps/clients/models.py:31 apps/scheduling/models.py:61
-#: apps/shoots/models.py:16 apps/shoots/models.py:130
+#: apps/clients/models.py:31 apps/finance/models.py:160
+#: apps/scheduling/models.py:61 apps/shoots/models.py:16
+#: apps/shoots/models.py:130
 msgid "notes"
 msgstr "opombe"
 
-#: apps/clients/models.py:34 apps/galleries/models.py:39
+#: apps/clients/models.py:34 apps/finance/models.py:143
+#: apps/finance/models.py:251 apps/galleries/models.py:39
 #: apps/scheduling/models.py:51 apps/shoots/models.py:100
 msgid "client"
 msgstr "stranka"
@@ -183,8 +186,8 @@ msgstr "Želite izbrisati stranko %(name)s?"
 #: apps/clients/views.py:123
 msgid "Their contact details and notes are removed. This can't be undone."
 msgstr ""
-"Odstranjeni bodo njihovi kontaktni podatki in opombe. Tega dejanja ni mogoče"
-" razveljaviti."
+"Odstranjeni bodo njihovi kontaktni podatki in opombe. Tega dejanja ni mogoče "
+"razveljaviti."
 
 #: apps/clients/views.py:127
 #, python-format
@@ -270,7 +273,7 @@ msgstr "Fotografiranja"
 msgid "Galleries"
 msgstr "Galerije"
 
-#: apps/core/navigation.py:21
+#: apps/core/navigation.py:21 apps/finance/apps.py:8
 msgid "Finance"
 msgstr "Finance"
 
@@ -335,7 +338,8 @@ msgstr "V obdelavi"
 msgid "Delivered"
 msgstr "Dostavljeno"
 
-#: apps/core/views.py:117 apps/shoots/models.py:74 apps/shoots/views.py:40
+#: apps/core/views.py:117 apps/finance/models.py:134 apps/shoots/models.py:74
+#: apps/shoots/views.py:40
 msgid "Paid"
 msgstr "Plačano"
 
@@ -378,6 +382,285 @@ msgstr "Opombe"
 #: apps/core/views.py:169
 msgid "Send a reminder a day before"
 msgstr "Pošlji opomnik en dan prej"
+
+#: apps/finance/defaults.py:4
+msgid "Equipment"
+msgstr "Oprema"
+
+#: apps/finance/defaults.py:5
+msgid "Software and subscriptions"
+msgstr "Programska oprema in naročnine"
+
+#: apps/finance/defaults.py:6
+msgid "Travel"
+msgstr "Potni stroški"
+
+#: apps/finance/defaults.py:7
+msgid "Marketing"
+msgstr "Marketing"
+
+#: apps/finance/defaults.py:8
+msgid "Studio and rent"
+msgstr "Studio in najemnina"
+
+#: apps/finance/models.py:22 apps/finance/models.py:46
+#: apps/galleries/models.py:141 apps/portfolio/models.py:55
+#: apps/portfolio/models.py:155 apps/shoots/models.py:13
+#: apps/shoots/models.py:28
+msgid "name"
+msgstr "ime"
+
+#: apps/finance/models.py:23
+#, fuzzy
+#| msgid "Colour"
+msgid "colour"
+msgstr "Barve"
+
+#: apps/finance/models.py:24 apps/finance/models.py:214
+#, fuzzy
+#| msgid "section"
+msgid "position"
+msgstr "poglavje"
+
+#: apps/finance/models.py:27
+#, fuzzy
+#| msgid "Delete category"
+msgid "expense category"
+msgstr "Izbriši kategorijo"
+
+#: apps/finance/models.py:28
+#, fuzzy
+#| msgid "categories"
+msgid "expense categories"
+msgstr "kategorije"
+
+#: apps/finance/models.py:43
+#, fuzzy
+#| msgid "Month"
+msgid "Monthly"
+msgstr "Mesec"
+
+#: apps/finance/models.py:44
+msgid "Yearly"
+msgstr ""
+
+#: apps/finance/models.py:47 apps/finance/models.py:83
+msgid "supplier"
+msgstr ""
+
+#: apps/finance/models.py:48 apps/finance/models.py:73
+#: apps/finance/models.py:237
+#, fuzzy
+#| msgid "Account"
+msgid "amount"
+msgstr "Račun"
+
+#: apps/finance/models.py:53 apps/finance/models.py:81
+#: apps/portfolio/models.py:69 apps/portfolio/models.py:90
+#: templates/portfolio/manage/index.html:30
+msgid "category"
+msgstr "kategorija"
+
+#: apps/finance/models.py:56
+msgid "interval"
+msgstr ""
+
+#: apps/finance/models.py:58
+#, fuzzy
+#| msgid "Important dates"
+msgid "start date"
+msgstr "Pomembni datumi"
+
+#: apps/finance/models.py:59
+#, fuzzy
+#| msgid "No date"
+msgid "end date"
+msgstr "Brez datuma"
+
+#: apps/finance/models.py:60
+#, fuzzy
+#| msgid "Active"
+msgid "active"
+msgstr "Aktivna"
+
+#: apps/finance/models.py:63 apps/finance/models.py:92
+msgid "recurring expense"
+msgstr ""
+
+#: apps/finance/models.py:64
+msgid "recurring expenses"
+msgstr ""
+
+#: apps/finance/models.py:72 apps/finance/models.py:236
+#: apps/galleries/models.py:43 apps/portfolio/models.py:104
+msgid "date"
+msgstr "datum"
+
+#: apps/finance/models.py:75
+#, fuzzy
+#| msgid "photos included"
+msgid "VAT included"
+msgstr "vključene fotografije"
+
+#: apps/finance/models.py:84 apps/finance/models.py:209
+#: apps/finance/models.py:238 apps/galleries/models.py:124
+#: apps/portfolio/models.py:57 apps/shoots/models.py:29
+msgid "description"
+msgstr "opis"
+
+#: apps/finance/models.py:85
+msgid "receipt"
+msgstr ""
+
+#: apps/finance/models.py:94
+msgid "period"
+msgstr ""
+
+#: apps/finance/models.py:97
+msgid "expense"
+msgstr ""
+
+#: apps/finance/models.py:98
+msgid "expenses"
+msgstr ""
+
+#: apps/finance/models.py:113 apps/finance/models.py:137
+msgid "year"
+msgstr ""
+
+#: apps/finance/models.py:114
+#, fuzzy
+#| msgid "last name"
+msgid "last number"
+msgstr "priimek"
+
+#: apps/finance/models.py:117
+msgid "invoice sequence"
+msgstr ""
+
+#: apps/finance/models.py:118
+msgid "invoice sequences"
+msgstr ""
+
+#: apps/finance/models.py:132 templates/galleries/editor.html:15
+#: templates/galleries/list.html:26
+msgid "Draft"
+msgstr "Osnutek"
+
+#: apps/finance/models.py:133
+msgid "Issued"
+msgstr ""
+
+#: apps/finance/models.py:136
+#, fuzzy
+#| msgid "tax number"
+msgid "number"
+msgstr "davčna številka"
+
+#: apps/finance/models.py:138
+msgid "sequence"
+msgstr ""
+
+#: apps/finance/models.py:151 apps/finance/models.py:259
+#: apps/galleries/models.py:31 apps/scheduling/models.py:43
+#: apps/shoots/models.py:136
+msgid "shoot"
+msgstr "fotografiranje"
+
+#: apps/finance/models.py:153
+msgid "issue date"
+msgstr ""
+
+#: apps/finance/models.py:154
+#, fuzzy
+#| msgid "preferred date"
+msgid "service date"
+msgstr "želeni datum"
+
+#: apps/finance/models.py:155
+#, fuzzy
+#| msgid "No date"
+msgid "due date"
+msgstr "Brez datuma"
+
+#: apps/finance/models.py:157
+#, fuzzy
+#| msgid "VAT registered"
+msgid "VAT rate"
+msgstr "zavezanec za DDV"
+
+#: apps/finance/models.py:159
+#, fuzzy
+#| msgid "notes"
+msgid "VAT note"
+msgstr "opombe"
+
+#: apps/finance/models.py:162 apps/shoots/models.py:120
+msgid "status"
+msgstr "status"
+
+#: apps/finance/models.py:164
+msgid "PDF"
+msgstr ""
+
+#: apps/finance/models.py:167 apps/finance/models.py:207
+#: apps/finance/models.py:267
+#, fuzzy
+#| msgid "For invoices"
+msgid "invoice"
+msgstr "Za račune"
+
+#: apps/finance/models.py:168
+#, fuzzy
+#| msgid "For invoices"
+msgid "invoices"
+msgstr "Za račune"
+
+#: apps/finance/models.py:211
+msgid "quantity"
+msgstr ""
+
+#: apps/finance/models.py:213
+#, fuzzy
+#| msgid "price"
+msgid "unit price"
+msgstr "cena"
+
+#: apps/finance/models.py:217
+#, fuzzy
+#| msgid "Invoicing"
+msgid "invoice line"
+msgstr "Za račune"
+
+#: apps/finance/models.py:218
+#, fuzzy
+#| msgid "For invoices"
+msgid "invoice lines"
+msgstr "Za račune"
+
+#: apps/finance/models.py:231
+msgid "Bank transfer"
+msgstr ""
+
+#: apps/finance/models.py:232
+msgid "Cash"
+msgstr ""
+
+#: apps/finance/models.py:233
+msgid "Card"
+msgstr ""
+
+#: apps/finance/models.py:240
+msgid "method"
+msgstr ""
+
+#: apps/finance/models.py:271
+msgid "income"
+msgstr ""
+
+#: apps/finance/models.py:272
+msgid "incomes"
+msgstr ""
 
 #: apps/galleries/forms.py:17
 msgid "Not linked to a shoot"
@@ -470,11 +753,6 @@ msgstr "Originali"
 msgid "Web size and originals"
 msgstr "Spletna velikost in originali"
 
-#: apps/galleries/models.py:31 apps/scheduling/models.py:43
-#: apps/shoots/models.py:136
-msgid "shoot"
-msgstr "fotografiranje"
-
 #: apps/galleries/models.py:41 apps/galleries/models.py:123
 #: apps/portfolio/models.py:100 apps/scheduling/models.py:30
 #: apps/shoots/models.py:118
@@ -484,10 +762,6 @@ msgstr "naslov"
 #: apps/galleries/models.py:42
 msgid "introduction"
 msgstr "uvod"
-
-#: apps/galleries/models.py:43 apps/portfolio/models.py:104
-msgid "date"
-msgstr "datum"
 
 #: apps/galleries/models.py:48
 msgid "available until"
@@ -535,11 +809,6 @@ msgstr "galerija"
 msgid "galleries"
 msgstr "galerije"
 
-#: apps/galleries/models.py:124 apps/portfolio/models.py:57
-#: apps/shoots/models.py:29
-msgid "description"
-msgstr "opis"
-
 #: apps/galleries/models.py:128
 msgid "section"
 msgstr "poglavje"
@@ -547,12 +816,6 @@ msgstr "poglavje"
 #: apps/galleries/models.py:129
 msgid "sections"
 msgstr "poglavja"
-
-#: apps/galleries/models.py:141 apps/portfolio/models.py:55
-#: apps/portfolio/models.py:155 apps/shoots/models.py:13
-#: apps/shoots/models.py:28
-msgid "name"
-msgstr "ime"
 
 #: apps/galleries/models.py:146
 msgid "visitor"
@@ -648,8 +911,8 @@ msgstr "Prejšnja"
 msgid ""
 "Preparing your ZIP. You can close this; the link also arrives by e-mail."
 msgstr ""
-"Pripravljamo ZIP. To okno lahko zaprete, povezavo vam pošljemo tudi po "
-"e-pošti."
+"Pripravljamo ZIP. To okno lahko zaprete, povezavo vam pošljemo tudi po e-"
+"pošti."
 
 #: apps/galleries/public_views.py:156
 msgid "Ready."
@@ -737,16 +1000,16 @@ msgstr[0] ""
 "in sporočili. Povezava za stranko takoj preneha delovati. Tega ni mogoče "
 "razveljaviti."
 msgstr[1] ""
-"Odstranjeni bosta %(count)s fotografiji z originali ter vsemi priljubljenimi"
-" in sporočili. Povezava za stranko takoj preneha delovati. Tega ni mogoče "
+"Odstranjeni bosta %(count)s fotografiji z originali ter vsemi priljubljenimi "
+"in sporočili. Povezava za stranko takoj preneha delovati. Tega ni mogoče "
 "razveljaviti."
 msgstr[2] ""
 "Odstranjene bodo %(count)s fotografije z originali ter vsemi priljubljenimi "
 "in sporočili. Povezava za stranko takoj preneha delovati. Tega ni mogoče "
 "razveljaviti."
 msgstr[3] ""
-"Odstranjenih bo %(count)s fotografij z originali ter vsemi priljubljenimi in"
-" sporočili. Povezava za stranko takoj preneha delovati. Tega ni mogoče "
+"Odstranjenih bo %(count)s fotografij z originali ter vsemi priljubljenimi in "
+"sporočili. Povezava za stranko takoj preneha delovati. Tega ni mogoče "
 "razveljaviti."
 
 #: apps/galleries/views.py:193 apps/portfolio/views.py:218
@@ -838,8 +1101,7 @@ msgstr "Brez portretne fotografije"
 
 #: apps/portfolio/forms.py:86
 msgid "One line under your name, e.g. “Wedding and portrait photography”."
-msgstr ""
-"Ena vrstica pod vašim imenom, npr. »Poročna in portretna fotografija«."
+msgstr "Ena vrstica pod vašim imenom, npr. »Poročna in portretna fotografija«."
 
 #: apps/portfolio/forms.py:89 apps/portfolio/models.py:40
 msgid "Shown by search engines under your name. Up to 160 characters."
@@ -849,7 +1111,7 @@ msgstr "Iskalniki ga pokažejo pod vašim imenom. Največ 160 znakov."
 msgid "Enter an address."
 msgstr "Vnesite naslov."
 
-#: apps/portfolio/forms.py:111
+#: apps/portfolio/forms.py:111 apps/portfolio/tests/test_manage.py:271
 msgid "You already use this address."
 msgstr "Ta naslov že uporabljate."
 
@@ -858,8 +1120,7 @@ msgid "No cover photo"
 msgstr "Brez naslovne fotografije"
 
 #: apps/portfolio/forms.py:145
-msgid ""
-"Used in the URL, e.g. /weddings/. Leave empty to make it from the name."
+msgid "Used in the URL, e.g. /weddings/. Leave empty to make it from the name."
 msgstr ""
 "Uporabi se v naslovu URL, npr. /poroke/. Če ga pustite praznega, se ustvari "
 "iz imena."
@@ -882,8 +1143,7 @@ msgstr "Galerija ni povezana"
 
 #: apps/portfolio/forms.py:215
 msgid "Link a gallery to pick photos from it on the next step."
-msgstr ""
-"Povežite galerijo, da v naslednjem koraku izberete fotografije iz nje."
+msgstr "Povežite galerijo, da v naslednjem koraku izberete fotografije iz nje."
 
 #: apps/portfolio/forms.py:226
 msgid "Used in the URL. Leave empty to make it from the title."
@@ -912,8 +1172,7 @@ msgstr "podnaslov"
 
 #: apps/portfolio/models.py:21
 msgid ""
-"One line under your name, e.g. “Wedding and portrait photography, "
-"Ljubljana”."
+"One line under your name, e.g. “Wedding and portrait photography, Ljubljana”."
 msgstr ""
 "Ena vrstica pod vašim imenom, npr. »Poročna in portretna fotografija, "
 "Ljubljana«."
@@ -941,11 +1200,6 @@ msgstr "opis za iskalnike"
 #: apps/portfolio/models.py:44
 msgid "portfolio"
 msgstr "portfolio"
-
-#: apps/portfolio/models.py:69 apps/portfolio/models.py:90
-#: templates/portfolio/manage/index.html:30
-msgid "category"
-msgstr "kategorija"
 
 #: apps/portfolio/models.py:70 templates/portfolio/manage/index.html:30
 msgid "categories"
@@ -1035,11 +1289,32 @@ msgstr "Sporočila ni bilo mogoče poslati. Poskusite znova."
 msgid "The form expired. Reload the page and try again."
 msgstr "Obrazec je potekel. Znova naložite stran in poskusite še enkrat."
 
-#: apps/portfolio/public_views.py:126
+#: apps/portfolio/public_views.py:126 apps/portfolio/tests/test_public.py:234
 msgid "Too many messages from here. Try again in an hour, or write by e-mail."
 msgstr ""
 "Od tu je bilo poslanih preveč sporočil. Poskusite znova čez eno uro ali "
 "pišite po e-pošti."
+
+#: apps/portfolio/tests/test_manage.py:117 apps/portfolio/views.py:136
+#, python-format
+msgid ""
+"%(count)s story belongs to this category. Deleting the category will also "
+"delete its stories."
+msgid_plural ""
+"%(count)s stories belong to this category. Deleting the category will also "
+"delete its stories."
+msgstr[0] ""
+"V tej kategoriji je %(count)s zgodba. Z izbrisom kategorije boste izbrisali "
+"tudi njo."
+msgstr[1] ""
+"V tej kategoriji sta %(count)s zgodbi. Z izbrisom kategorije boste izbrisali "
+"tudi njiju."
+msgstr[2] ""
+"V tej kategoriji so %(count)s zgodbe. Z izbrisom kategorije boste izbrisali "
+"tudi njih."
+msgstr[3] ""
+"V tej kategoriji je %(count)s zgodb. Z izbrisom kategorije boste izbrisali "
+"tudi njih."
 
 #: apps/portfolio/views.py:57 apps/portfolio/views.py:58
 #: templates/core/settings.html:42
@@ -1090,31 +1365,9 @@ msgstr "Izbriši kategorijo"
 msgid "Delete “%(name)s”?"
 msgstr "Želite izbrisati „%(name)s“?"
 
-#: apps/portfolio/views.py:136
-#, python-format
-msgid ""
-"%(count)s story belongs to this category. Deleting the category will also "
-"delete its stories."
-msgid_plural ""
-"%(count)s stories belong to this category. Deleting the category will also "
-"delete its stories."
-msgstr[0] ""
-"V tej kategoriji je %(count)s zgodba. Z izbrisom kategorije boste izbrisali "
-"tudi njo."
-msgstr[1] ""
-"V tej kategoriji sta %(count)s zgodbi. Z izbrisom kategorije boste izbrisali"
-" tudi njiju."
-msgstr[2] ""
-"V tej kategoriji so %(count)s zgodbe. Z izbrisom kategorije boste izbrisali "
-"tudi njih."
-msgstr[3] ""
-"V tej kategoriji je %(count)s zgodb. Z izbrisom kategorije boste izbrisali "
-"tudi njih."
-
 #: apps/portfolio/views.py:142
 msgid "The category will be permanently removed. This can't be undone."
-msgstr ""
-"Kategorija bo trajno odstranjena. Tega dejanja ni mogoče razveljaviti."
+msgstr "Kategorija bo trajno odstranjena. Tega dejanja ni mogoče razveljaviti."
 
 #: apps/portfolio/views.py:146 apps/shoots/views_catalogue.py:96
 #: apps/shoots/views_catalogue.py:173
@@ -1343,10 +1596,6 @@ msgstr "paketi"
 msgid "Cancelled"
 msgstr "Odpovedano"
 
-#: apps/shoots/models.py:120
-msgid "status"
-msgstr "status"
-
 #: apps/shoots/models.py:128
 msgid "Taken from the package when left empty."
 msgstr "Če pustite prazno, se prevzame iz paketa."
@@ -1434,8 +1683,8 @@ msgstr "Izbriši paket"
 #: apps/shoots/views_catalogue.py:86
 #, python-format
 msgid ""
-"%(count)s shoot uses this package. It keeps its price but loses the package."
-" To stop offering it, switch off “Offered” instead."
+"%(count)s shoot uses this package. It keeps its price but loses the package. "
+"To stop offering it, switch off “Offered” instead."
 msgid_plural ""
 "%(count)s shoots use this package. They keep their price but lose the "
 "package. To stop offering it, switch off “Offered” instead."
@@ -1486,8 +1735,7 @@ msgstr "Izbriši lokacijo"
 #: apps/shoots/views_catalogue.py:165
 #, python-format
 msgid "%(count)s shoot takes place here. It stays, without a location."
-msgid_plural ""
-"%(count)s shoots take place here. They stay, without a location."
+msgid_plural "%(count)s shoots take place here. They stay, without a location."
 msgstr[0] ""
 "Tukaj poteka %(count)s fotografiranje. Ostalo bo, vendar brez lokacije."
 msgstr[1] ""
@@ -1501,7 +1749,7 @@ msgstr[3] ""
 msgid "The location will be permanently removed. This can't be undone."
 msgstr "Lokacija bo trajno odstranjena. Tega dejanja ni mogoče razveljaviti."
 
-#: config/settings/base.py:173
+#: config/settings/base.py:174
 msgid "Slovenian"
 msgstr "Slovenščina"
 
@@ -1533,8 +1781,8 @@ msgid ""
 "No client matches “%(query)s”. Try part of a name, an email or a phone "
 "number."
 msgstr ""
-"Nobena stranka ne ustreza iskanju „%(query)s“. Poskusite z delom imena, "
-"e-pošto ali telefonsko številko."
+"Nobena stranka ne ustreza iskanju „%(query)s“. Poskusite z delom imena, e-"
+"pošto ali telefonsko številko."
 
 #: templates/clients/_results.html:28
 msgid "No clients yet"
@@ -1713,12 +1961,10 @@ msgstr "Steklo"
 #: templates/core/styleguide.html:78
 msgid ""
 "Regular glass for navigation, popovers and sheets. Clear glass only for "
-"controls floating over photos, with a dimming layer when the photo is "
-"bright."
+"controls floating over photos, with a dimming layer when the photo is bright."
 msgstr ""
 "Navadno steklo za navigacijo, menije in spodnje liste. Prozorno steklo samo "
-"za kontrolnike nad fotografijami; nad svetlimi fotografijami dobi "
-"zatemnitev."
+"za kontrolnike nad fotografijami; nad svetlimi fotografijami dobi zatemnitev."
 
 #: templates/core/styleguide.html:88
 msgid "Back"
@@ -1865,8 +2111,7 @@ msgstr "vaše fotografije „%(title)s“ so pripravljene. Galerijo odprete tuka
 #: templates/emails/gallery_link.txt:7
 msgid "Tap the heart on the photos you love; I'll see your choice."
 msgstr ""
-"Pri fotografijah, ki so vam všeč, tapnite srce; vaš izbor bom videl tudi "
-"jaz."
+"Pri fotografijah, ki so vam všeč, tapnite srce; vaš izbor bom videl tudi jaz."
 
 #: templates/emails/gallery_link.txt:8
 msgid ""
@@ -1892,8 +2137,8 @@ msgstr "Novo sporočilo prek vašega portfolia – %(name)s (%(email)s):"
 msgid ""
 "It's in your shoots as an inquiry, and on the calendar if a date was given:"
 msgstr ""
-"Med fotografiranji je zabeleženo kot povpraševanje, če je bil naveden datum,"
-" pa tudi v koledarju:"
+"Med fotografiranji je zabeleženo kot povpraševanje, če je bil naveden datum, "
+"pa tudi v koledarju:"
 
 #: templates/emails/inquiry_new.txt:12
 msgid "Reply to this e-mail to answer them directly."
@@ -1911,8 +2156,8 @@ msgstr "Pozdravljeni,"
 #: templates/emails/inquiry_received.txt:3
 #, python-format
 msgid ""
-"thank you for writing. Your message has reached %(studio)s, and you'll get a"
-" reply soon."
+"thank you for writing. Your message has reached %(studio)s, and you'll get a "
+"reply soon."
 msgstr ""
 "hvala, ker ste pisali. Vaše sporočilo je prispelo na naslov %(studio)s in "
 "kmalu boste prejeli odgovor."
@@ -2015,8 +2260,8 @@ msgid ""
 "No photos in this section yet. Upload into it, or move photos here from "
 "their menu."
 msgstr ""
-"V tem poglavju še ni fotografij. Naložite jih vanj ali jih sem premaknite iz"
-" menija fotografije."
+"V tem poglavju še ni fotografij. Naložite jih vanj ali jih sem premaknite iz "
+"menija fotografije."
 
 #: templates/galleries/_tile.html:8
 msgid "Couldn't process this file"
@@ -2065,10 +2310,6 @@ msgstr "Potekla"
 msgid "Published"
 msgstr "Objavljena"
 
-#: templates/galleries/editor.html:15 templates/galleries/list.html:26
-msgid "Draft"
-msgstr "Osnutek"
-
 #: templates/galleries/editor.html:16
 #: templates/galleries/public/password.html:12
 msgid "Password"
@@ -2116,8 +2357,8 @@ msgstr "Še ni fotografij"
 
 #: templates/galleries/editor.html:58
 msgid ""
-"Upload the edited photos. They are processed in the background; you can keep"
-" working meanwhile."
+"Upload the edited photos. They are processed in the background; you can keep "
+"working meanwhile."
 msgstr ""
 "Naložite obdelane fotografije. Obdelajo se v ozadju, vi pa lahko medtem "
 "delate naprej."
@@ -2139,8 +2380,8 @@ msgid ""
 "Anyone with this link can open the gallery. Send it to your client by email "
 "or message."
 msgstr ""
-"Galerijo lahko odpre vsak, ki ima to povezavo. Stranki jo pošljite po "
-"e-pošti ali v sporočilu."
+"Galerijo lahko odpre vsak, ki ima to povezavo. Stranki jo pošljite po e-"
+"pošti ali v sporočilu."
 
 #: templates/galleries/editor.html:89
 msgid "The gallery is a draft. Publish it and the link starts working."
@@ -2303,8 +2544,7 @@ msgid "Send"
 msgstr "Pošlji"
 
 #: templates/galleries/public/password.html:10
-msgid ""
-"This gallery is private. Enter the password you received with the link."
+msgid "This gallery is private. Enter the password you received with the link."
 msgstr "Galerija je zasebna. Vnesite geslo, ki ste ga prejeli s povezavo."
 
 #: templates/galleries/public/password.html:16
@@ -2316,8 +2556,8 @@ msgid ""
 "This gallery is no longer available. If you still need the photos, write to "
 "your photographer and they can open it again."
 msgstr ""
-"Galerija ni več na voljo. Če fotografije še potrebujete, pišite fotografu in"
-" jo lahko znova odpre."
+"Galerija ni več na voljo. Če fotografije še potrebujete, pišite fotografu in "
+"jo lahko znova odpre."
 
 #: templates/galleries/public/unavailable.html:10
 msgid "Write to"
@@ -2361,8 +2601,8 @@ msgid ""
 "Collections of stories (e.g., “Wedding”, “Portrait”). Order them to "
 "customize your portfolio."
 msgstr ""
-"Skupine zgodb (npr. »Poroke«, »Portreti«). Z vrstnim redom določite, kako je"
-" portfolio urejen."
+"Skupine zgodb (npr. »Poroke«, »Portreti«). Z vrstnim redom določite, kako je "
+"portfolio urejen."
 
 #: templates/portfolio/manage/category_list.html:28
 msgid "No categories yet"
@@ -2452,8 +2692,8 @@ msgid ""
 "Your message has reached %(name)s. A confirmation is on its way to your "
 "inbox, and you'll get a reply soon."
 msgstr ""
-"Sporočilo je prispelo na naslov %(name)s. Potrditev je na poti v vaš "
-"e-poštni predal, odgovor pa prejmete kmalu."
+"Sporočilo je prispelo na naslov %(name)s. Potrditev je na poti v vaš e-"
+"poštni predal, odgovor pa prejmete kmalu."
 
 #: templates/portfolio/public/_nav.html:9
 msgid "Get in touch"
