@@ -1,0 +1,5 @@
+{% load i18n %}{% translate "Hello," %}
+
+{% blocktranslate with studio=studio.name %}thank you for writing. Your message has reached {{ studio }}, and you'll get a reply soon.{% endblocktranslate %}
+
+{{ studio.name }}

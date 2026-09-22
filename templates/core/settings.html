@@ -36,5 +36,13 @@
       </span>
       <c-icon name="chevron-right" class="text-ink-3" />
     </a>
+    <a class="row" href="{% url 'portfolio:index' %}">
+      <span class="avatar" aria-hidden="true"><c-icon name="images" size="sm" /></span>
+      <span class="grid min-w-0">
+        <span class="row-title">{% translate 'Portfolio' %}</span>
+        <span class="row-meta">{% translate 'Your public page, its stories and the inquiry form' %}</span>
+      </span>
+      <c-icon name="chevron-right" class="text-ink-3" />
+    </a>
   </div>
 {% endblock %}

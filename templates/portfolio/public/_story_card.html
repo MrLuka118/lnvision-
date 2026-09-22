@@ -1,0 +1,9 @@
+{% load formatting %}
+{# A story as a card; the cover carries a view-transition-name that the story page's hero shares. #}
+<a class="pf-card reveal" href="{{ item.get_public_url }}">
+  <div class="pf-card-cover" style="view-transition-name: story-{{ item.pk }}">
+    {% if item.cover_photo and item.cover_photo.is_ready %}<c-photo :photo="item.cover_photo" sizes="(min-width: 64rem) 30vw, (min-width: 40rem) 45vw, 100vw" alt="" />{% endif %}
+  </div>
+  <p class="pf-card-title">{{ item.title }}</p>
+  <p class="pf-card-meta">{% if item.place %}{{ item.place }}{% endif %}{% if item.place and item.story_date %}, {% endif %}{% if item.story_date %}{{ item.story_date|date:"F Y" }}{% endif %}</p>
+</a>

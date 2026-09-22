@@ -10,6 +10,7 @@ from decimal import Decimal
 from urllib.parse import quote_plus
 
 from django.utils import timezone
+from django.utils.text import slugify
 
 from apps.clients.models import Client
 from apps.scheduling.models import Event
@@ -219,6 +220,7 @@ def seed_studio(studio) -> dict[str, int]:
     shoots = seed_shoots(studio, clients, locations, packages, rng)
     others = seed_other_events(studio, clients, rng)
     galleries = seed_galleries(studio)
+    stories = seed_portfolio(studio)
     return {
         "locations": len(locations),
         "packages": sum(len(p) for p in packages.values()),
@@ -227,6 +229,7 @@ def seed_studio(studio) -> dict[str, int]:
         "events": Event.objects.for_studio(studio).count(),
         "other events": others,
         "galleries": galleries,
+        "portfolio stories": stories,
     }
 
 
@@ -314,5 +317,70 @@ def seed_galleries(studio) -> int:
             photo_services.process(photo)
         gallery.cover_photo = gallery.photos.order_by("position").first()
         gallery.save(update_fields=["cover_photo"])
+        created += 1
+    return created
+
+
+def seed_portfolio(studio) -> int:
+    from apps.galleries.models import Gallery
+    from apps.portfolio.models import (
+        Portfolio,
+        PortfolioCategory,
+        PortfolioStory,
+        PortfolioStoryPhoto,
+    )
+
+    galleries = list(Gallery.objects.for_studio(studio).order_by("pk"))
+    if not galleries:
+        return 0
+    wedding, portrait = galleries[0], galleries[-1]
+    Portfolio.objects.create(
+        studio=studio,
+        is_published=True,
+        headline="Poročna in portretna fotografija, Ljubljana",
+        about=(
+            "Fotografiram ljudi takrat, ko pozabijo na fotoaparat: poroke od prvih priprav do "
+            "zadnjega plesa, družine doma in portrete v naravni svetlobi.\n\n"
+            "Delam po vsej Sloveniji. Najraje na Bledu, v Logarski dolini in ob morju."
+        ),
+        portrait=portrait.photos.order_by("position").first(),
+        instagram="https://instagram.com/",
+    )
+    weddings = PortfolioCategory.objects.create(
+        studio=studio,
+        name="Poroke",
+        slug="poroke",
+        description="Cel dan, brez poziranja: priprave, obred in zabava, kot so se zgodili.",
+        cover_photo=wedding.cover_photo,
+        position=0,
+    )
+    portraits = PortfolioCategory.objects.create(
+        studio=studio,
+        name="Portreti",
+        slug="portreti",
+        description="Portreti v naravni svetlobi, v ateljeju ali na kraju, ki vam nekaj pomeni.",
+        cover_photo=portrait.cover_photo,
+        position=1,
+    )
+    created = 0
+    for category, gallery, place, count in (
+        (weddings, wedding, "Logarska dolina", 9),
+        (portraits, portrait, "Park Tivoli, Ljubljana", 4),
+    ):
+        story = PortfolioStory.objects.create(
+            studio=studio,
+            category=category,
+            gallery=gallery,
+            title=gallery.title,
+            slug=slugify(gallery.title),
+            intro=gallery.intro or "Dan, ki je minil prehitro, in fotografije, ki ga ohranijo.",
+            place=place,
+            story_date=gallery.event_date,
+            cover_photo=gallery.cover_photo,
+            is_published=True,
+            is_featured=True,
+        )
+        for position, photo in enumerate(gallery.photos.order_by("position")[:count]):
+            PortfolioStoryPhoto.objects.create(story=story, photo=photo, position=position)
         created += 1
     return created

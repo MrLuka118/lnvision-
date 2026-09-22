@@ -10,12 +10,11 @@ from celery import shared_task
 from django.conf import settings
 from django.core.files import File
 from django.core.files.storage import storages
-from django.core.mail import send_mail
 from django.core.signing import TimestampSigner
-from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone, translation
 
+from apps.core.mail import text_message
 from apps.photos.models import Photo, UploadSession, rendition_key
 
 from .models import DownloadRequest
@@ -122,9 +121,8 @@ def send_zip_ready(req: DownloadRequest):
         "APP_NAME": settings.APP_NAME,
     }
     with translation.override(settings.LANGUAGE_CODE):
-        subject = render_to_string("emails/zip_ready_subject.txt", context).strip()
-        body = render_to_string("emails/zip_ready.txt", context)
-    send_mail(subject, body, None, [req.email])
+        message = text_message("zip_ready", context, [req.email])
+    message.send()
 
 
 @shared_task
@@ -159,10 +157,7 @@ def send_gallery_link(gallery_id: int):
         "client": gallery.client,
         "link": base + gallery.get_public_url(),
     }
-    with translation.override(settings.LANGUAGE_CODE):
-        subject = render_to_string("emails/gallery_link_subject.txt", context).strip()
-        body = render_to_string("emails/gallery_link.txt", context)
     reply_to = [gallery.studio.email] if gallery.studio.email else None
-    from django.core.mail import EmailMessage
-
-    EmailMessage(subject, body, None, [gallery.client.email], reply_to=reply_to).send()
+    with translation.override(settings.LANGUAGE_CODE):
+        message = text_message("gallery_link", context, [gallery.client.email], reply_to=reply_to)
+    message.send()

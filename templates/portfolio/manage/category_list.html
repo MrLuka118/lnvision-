@@ -1,0 +1,35 @@
+{% extends "layouts/app.html" %}
+{% load formatting %}
+{% block title %}{% translate 'Categories' %}{% endblock %}
+{% block content %}
+  {% url "portfolio:index" as portfolio_url %}
+  {% url "portfolio:category_create" as create_url %}
+  <a class="back-link" href="{{ portfolio_url }}"><c-icon name="chevron-left" size="sm" />{% translate 'Portfolio' %}</a>
+  <c-page-header title="{% translate 'Categories' %}" lede="{% translate 'Collections of stories (e.g., “Wedding”, “Portrait”). Order them to customize your portfolio.' %}">
+    <c-slot name="actions"><c-button :href="create_url" icon="plus">{% translate 'New category' %}</c-button></c-slot>
+  </c-page-header>
+
+  <div class="max-w-3xl">
+    {% if object_list %}
+      <div class="rows">
+        {% for category in object_list %}
+          <a class="row" href="{% url 'portfolio:category_update' category.pk %}">
+            <span class="avatar" aria-hidden="true"><c-icon name="folder" size="sm" /></span>
+            <span class="grid min-w-0">
+              <span class="row-title">{{ category.name }}</span>
+              <span class="row-meta">{{ category.story_count }} {% if category.story_count == 1 %}{% translate 'story' %}{% else %}{% translate 'stories' %}{% endif %}</span>
+            </span>
+            <span><c-icon name="chevron-right" class="text-ink-3" /></span>
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="panel">
+        <c-empty icon="folder" title="{% translate 'No categories yet' %}">
+          {% translate 'Create your first category to organize stories.' %}
+          <c-slot name="actions"><c-button :href="create_url" icon="plus">{% translate 'New category' %}</c-button></c-slot>
+        </c-empty>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

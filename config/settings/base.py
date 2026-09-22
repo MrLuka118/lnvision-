@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "apps.scheduling",
     "apps.photos",
     "apps.galleries",
+    "apps.portfolio",
 ]
 
 MIDDLEWARE = [

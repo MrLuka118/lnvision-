@@ -1,0 +1,16 @@
+{% url "public_portfolio:inquiry" studio.slug as inquiry_url %}
+<form class="pf-form panel" method="post" action="{{ inquiry_url }}" hx-post="{{ inquiry_url }}" hx-target="this" hx-swap="outerHTML" novalidate>
+  {% csrf_token %}
+  {% include "partials/form_errors.html" %}
+  {{ form.started }}
+  <div class="grid gap-5 sm:grid-cols-2">
+    <c-field :field="form.name" />
+    <c-field :field="form.email" />
+    <c-field :field="form.phone" />
+    <c-field :field="form.desired_date" />
+  </div>
+  <c-field :field="form.package" />
+  <c-field :field="form.message" />
+  <div class="visually-hidden" aria-hidden="true"><c-field :field="form.website" /></div>
+  <div><c-button type="submit" size="lg">{% translate "Send inquiry" %}</c-button></div>
+</form>

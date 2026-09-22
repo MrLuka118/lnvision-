@@ -4,6 +4,7 @@ from django.test import Client
 from apps.clients.tests.factories import ClientFactory
 from apps.core.tests.factories import StudioFactory, UserFactory
 from apps.galleries.tests import factories as _gallery_factories  # noqa: F401  (registers)
+from apps.portfolio.tests import factories as _portfolio_factories  # noqa: F401  (registers)
 from apps.scheduling.tests import factories as _event_factories  # noqa: F401  (registers)
 from apps.shoots.tests.factories import ShootFactory
 

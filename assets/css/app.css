@@ -8,6 +8,7 @@
 @import "./calendar.css";
 @import "./photos.css";
 @import "./gallery.css";
+@import "./portfolio.css";
 
 @source not "../../docs";
 @source not "../../staticfiles";

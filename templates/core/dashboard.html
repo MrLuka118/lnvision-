@@ -10,7 +10,33 @@
     <h1 class="text-6xl">{{ weekday|capfirst }}, <span class="whitespace-nowrap">{{ today|long_date:False }}</span></h1>
   </header>
 
-  <section aria-labelledby="week-title" class="max-w-3xl">
+  <div class="grid items-start gap-14 xl:grid-cols-[minmax(0,48rem)_minmax(0,22rem)] xl:justify-between">
+  {% if inquiries %}
+    {# Waiting for a reply comes first on a phone; beside the week on a wide screen. #}
+    <section aria-labelledby="inquiries-title" class="xl:col-start-2 xl:row-start-1">
+      <div class="mb-4 flex items-baseline justify-between gap-4">
+        <h2 id="inquiries-title" class="text-xl">
+          {% translate "Waiting for a reply" %} <span class="tnum text-ink-2">{{ inquiry_count }}</span>
+        </h2>
+        <a class="link text-sm" href="{% url 'shoots:list' %}?status=inquiry">{% translate "All inquiries" %}</a>
+      </div>
+      <div class="rows">
+        {% for shoot in inquiries %}
+          <a class="row grid-cols-[minmax(0,1fr)_auto]" href="{{ shoot.get_absolute_url }}">
+            <span class="grid min-w-0">
+              <span class="row-title">{{ shoot.client.display_name }}</span>
+              <span class="row-meta">
+                {% if shoot.package %}{{ shoot.package.name }}{% else %}{% translate "No package yet" %}{% endif %}{% if shoot.starts_at %}, {{ shoot.starts_at|date:"j. n. Y" }}{% endif %}
+              </span>
+            </span>
+            <span class="tnum text-sm text-ink-2" title="{% translate 'Received' %}">{{ shoot.created_at|date:"j. n." }}</span>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  <section aria-labelledby="week-title" class="max-w-3xl xl:col-start-1 xl:row-start-1">
     <div class="mb-4 flex items-baseline justify-between gap-4">
       <h2 id="week-title" class="text-xl">{% translate "Next 7 days" %}</h2>
       <a class="link text-sm" href="{% url 'scheduling:calendar' %}">{% translate "Open calendar" %}</a>
@@ -45,4 +71,5 @@
       </div>
     {% endif %}
   </section>
+  </div>
 {% endblock %}

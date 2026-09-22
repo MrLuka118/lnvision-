@@ -1,0 +1,43 @@
+{% extends "layouts/app.html" %}
+{% block title %}{% translate 'Portfolio' %}{% endblock %}
+{% block content %}
+  {% url "core:settings" as settings_url %}
+  <a class="back-link" href="{{ settings_url }}"><c-icon name="chevron-left" size="sm" />{% translate 'Settings' %}</a>
+
+  {% if portfolio.is_published %}
+    <c-page-header title="{% translate 'Portfolio' %}">
+      <c-slot name="lede">
+        {% translate 'Published on' %} <a class="underline" href="{{ public_url }}" target="_blank" rel="noopener">{{ public_url }}</a>
+      </c-slot>
+    </c-page-header>
+  {% else %}
+    <c-page-header title="{% translate 'Portfolio' %}" lede="{% translate 'Your portfolio is not yet published.' %}" />
+  {% endif %}
+
+  <div class="rows max-w-3xl">
+    <a class="row" href="{% url 'portfolio:profile' %}">
+      <span class="avatar" aria-hidden="true"><c-icon name="settings" size="sm" /></span>
+      <span class="grid min-w-0">
+        <span class="row-title">{% translate 'Profile' %}</span>
+        <span class="row-meta">{% translate 'Your name, photo and introduction' %}</span>
+      </span>
+      <c-icon name="chevron-right" class="text-ink-3" />
+    </a>
+    <a class="row" href="{% url 'portfolio:category_list' %}">
+      <span class="avatar" aria-hidden="true"><c-icon name="images" size="sm" /></span>
+      <span class="grid min-w-0">
+        <span class="row-title">{% translate 'Categories' %}</span>
+        <span class="row-meta">{{ category_count }} {% if category_count == 1 %}{% translate 'category' %}{% else %}{% translate 'categories' %}{% endif %}</span>
+      </span>
+      <c-icon name="chevron-right" class="text-ink-3" />
+    </a>
+    <a class="row" href="{% url 'portfolio:story_list' %}">
+      <span class="avatar" aria-hidden="true"><c-icon name="image-plus" size="sm" /></span>
+      <span class="grid min-w-0">
+        <span class="row-title">{% translate 'Stories' %}</span>
+        <span class="row-meta">{{ published_story_count }}/{{ story_count }} {% if story_count == 1 %}{% translate 'story' %}{% else %}{% translate 'stories' %}{% endif %} (published)</span>
+      </span>
+      <c-icon name="chevron-right" class="text-ink-3" />
+    </a>
+  </div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "layouts/app.html" %}
+{% block title %}{% translate 'Stories' %}{% endblock %}
+{% block content %}
+  {% url "portfolio:index" as portfolio_url %}
+  {% url "portfolio:story_create" as create_url %}
+  <a class="back-link" href="{{ portfolio_url }}"><c-icon name="chevron-left" size="sm" />{% translate 'Portfolio' %}</a>
+  <c-page-header title="{% translate 'Stories' %}" lede="{% translate 'Each story is a series of photos telling the tale of a shoot.' %}">
+    <c-slot name="actions"><c-button :href="create_url" icon="plus">{% translate 'New story' %}</c-button></c-slot>
+  </c-page-header>
+
+  <div class="max-w-3xl">
+    {% if object_list %}
+      <div class="rows">
+        {% for story in object_list %}
+          <a class="row" href="{% url 'portfolio:story_update' story.pk %}">
+            <span class="avatar" aria-hidden="true">
+              {% if story.cover_photo %}
+                <c-photo :photo="story.cover_photo" sizes="64px" alt="" />
+              {% else %}
+                <c-icon name="image-off" size="sm" />
+              {% endif %}
+            </span>
+            <span class="grid min-w-0">
+              <span class="row-title">{{ story.title }}</span>
+              <span class="row-meta">{{ story.category.name }} • {{ story.photo_count }} {% if story.photo_count == 1 %}{% translate 'photo' %}{% else %}{% translate 'photos' %}{% endif %}</span>
+            </span>
+            <span class="grid justify-items-end gap-1">
+              {% if story.is_published %}<c-badge>{% translate 'Published' %}</c-badge>{% endif %}
+              {% url "portfolio:story_photos" story.pk as photos_url %}
+              <c-button variant="secondary" size="sm" :href="photos_url">{% translate 'Photos' %}</c-button>
+            </span>
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="panel">
+        <c-empty icon="image-off" title="{% translate 'No stories yet' %}">
+          {% translate 'Create your first story to start your portfolio.' %}
+          <c-slot name="actions"><c-button :href="create_url" icon="plus">{% translate 'New story' %}</c-button></c-slot>
+        </c-empty>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

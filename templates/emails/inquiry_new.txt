@@ -1,0 +1,12 @@
+{% load i18n formatting %}{% blocktranslate with name=inquiry.name email=inquiry.email %}{{ name }} ({{ email }}) wrote through your portfolio:{% endblocktranslate %}
+
+{{ inquiry.message }}
+
+{% if inquiry.desired_date %}{% translate "Preferred date" %}: {{ inquiry.desired_date|long_date }}
+{% endif %}{% if inquiry.package %}{% translate "Package" %}: {{ inquiry.package.name }}
+{% endif %}{% if inquiry.phone %}{% translate "Phone" %}: {{ inquiry.phone }}
+{% endif %}
+{% translate "It's in your shoots as an inquiry, and on the calendar if a date was given:" %}
+{{ shoot_link }}
+
+{% translate "Reply to this e-mail to answer them directly." %}

@@ -21,6 +21,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         from apps.scheduling.models import Event
+        from apps.shoots.models import Shoot
 
         today = timezone.localdate()
         start = timezone.make_aware(datetime.combine(today, time.min))
@@ -35,7 +36,21 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             {"date": day, "events": list(events)}
             for day, events in groupby(week, key=lambda e: timezone.localdate(e.start))
         ]
-        return super().get_context_data(days=days, today=today, **kwargs)
+        # Waiting for a reply: every shoot still in the "inquiry" status, newest first.
+        inquiries = (
+            Shoot.objects.for_studio(self.request.studio)
+            .filter(status=Shoot.Status.INQUIRY)
+            .with_dates()
+            .select_related("client", "package")
+            .order_by("-created_at")
+        )
+        return super().get_context_data(
+            days=days,
+            today=today,
+            inquiries=inquiries[:5],
+            inquiry_count=inquiries.count(),
+            **kwargs,
+        )
 
 
 class SettingsView(LoginRequiredMixin, TemplateView):

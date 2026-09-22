@@ -1,0 +1,65 @@
+{% extends "layouts/portfolio.html" %}
+{% block title %}{{ studio.name }}{% if portfolio.headline %}: {{ portfolio.headline }}{% endif %}{% endblock %}
+{% block og %}
+  <meta property="og:title" content="{{ studio.name }}">
+  {% if portfolio.headline %}<meta property="og:description" content="{{ portfolio.headline }}">{% endif %}
+  {% if hero %}<meta property="og:image" content="{{ hero.cover_photo.display_src }}">{% endif %}
+{% endblock %}
+{% block portfolio %}
+  <header class="pf-hero{% if not hero %} is-plain{% endif %}">
+    {% if hero %}<c-photo :photo="hero.cover_photo" sizes="100vw" loading="eager" fetchpriority="high" class="pf-hero-photo" alt="" />{% endif %}
+    <div class="pf-hero-text">
+      <h1 class="pf-hero-name">{{ studio.name }}</h1>
+      {% if portfolio.headline %}<p class="pf-hero-line">{{ portfolio.headline }}</p>{% endif %}
+    </div>
+  </header>
+
+  <main class="pf-main">
+    {% if categories %}
+      <section aria-labelledby="pf-categories" class="pf-categories">
+        <h2 id="pf-categories" class="visually-hidden">{% translate "What I photograph" %}</h2>
+        {% for item in categories %}
+          <a class="pf-category reveal" href="{{ item.get_public_url }}">
+            <div class="pf-category-photo">
+              {% if item.cover_photo and item.cover_photo.is_ready %}<c-photo :photo="item.cover_photo" sizes="(min-width: 64rem) 58vw, 100vw" alt="" class="pf-parallax" />{% endif %}
+            </div>
+            <div class="pf-category-text">
+              <h3 class="pf-category-name">{{ item.name }}</h3>
+              {% if item.description %}<p class="text-ink-2">{{ item.description|truncatewords:40 }}</p>{% endif %}
+              <span class="link text-sm">{% blocktranslate with name=item.name|lower %}See {{ name }}{% endblocktranslate %}</span>
+            </div>
+          </a>
+        {% endfor %}
+      </section>
+    {% endif %}
+
+    {% if stories %}
+      <section aria-labelledby="pf-stories" class="pf-block">
+        <h2 id="pf-stories" class="pf-heading">{% translate "Recent stories" %}</h2>
+        <div class="pf-cards">{% for item in stories %}{% include "portfolio/public/_story_card.html" %}{% endfor %}</div>
+      </section>
+    {% endif %}
+
+    {% if portfolio.about %}
+      <section aria-labelledby="pf-about" class="pf-about pf-block">
+        {% if portfolio.portrait and portfolio.portrait.is_ready %}
+          <div class="pf-about-photo reveal"><c-photo :photo="portfolio.portrait" sizes="(min-width: 64rem) 30vw, 100vw" alt="" /></div>
+        {% endif %}
+        <div class="pf-about-text reveal">
+          <h2 id="pf-about" class="pf-heading">{% translate "Behind the camera" %}</h2>
+          <div class="pf-prose">{{ portfolio.about|linebreaks }}</div>
+        </div>
+      </section>
+    {% endif %}
+
+    {% if portfolio.accept_inquiries %}
+      <section id="povprasevanje" aria-labelledby="pf-inquiry" class="pf-inquiry pf-block">
+        <div class="grid gap-3">
+          <h2 id="pf-inquiry" class="pf-heading">{% translate "Tell me about your plans" %}</h2>
+          <p class="text-md text-ink-2">{% translate "A date, a place, a few words about you. I reply within two working days." %}</p>
+        </div>
+        {% if thanks %}{% include "portfolio/public/_inquiry_thanks.html" %}{% else %}{% include "portfolio/public/_inquiry_form.html" %}{% endif %}
+      </section>
+    {% endif %}
+  </main>
+{% endblock %}
