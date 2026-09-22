@@ -129,6 +129,55 @@
     bottom: 6px;
   }
 
+  /* Picker tiles: a whole tile is the checkbox. Unpicked photos step back. */
+  .tile-pick {
+    cursor: pointer;
+  }
+  .tile-pick > input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .tile-pick .photo {
+    opacity: 0.5;
+    transition: opacity var(--dur-2) var(--ease-out);
+  }
+  .tile-pick:has(input:checked) .photo,
+  .tile-pick:hover .photo {
+    opacity: 1;
+  }
+  .tile-pick::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  .tile-pick:has(input:checked)::after {
+    box-shadow: inset 0 0 0 2px var(--ink);
+  }
+  .tile-pick:has(input:focus-visible)::after {
+    box-shadow: inset 0 0 0 3px var(--focus);
+  }
+  .tile-pick-mark {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink);
+    color: transparent;
+    background: color-mix(in srgb, var(--surface) 60%, transparent);
+  }
+  .tile-pick:has(input:checked) .tile-pick-mark {
+    color: var(--surface);
+    background: var(--ink);
+  }
+
   .spinner {
     width: 1.25rem;
     height: 1.25rem;

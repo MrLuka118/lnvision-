@@ -1,0 +1,10 @@
+{% url "public_portfolio:home" studio.slug as home_url %}
+<nav class="pf-nav glass" aria-label="{% translate 'Portfolio' %}">
+  <a class="pf-nav-name" href="{{ home_url }}">{{ studio.name }}</a>
+  {% if categories %}
+    <div class="pf-nav-links">
+      {% for item in categories %}<a href="{{ item.get_public_url }}"{% if item.pk == category.pk or item.pk == story.category_id %} aria-current="page"{% endif %}>{{ item.name }}</a>{% endfor %}
+    </div>
+  {% endif %}
+  {% if portfolio.accept_inquiries %}<a class="pf-nav-cta" href="{{ home_url }}#povprasevanje">{% translate "Get in touch" %}</a>{% endif %}
+</nav>

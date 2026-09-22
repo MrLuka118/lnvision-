@@ -12,6 +12,8 @@ urlpatterns = [
     path("", include("apps.photos.urls")),
     path("", include("apps.galleries.urls")),
     path("", include("apps.galleries.public_urls")),
+    path("", include("apps.portfolio.urls")),
+    path("", include("apps.portfolio.public_urls")),
 ]
 
 if settings.DEBUG:

@@ -17,6 +17,17 @@ class TestViews:
         response = auth_client.get(reverse("core:dashboard"))
         assert response.status_code == 200
 
+    def test_dashboard_lists_inquiries_waiting_for_a_reply(self, auth_client, studio, other_studio):
+        from apps.shoots.models import Shoot
+        from apps.shoots.tests.factories import ShootFactory
+
+        waiting = ShootFactory(studio=studio, status=Shoot.Status.INQUIRY)
+        ShootFactory(studio=studio, status=Shoot.Status.CONFIRMED)
+        ShootFactory(studio=other_studio, status=Shoot.Status.INQUIRY)
+        response = auth_client.get(reverse("core:dashboard"))
+        assert list(response.context["inquiries"]) == [waiting]
+        assert response.context["inquiry_count"] == 1
+
     def test_styleguide_404_anonymous(self, client):
         """Anonymous request to styleguide returns 404."""
         response = client.get(reverse("core:styleguide"))

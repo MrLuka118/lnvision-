@@ -1,0 +1,47 @@
+{% extends "layouts/app.html" %}
+{% block title %}{{ story.title }}{% endblock %}
+{% block content %}
+  {% url "portfolio:story_list" as story_list_url %}
+  <a class="back-link" href="{{ story_list_url }}"><c-icon name="chevron-left" size="sm" />{% translate 'Stories' %}</a>
+  <c-page-header :title="story.title" lede="{% translate 'Choose the photos for this story. They appear in the same order as in the gallery.' %}" />
+
+  {% if not story.gallery %}
+    <div class="max-w-3xl">
+      <div class="panel">
+        <c-empty icon="image-plus" title="{% translate 'No gallery selected' %}">
+          {% translate 'First choose the gallery for this story.' %}
+          {% url "portfolio:story_update" story.pk as update_url %}
+          <c-slot name="actions"><c-button :href="update_url">{% translate 'Edit story' %}</c-button></c-slot>
+        </c-empty>
+      </div>
+    </div>
+  {% else %}
+    {% if available_photos %}
+      <form method="post">
+        {% csrf_token %}
+        <div class="justified">
+          {% for photo in available_photos %}
+            <label class="tile tile-pick" style="--ar: {{ photo.aspect_ratio|stringformat:'.4f' }}">
+              <input type="checkbox" name="photos" value="{{ photo.pk }}" aria-label="{% blocktranslate with n=forloop.counter %}Photo {{ n }}{% endblocktranslate %}" {% if photo.pk in selected_ids %}checked{% endif %}>
+              <span class="tile-pick-mark" aria-hidden="true"><c-icon name="check" size="sm" /></span>
+              <c-photo :photo="photo" sizes="(min-width: 64rem) 18vw, 45vw" alt="" />
+            </label>
+          {% endfor %}
+        </div>
+        <div class="mt-6 flex flex-wrap items-center gap-2">
+          {% url "portfolio:story_list" as cancel_url %}
+          <c-button type="submit">{% translate 'Save' %}</c-button>
+          <c-button variant="quiet" :href="cancel_url">{% translate 'Cancel' %}</c-button>
+        </div>
+      </form>
+    {% else %}
+      <div class="max-w-3xl">
+        <div class="panel">
+          <c-empty icon="image-plus" title="{% translate 'No photos in this gallery' %}">
+            {% translate 'Upload photos to the selected gallery first.' %}
+          </c-empty>
+        </div>
+      </div>
+    {% endif %}
+  {% endif %}
+{% endblock %}

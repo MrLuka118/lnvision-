@@ -1,0 +1,15 @@
+{% extends "layouts/portfolio.html" %}
+{% block title %}{{ category.name }}: {{ studio.name }}{% endblock %}
+{% block portfolio %}
+  <main class="pf-main pf-main--page">
+    <header class="pf-page-head">
+      <h1 class="pf-page-title">{{ category.name }}</h1>
+      {% if category.description %}<p class="pf-prose text-ink-2">{{ category.description }}</p>{% endif %}
+    </header>
+    {% if stories %}
+      <div class="pf-cards">{% for item in stories %}{% include "portfolio/public/_story_card.html" %}{% endfor %}</div>
+    {% else %}
+      <p class="text-ink-2">{% translate "Stories are on their way." %}</p>
+    {% endif %}
+  </main>
+{% endblock %}

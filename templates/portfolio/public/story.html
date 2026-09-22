@@ -1,0 +1,43 @@
+{% extends "layouts/portfolio.html" %}
+{% load formatting %}
+{% block title %}{{ story.title }}: {{ studio.name }}{% endblock %}
+{% block og %}
+  <meta property="og:title" content="{{ story.title }}">
+  {% if story.cover_photo %}<meta property="og:image" content="{{ story.cover_photo.display_src }}">{% endif %}
+{% endblock %}
+{% block portfolio %}
+  <header class="pf-hero pf-hero--story">
+    <div class="pf-hero-media" style="view-transition-name: story-{{ story.pk }}">
+      {% if story.cover_photo and story.cover_photo.is_ready %}<c-photo :photo="story.cover_photo" sizes="100vw" loading="eager" fetchpriority="high" class="pf-hero-photo" alt="" />{% endif %}
+    </div>
+    <div class="pf-hero-text">
+      <a class="pf-hero-kicker" href="{{ story.category.get_public_url }}">{{ story.category.name }}</a>
+      <h1 class="pf-hero-name">{{ story.title }}</h1>
+      <p class="pf-hero-line">{% if story.place %}{{ story.place }}{% endif %}{% if story.place and story.story_date %}, {% endif %}{% if story.story_date %}{{ story.story_date|long_date }}{% endif %}</p>
+    </div>
+  </header>
+
+  <main class="pf-main">
+    <div class="pf-story">
+      {% if story.intro %}
+        <aside class="pf-story-text"><div class="pf-prose pf-prose--story">{{ story.intro|linebreaks }}</div></aside>
+      {% endif %}
+      <div class="pf-story-photos">
+        {% for row in rows %}
+          <div class="pf-story-row{% if row|length == 2 %} is-pair{% endif %}">
+            {% for photo in row %}
+              <figure class="reveal{% if photo.aspect_ratio < 1 %} is-portrait{% endif %}"><c-photo :photo="photo" sizes="(min-width: 64rem) 60vw, 100vw" alt="" /></figure>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if previous_story or next_story %}
+      <nav class="pf-cards pf-more pf-block" aria-label="{% translate 'More stories' %}">
+        {% if previous_story %}{% with item=previous_story %}{% include "portfolio/public/_story_card.html" %}{% endwith %}{% endif %}
+        {% if next_story %}{% with item=next_story %}{% include "portfolio/public/_story_card.html" %}{% endwith %}{% endif %}
+      </nav>
+    {% endif %}
+  </main>
+{% endblock %}

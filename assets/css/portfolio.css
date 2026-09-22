@@ -1,0 +1,361 @@
+/*
+ * The public portfolio: an editorial page where photographs lead. Light ("paper-white", not
+ * cream) or dark, chosen by the photographer. One bold moment: the hero; everything else quiet.
+ */
+@layer components {
+  .pf {
+    --pf-pad: clamp(1rem, 5vw, 5rem);
+    background: var(--surround);
+  }
+  .pf-light {
+    --surround: #fbfbfb;
+    --surface: #ffffff;
+  }
+
+  /* ------------------------------------------------------------------- nav */
+  .pf-nav {
+    --glass-radius: var(--radius-full);
+    position: fixed;
+    z-index: 50;
+    top: calc(var(--nav-inset) + env(safe-area-inset-top));
+    left: 50%;
+    translate: -50% 0;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    max-width: calc(100vw - 2 * var(--nav-inset));
+    padding: 0.3rem 0.3rem 0.3rem 1.1rem;
+    font-size: var(--text-sm);
+  }
+  .pf-nav-name {
+    font-family: var(--font-display);
+    font-size: var(--text-md);
+    white-space: nowrap;
+    text-decoration: none;
+    margin-right: 0.5rem;
+  }
+  .pf-nav-links {
+    display: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .pf-nav-links a {
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-full);
+    color: var(--ink-2);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .pf-nav-links a:hover,
+  .pf-nav-links a[aria-current="page"] {
+    color: var(--ink);
+    background: var(--line-soft);
+  }
+  .pf-nav-cta {
+    display: inline-flex;
+    align-items: center;
+    height: 2.5rem;
+    padding-inline: 1rem;
+    border-radius: var(--radius-full);
+    background: var(--ink);
+    color: var(--surround);
+    font-weight: 560;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 380ms var(--ease-spring);
+  }
+  .pf-nav-cta:active {
+    transform: scale(0.95);
+    transition-duration: 90ms;
+  }
+  @media (min-width: 56rem) {
+    .pf-nav-links {
+      display: flex;
+    }
+  }
+
+  /* ------------------------------------------------------------------ hero */
+  .pf-hero {
+    position: relative;
+    height: 100svh;
+    min-height: 34rem;
+    overflow: hidden;
+    color: #fff;
+    background: #111;
+  }
+  .pf-hero.is-plain {
+    height: auto;
+    min-height: 0;
+    padding: 9rem var(--pf-pad) 4rem;
+    color: var(--ink);
+    background: var(--surround);
+  }
+  .pf-hero-media,
+  .pf-hero-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+  .pf-hero:not(.is-plain)::after {
+    content: "";
+    position: absolute;
+    inset: 40% 0 0;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.55), rgb(0 0 0 / 0));
+    pointer-events: none;
+  }
+  .pf-hero-text {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 0.75rem;
+    max-width: 64rem;
+  }
+  .pf-hero:not(.is-plain) .pf-hero-text {
+    position: absolute;
+    left: var(--pf-pad);
+    right: var(--pf-pad);
+    bottom: var(--pf-pad);
+  }
+  .pf-hero-name {
+    font-size: clamp(3rem, 1.5rem + 7vw, 8.5rem);
+    line-height: 0.94;
+    font-weight: 450;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .pf-hero-line {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--text-xl);
+    opacity: 0.92;
+  }
+  .pf-hero-kicker {
+    font-size: var(--text-sm);
+    font-weight: 560;
+    color: inherit;
+    opacity: 0.9;
+  }
+
+  /* --------------------------------------------------------------- content */
+  .pf-main {
+    padding: clamp(3rem, 8vw, 7rem) var(--pf-pad) 0;
+  }
+  .pf-main--page {
+    padding-top: 8rem;
+  }
+  .pf-block {
+    margin-top: clamp(5rem, 12vw, 10rem);
+  }
+  .pf-heading {
+    font-size: var(--text-4xl);
+    margin-bottom: 2rem;
+  }
+  .pf-prose {
+    max-width: 38rem;
+    font-size: var(--text-md);
+    line-height: 1.65;
+  }
+  .pf-prose p + p {
+    margin-top: 1em;
+  }
+  .pf-page-head {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: 3.5rem;
+  }
+  .pf-page-title {
+    font-size: var(--text-6xl);
+  }
+
+  /* Categories: large editorial rows, photo and words alternating sides. */
+  .pf-categories {
+    display: grid;
+    gap: clamp(4rem, 10vw, 9rem);
+  }
+  .pf-category {
+    display: grid;
+    gap: 1.5rem;
+    align-items: end;
+    color: inherit;
+    text-decoration: none;
+  }
+  .pf-category-photo {
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .pf-category-photo .photo {
+    width: 100%;
+    height: 116%;
+    margin-top: -8%;
+    aspect-ratio: auto;
+  }
+  .pf-category-text {
+    display: grid;
+    gap: 0.9rem;
+    max-width: 26rem;
+  }
+  .pf-category-name {
+    font-size: var(--text-5xl);
+  }
+  @media (min-width: 56rem) {
+    .pf-category {
+      grid-template-columns: 7fr 4fr;
+      gap: clamp(2rem, 5vw, 5rem);
+    }
+    .pf-category:nth-child(even) {
+      grid-template-columns: 4fr 7fr;
+    }
+    .pf-category:nth-child(even) .pf-category-photo {
+      order: 2;
+    }
+  }
+
+  /* Story cards. */
+  .pf-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    gap: 3rem clamp(1rem, 3vw, 2.5rem);
+  }
+  .pf-card {
+    display: grid;
+    gap: 0.35rem;
+    color: inherit;
+    text-decoration: none;
+  }
+  .pf-card-cover {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+    background: var(--surface);
+  }
+  .pf-card-cover .photo {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+  .pf-card-cover img {
+    transition:
+      opacity var(--dur-3) var(--ease-out),
+      scale 800ms var(--ease-out);
+  }
+  .pf-card:hover .pf-card-cover img {
+    scale: 1.03;
+  }
+  .pf-card-title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    line-height: 1.2;
+  }
+  .pf-card-meta {
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+  }
+
+  /* About. */
+  .pf-about {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .pf-about-photo {
+    max-width: 26rem;
+  }
+  @media (min-width: 56rem) {
+    .pf-about {
+      grid-template-columns: 5fr 7fr;
+      gap: clamp(3rem, 7vw, 7rem);
+    }
+  }
+
+  /* Inquiry. */
+  .pf-inquiry {
+    display: grid;
+    gap: 2.5rem;
+    padding-bottom: 2rem;
+  }
+  .pf-form {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 44rem;
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+  }
+  @media (min-width: 64rem) {
+    .pf-inquiry {
+      grid-template-columns: 5fr 7fr;
+      gap: clamp(3rem, 7vw, 7rem);
+      align-items: start;
+    }
+  }
+
+  /* A story: the words stay beside the photos as they pass (desktop). */
+  .pf-story {
+    display: grid;
+    gap: 3rem;
+  }
+  .pf-story-text {
+    align-self: start;
+  }
+  .pf-prose--story {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    line-height: 1.5;
+  }
+  .pf-story-photos {
+    display: grid;
+    gap: clamp(0.75rem, 2vw, 2rem);
+  }
+  .pf-story-row {
+    display: grid;
+    gap: clamp(0.75rem, 2vw, 2rem);
+    justify-items: center;
+  }
+  .pf-story-row.is-pair {
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+  }
+  .pf-story-row figure {
+    width: 100%;
+    margin: 0;
+  }
+  .pf-story-row:not(.is-pair) figure.is-portrait {
+    width: min(100%, 34rem);
+  }
+  .pf-story-row .photo {
+    width: 100%;
+  }
+  @media (min-width: 64rem) {
+    .pf-story {
+      grid-template-columns: 4fr 8fr;
+      gap: clamp(3rem, 6vw, 6rem);
+    }
+    .pf-story-text {
+      position: sticky;
+      top: 7rem;
+    }
+  }
+  .pf-more {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+    max-width: 48rem;
+  }
+
+  .pf-footer {
+    display: grid;
+    justify-items: center;
+    gap: 0.6rem;
+    margin-top: clamp(5rem, 12vw, 10rem);
+    padding: 3rem var(--pf-pad) calc(3rem + env(safe-area-inset-bottom));
+    text-align: center;
+    color: var(--ink-2);
+    border-top: 1px solid var(--line-soft);
+  }
+  .pf-footer .font-display {
+    color: var(--ink);
+  }
+
+  .pf-reveal-ready .reveal {
+    opacity: 0;
+  }
+}

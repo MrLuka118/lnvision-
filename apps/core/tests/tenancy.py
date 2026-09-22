@@ -97,5 +97,16 @@ def _register_url_cases():
     ]:
         register_url(TenantURLCase(name, model, methods=("get", "post")))
 
+    from apps.portfolio.models import PortfolioCategory, PortfolioStory
+
+    for name, model in [
+        ("portfolio:category_update", PortfolioCategory),
+        ("portfolio:category_delete", PortfolioCategory),
+        ("portfolio:story_update", PortfolioStory),
+        ("portfolio:story_delete", PortfolioStory),
+        ("portfolio:story_photos", PortfolioStory),
+    ]:
+        register_url(TenantURLCase(name, model, methods=("get", "post")))
+
 
 _register_url_cases()

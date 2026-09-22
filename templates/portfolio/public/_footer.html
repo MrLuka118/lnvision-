@@ -1,0 +1,9 @@
+<footer class="pf-footer">
+  <p class="font-display text-2xl">{{ studio.name }}</p>
+  <p class="flex flex-wrap justify-center gap-x-5 gap-y-1">
+    {% if studio.email %}<a class="link" href="mailto:{{ studio.email }}">{{ studio.email }}</a>{% endif %}
+    {% if studio.phone %}<a class="link" href="tel:{{ studio.phone|cut:' ' }}">{{ studio.phone }}</a>{% endif %}
+    {% if portfolio.instagram %}<a class="link" href="{{ portfolio.instagram }}" rel="noopener me">Instagram</a>{% endif %}
+  </p>
+  <p class="text-sm">© {% now "Y" %} {{ studio.name }}</p>
+</footer>
