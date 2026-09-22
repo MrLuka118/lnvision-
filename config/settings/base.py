@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "apps.photos",
     "apps.galleries",
     "apps.portfolio",
+    "apps.finance",
 ]
 
 MIDDLEWARE = [

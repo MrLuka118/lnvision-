@@ -26,6 +26,9 @@ def ensure_studio(user, name: str = "") -> Studio:
                 studio = Studio.objects.create(
                     owner=user, name=name, slug=unique_studio_slug(name), email=user.email
                 )
+                from apps.finance.defaults import seed_categories
+
+                seed_categories(studio)
         except IntegrityError:
             # Lost a race on the slug or the owner; re-read and retry.
             if Studio.objects.filter(owner=user).exists():

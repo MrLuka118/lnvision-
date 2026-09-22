@@ -12,3 +12,4 @@ seed/cache/
 screenshots/
 .DS_Store
 .playwright-mcp/
+.aider*
