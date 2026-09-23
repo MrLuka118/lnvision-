@@ -66,24 +66,56 @@
     gap: 0.6rem;
     max-width: 60rem;
   }
+  /* Editorial stack: small tracked studio line, a light oversized title, a quiet date.
+     Outfit has no italic, so nothing here is slanted (a synthesised oblique looks cheap). */
   .g-cover-studio {
-    font-size: var(--text-sm);
-    font-weight: 560;
-    letter-spacing: 0.02em;
-    opacity: 0.9;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.88;
   }
   .g-title {
-    font-size: clamp(3rem, 9vw, 7.5rem);
-    line-height: 0.95;
-    font-weight: 450;
-    letter-spacing: -0.02em;
+    font-size: clamp(2.75rem, 8.5vw, 7rem);
+    line-height: 0.94;
+    font-weight: 350;
+    letter-spacing: -0.035em;
     text-wrap: balance;
+    text-shadow: 0 1px 24px rgb(0 0 0 / 0.25);
   }
   .g-cover-date {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: clamp(1.1rem, 2vw, 1.5rem);
-    opacity: 0.92;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    opacity: 0.9;
+  }
+  .g-cover-date::before {
+    content: "";
+    width: 2rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.7;
+  }
+  /* The words rise in once, after the photo has settled. */
+  @media (prefers-reduced-motion: no-preference) {
+    .g-cover-text > * {
+      animation: g-rise 700ms var(--ease-out) both;
+    }
+    .g-cover-text > :nth-child(2) {
+      animation-delay: 80ms;
+    }
+    .g-cover-text > :nth-child(3) {
+      animation-delay: 160ms;
+    }
+  }
+  @keyframes g-rise {
+    from {
+      opacity: 0;
+      translate: 0 12px;
+    }
   }
   .g-cover-next {
     position: absolute;
@@ -231,7 +263,7 @@
     max-width: 34rem;
     margin: 1rem auto 4rem;
     font-family: var(--font-display);
-    font-style: italic;
+    font-weight: 350;
     font-size: var(--text-xl);
     line-height: 1.45;
     text-align: center;
@@ -296,8 +328,17 @@
   @media (hover: none) {
     .g-heart {
       opacity: 1;
-      width: 2.25rem;
-      height: 2.25rem;
+    }
+  }
+  /* 44 px on touch: the visible disc stays 40 px, the hit area grows around it. */
+  @media (pointer: coarse) {
+    .g-heart::after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+    }
+    .g-bar-button {
+      height: 2.75rem;
     }
   }
   .g-heart:active {
@@ -335,6 +376,22 @@
   .g-prints {
     columns: 3 18rem;
     column-gap: var(--g-gap);
+  }
+  /* Few prints: CSS columns would balance four photos as 2 + 2 + an empty column. Lay them
+     out as a centred row instead. */
+  .g-prints:not(:has(> .g-tile:nth-child(5))) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 26rem));
+    justify-content: center;
+    align-items: start;
+    gap: var(--g-gap);
+  }
+  .g-prints:not(:has(> .g-tile:nth-child(5))) .g-tile {
+    margin-bottom: 0;
+  }
+  /* Exactly four: two by two, not three and an orphan. */
+  .g-prints:has(> .g-tile:nth-child(4)):not(:has(> .g-tile:nth-child(5))) {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 34rem));
   }
   .g-prints .g-tile {
     break-inside: avoid;
