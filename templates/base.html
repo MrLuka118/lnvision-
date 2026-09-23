@@ -5,13 +5,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="{% if theme == 'light' %}#e9e9e9{% else %}#0f172a{% endif %}">
+  <meta name="theme-color" content="{% if theme == 'light' %}#f1f5f9{% else %}#0f172a{% endif %}">
   <meta name="htmx-config" content='{"includeIndicatorStyles": false, "allowEval": false, "allowScriptTags": false}'>
   <title>{% block title %}{% endblock %} – {{ APP_NAME }}</title>
   <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
   <link rel="preload" href="{% static 'fonts/outfit-latin-wght-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{% static 'fonts/inter-latin-wght-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  {% comment %} Chrome sometimes aborts the cross-document view transition on arrival and rejects a promise
+     no page code can reach; the navigation itself is unaffected. Settle only that rejection. {% endcomment %}
+  <script nonce="{{ CSP_NONCE }}">
+    addEventListener("unhandledrejection", (e) => {
+      if (e.reason?.name === "InvalidStateError" && /^Transition was aborted/.test(e.reason.message)) e.preventDefault();
+    });
+  </script>
   <script type="importmap" nonce="{{ CSP_NONCE }}">
     {
       "imports": {
@@ -19,6 +26,7 @@
         "alpine": "{% static 'vendor/alpine-csp-3.17.4.esm.min.js' %}",
         "app/components": "{% static 'js/components.js' %}",
         "app/popover": "{% static 'js/popover.js' %}",
+        "app/actions": "{% static 'js/actions.js' %}",
         "app/refraction": "{% static 'js/refraction.js' %}",
         "photoswipe": "{% static 'vendor/photoswipe-5.4.4.esm.min.js' %}",
         "photoswipe/lightbox": "{% static 'vendor/photoswipe-lightbox-5.4.4.esm.min.js' %}"

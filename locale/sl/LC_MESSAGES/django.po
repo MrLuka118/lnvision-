@@ -2895,3 +2895,6 @@ msgstr "Še ni paketov"
 #: templates/shoots/package_list.html:32
 msgid "Add the packages you offer, with price, length and delivery time."
 msgstr "Dodajte pakete, ki jih ponujate, s ceno, trajanjem in časom dostave."
+
+msgid "Confirm"
+msgstr "Potrdi"

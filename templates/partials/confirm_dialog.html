@@ -1,0 +1,9 @@
+{# The one confirmation dialog, driven by static/js/actions.js (hx-confirm, data-confirm). #}
+<dialog id="confirm-dialog" class="modal glass" role="alertdialog" aria-labelledby="confirm-title" aria-describedby="confirm-body" closedby="any">
+  <h2 id="confirm-title" class="section-title" data-confirm-title></h2>
+  <p id="confirm-body" class="mt-3 text-ink-2" data-confirm-body hidden></p>
+  <form method="dialog" class="mt-7 flex flex-wrap justify-end gap-2">
+    <button class="btn btn-quiet" value="cancel" autofocus>{% translate "Cancel" %}</button>
+    <button class="btn btn-danger" value="confirm" data-confirm-ok data-default-label="{% translate 'Confirm' %}">{% translate "Confirm" %}</button>
+  </form>
+</dialog>

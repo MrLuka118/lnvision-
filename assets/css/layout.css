@@ -71,7 +71,6 @@
     z-index: 45;
     top: calc(var(--nav-inset) + env(safe-area-inset-top));
     right: var(--nav-inset);
-    padding: 4px;
     view-transition-name: account-fab;
   }
   .account-fab[data-open] {
@@ -79,9 +78,12 @@
     width: min(20rem, calc(100vw - 2 * var(--nav-inset)));
     padding: 0.5rem;
   }
+  /* The padding lives on the button, so the whole 44 px circle is the target, not just the avatar. */
   .account-fab-button {
     display: flex;
     width: 100%;
+    min-height: 2.75rem;
+    padding: 4px;
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;

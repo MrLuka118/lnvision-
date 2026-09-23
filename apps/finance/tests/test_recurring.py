@@ -173,7 +173,7 @@ class TestGenerateRecurring:
     def test_query_count_does_not_grow_with_occurrences(self, studio):
         """The number of database queries is independent of how many occurrences are created."""
         cat = ExpenseCategoryFactory(studio=studio)
-        rec = RecurringExpenseFactory(
+        RecurringExpenseFactory(
             studio=studio,
             category=cat,
             start_date=datetime.date(2020, 1, 1),

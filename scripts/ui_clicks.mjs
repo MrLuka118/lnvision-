@@ -30,7 +30,7 @@ const browser = await chromium.launch({ channel: process.env.PW_CHANNEL || 'chro
 const results = { pages: {}, links: {} };
 
 async function newCtx(vp, auth) {
-  const ctx = await browser.newContext({ viewport: vp, colorScheme: 'dark' });
+  const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, hasTouch: !!vp.touch, isMobile: !!vp.touch, colorScheme: 'dark' });
   if (auth) {
     const p = await ctx.newPage();
     await p.goto(`${BASE}/racun/login/`);
@@ -77,7 +77,7 @@ function listControls(destructive) {
   });
 }
 
-for (const [vpName, vp] of Object.entries({ desktop: { width: 1440, height: 900 }, mobile: { width: 390, height: 844 } })) {
+for (const [vpName, vp] of Object.entries({ desktop: { width: 1440, height: 900 }, mobile: { width: 390, height: 844, touch: true } })) {
   const auth = await newCtx(vp, true);
   const anon = await newCtx(vp, false);
   for (const [name, path, who] of PAGES) {

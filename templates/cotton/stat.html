@@ -2,6 +2,6 @@
 <c-vars label value format="int" note="" />
 <div class="grid gap-1">
   <p class="text-sm text-ink-2">{{ label }}</p>
-  <p class="tnum font-display text-3xl leading-none" x-data="counter" data-to="{{ value }}" data-format="{{ format }}">{% if format == "eur" %}{{ value|eur }}{% else %}{{ value }}{% endif %}</p>
+  <p class="tnum font-display text-2xl leading-none" x-data="counter" data-to="{{ value }}" data-format="{{ format }}">{% if format == "eur" %}{{ value|eur }}{% else %}{{ value }}{% endif %}</p>
   {% if note %}<p class="text-sm text-ink-2">{{ note }}</p>{% endif %}
 </div>

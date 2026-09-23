@@ -2,7 +2,9 @@
  * Design tokens: slate photostudio theme.
  *
  * Slate background with a muted gold accent, using Outfit for display and Inter for body text.
- * The surround is a deep slate rather than neutral grey: a deliberate trade of strict colour neutrality for a warmer, premium feel. Photographs in the editor and lightbox still sit on their own dark wells.
+ * The surround is a deep slate rather than neutral grey: a deliberate trade of strict colour
+ * neutrality for a warmer, premium feel. Photographs in the editor and lightbox still sit on
+ * their own dark wells.
  * Colour comes from the photographs; the only fixed hues are the ColorChecker Classic patches
  * used to tell event types apart.
  */
@@ -125,6 +127,8 @@
   --color-danger: var(--danger);
   --color-success: var(--success);
   --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-line-strong: var(--line-strong);
   --color-on-accent: var(--on-accent);
 }
 
@@ -139,7 +143,8 @@
   --glass-sat: 180%;
 }
 
-/* Darkroom (default). */
+/* Darkroom (default). Contrast on --surround / --raised: ink 16:1, ink-2 5.8:1+, ink-3 4.9:1+,
+   accent-ink 7:1+, line-strong (control boundaries) 3:1+. */
 :root,
 [data-theme="dark"] {
   color-scheme: dark;
@@ -149,14 +154,18 @@
   --well: #0b1120;
   --line: #334155;
   --line-soft: rgb(148 163 184 / 0.12);
+  --line-strong: #64748b;
   --ink: #f1f5f9;
   --ink-2: #a3b1c6;
-  --ink-3: #8a9ab0;
+  --ink-3: #94a3b8;
   --danger: #e57a7f;
   --success: #7cc27f;
+  /* Gold as a fill (buttons, rules, dots) and as text (links, eyebrows): they part in light. */
   --accent: #d4af6a;
+  --accent-ink: #d4af6a;
   --on-accent: #0f172a;
   --focus: #d4af6a;
+  --theme-color: #0f172a;
 
   /* Regular glass: tinted, luminosity pulled towards the tint so text stays legible over any photo. */
   --glass-tint: rgb(15 23 42 / 0.74);
@@ -169,58 +178,67 @@
   --shadow-soft: 0 1px 2px rgb(2 6 23 / 0.4), 0 8px 24px -8px rgb(2 6 23 / 0.55);
 }
 
-/* Light table. "auto" follows the system appearance (HIG: respect the system-wide setting). */
+/* Light table: the same slate family, lightened. Contrast on --surround: ink 16:1, ink-2 6.9:1,
+   ink-3 5:1, accent-ink 5.4:1, line-strong 3.2:1; ink on the gold button 7.6:1.
+   "auto" follows the system appearance (HIG: respect the system-wide setting), so the block is
+   repeated inside the media query below; keep the two in step. */
 [data-theme="light"] {
   color-scheme: light;
-  --surround: #e9e9e9;
-  --surface: #fafafa;
+  --surround: #f1f5f9;
+  --surface: #ffffff;
   --raised: #ffffff;
   --well: #ffffff;
-  --line: #cfcfcf;
-  --line-soft: rgb(0 0 0 / 0.07);
-  --ink: #1c1c1c;
-  --ink-2: #5a5a5a;
-  --ink-3: #666666;
-  --danger: #a8323a;
+  --line: #cbd5e1;
+  --line-soft: rgb(15 23 42 / 0.08);
+  --line-strong: #7c8aa0;
+  --ink: #0f172a;
+  --ink-2: #475569;
+  --ink-3: #5b6b80;
+  --danger: #b42318;
   --success: #2f7a33;
-  --accent: #a8842c;
-  --on-accent: #ffffff;
-  --focus: #1c1c1c;
+  --accent: #c9a45c;
+  --accent-ink: #7d5f17;
+  --on-accent: #0f172a;
+  --focus: #0f172a;
+  --theme-color: #f1f5f9;
 
-  --glass-tint: rgb(250 250 250 / 0.72);
+  --glass-tint: rgb(248 250 252 / 0.72);
   --glass-lum: brightness(1.5);
-  --glass-ink-2: #4f4f4f;
+  --glass-ink-2: #475569;
   --glass-spec: rgb(255 255 255 / 0.9);
-  --glass-rim: rgb(0 0 0 / 0.07);
-  --shadow-float: 0 1px 1px rgb(0 0 0 / 0.05), 0 10px 30px -10px rgb(0 0 0 / 0.18),
-    0 30px 80px -24px rgb(0 0 0 / 0.22);
-  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.06), 0 6px 18px -8px rgb(0 0 0 / 0.14);
+  --glass-rim: rgb(15 23 42 / 0.07);
+  --shadow-float: 0 1px 1px rgb(15 23 42 / 0.05), 0 10px 30px -10px rgb(15 23 42 / 0.18),
+    0 30px 80px -24px rgb(15 23 42 / 0.22);
+  --shadow-soft: 0 1px 2px rgb(15 23 42 / 0.06), 0 6px 18px -8px rgb(15 23 42 / 0.14);
 }
 @media (prefers-color-scheme: light) {
   [data-theme="auto"] {
     color-scheme: light;
-    --surround: #e9e9e9;
-    --surface: #fafafa;
+    --surround: #f1f5f9;
+    --surface: #ffffff;
     --raised: #ffffff;
     --well: #ffffff;
-    --line: #cfcfcf;
-    --line-soft: rgb(0 0 0 / 0.07);
-    --ink: #1c1c1c;
-    --ink-2: #5a5a5a;
-    --ink-3: #666666;
-    --danger: #a8323a;
+    --line: #cbd5e1;
+    --line-soft: rgb(15 23 42 / 0.08);
+    --line-strong: #7c8aa0;
+    --ink: #0f172a;
+    --ink-2: #475569;
+    --ink-3: #5b6b80;
+    --danger: #b42318;
     --success: #2f7a33;
-    --accent: #a8842c;
-    --on-accent: #ffffff;
-    --focus: #1c1c1c;
+    --accent: #c9a45c;
+    --accent-ink: #7d5f17;
+    --on-accent: #0f172a;
+    --focus: #0f172a;
+    --theme-color: #f1f5f9;
 
-    --glass-tint: rgb(250 250 250 / 0.72);
+    --glass-tint: rgb(248 250 252 / 0.72);
     --glass-lum: brightness(1.5);
-    --glass-ink-2: #4f4f4f;
+    --glass-ink-2: #475569;
     --glass-spec: rgb(255 255 255 / 0.9);
-    --glass-rim: rgb(0 0 0 / 0.07);
-    --shadow-float: 0 1px 1px rgb(0 0 0 / 0.05), 0 10px 30px -10px rgb(0 0 0 / 0.18),
-      0 30px 80px -24px rgb(0 0 0 / 0.22);
-    --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.06), 0 6px 18px -8px rgb(0 0 0 / 0.14);
-}
+    --glass-rim: rgb(15 23 42 / 0.07);
+    --shadow-float: 0 1px 1px rgb(15 23 42 / 0.05), 0 10px 30px -10px rgb(15 23 42 / 0.18),
+      0 30px 80px -24px rgb(15 23 42 / 0.22);
+    --shadow-soft: 0 1px 2px rgb(15 23 42 / 0.06), 0 6px 18px -8px rgb(15 23 42 / 0.14);
+  }
 }

@@ -44,3 +44,17 @@ export function polyfillCommands() {
     }
   });
 }
+
+// closedby="any" (click on the backdrop closes the dialog) is Chromium-only so far.
+export function polyfillDialogLightDismiss() {
+  if ("closedBy" in HTMLDialogElement.prototype) return;
+  document.addEventListener("click", (event) => {
+    const dialog = event.target;
+    if (!(dialog instanceof HTMLDialogElement) || !dialog.open) return;
+    if (dialog.getAttribute("closedby") !== "any") return;
+    const r = dialog.getBoundingClientRect();
+    const inside =
+      event.clientX >= r.left && event.clientX <= r.right && event.clientY >= r.top && event.clientY <= r.bottom;
+    if (!inside) dialog.close();
+  });
+}

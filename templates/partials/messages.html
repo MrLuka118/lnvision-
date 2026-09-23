@@ -1,10 +1,10 @@
-{% if messages %}
-  <div class="toasts" role="status" aria-live="polite">
-    {% for message in messages %}
-      <div class="toast glass" x-data="toast" x-show="open" x-transition.opacity.duration.250ms>
-        <span>{{ message }}</span>
-        <c-button variant="quiet" size="sm" icon="x" icon_only aria-label="{% translate 'Dismiss' %}" @click="dismiss" />
-      </div>
-    {% endfor %}
-  </div>
-{% endif %}
+{% comment %} Always present (empty when there is nothing to say), so HTMX responses can refresh it with
+   hx-select-oob="#toasts" and screen readers hear it through the existing live region. {% endcomment %}
+<div id="toasts" class="toasts" role="status" aria-live="polite">
+  {% for message in messages %}
+    <div class="toast glass" x-data="toast" x-show="open" x-transition.opacity.duration.250ms>
+      <span>{{ message }}</span>
+      <c-button variant="quiet" size="sm" icon="x" icon_only aria-label="{% translate 'Dismiss' %}" @click="dismiss" />
+    </div>
+  {% endfor %}
+</div>

@@ -179,12 +179,12 @@ export function registerComponents(Alpine) {
 
     choose(event) {
       const theme = event.target.value;
-      const light =
-        theme === "light" || (theme === "auto" && matchMedia("(prefers-color-scheme: light)").matches);
       morph(() => {
         document.documentElement.dataset.theme = theme;
+        // The browser chrome follows the page surround (--theme-color in tokens.css).
         const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.content = light ? "#e9e9e9" : "#262626";
+        const color = getComputedStyle(document.documentElement).getPropertyValue("--theme-color").trim();
+        if (meta && color) meta.content = color;
       });
       this.theme = theme;
       document.cookie = `theme=${theme}; path=/; max-age=31536000; samesite=lax`;

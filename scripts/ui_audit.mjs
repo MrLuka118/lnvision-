@@ -63,7 +63,7 @@ const PAGES = {
   ],
 };
 
-const VIEWPORTS = { mobile: { width: 390, height: 844 }, desktop: { width: 1440, height: 900 } };
+const VIEWPORTS = { mobile: { width: 390, height: 844, touch: true }, desktop: { width: 1440, height: 900 } };
 
 async function login(context) {
   const page = await context.newPage();
@@ -94,6 +94,7 @@ function inspect() {
     const s = getComputedStyle(el);
     if (r.width === 0 || r.height === 0 || s.visibility === 'hidden') continue;
     if (el.closest('p, li p, td') && el.tagName === 'A') continue; // inline text links are exempt
+    if (el.matches('.segmented input, label input')) continue; // the label is the target
     if (r.height < 44 || r.width < 24) {
       const name = (el.getAttribute('aria-label') || el.textContent || el.getAttribute('name') || '').trim().replace(/\s+/g, ' ').slice(0, 30);
       small.push(`${el.tagName.toLowerCase()} "${name}" ${Math.round(r.width)}x${Math.round(r.height)}`);
@@ -109,9 +110,9 @@ function inspect() {
 const browser = await chromium.launch({ channel: process.env.PW_CHANNEL || 'chrome' });
 const report = {};
 for (const [vpName, vp] of Object.entries(VIEWPORTS)) {
-  const context = await browser.newContext({ viewport: vp, colorScheme: 'dark' });
+  const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, hasTouch: !!vp.touch, isMobile: !!vp.touch, colorScheme: 'dark' });
   await login(context);
-  const anon = await browser.newContext({ viewport: vp, colorScheme: 'dark' });
+  const anon = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, hasTouch: !!vp.touch, isMobile: !!vp.touch, colorScheme: 'dark' });
   for (const [group, pages] of Object.entries(PAGES)) {
     for (const [name, path] of pages) {
       if (only && !only.split(',').includes(name)) continue;

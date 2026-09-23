@@ -3,7 +3,8 @@ import htmx from "htmx";
 import Alpine from "alpine";
 import { registerComponents } from "app/components";
 import { initRefraction } from "app/refraction";
-import { initPopovers, polyfillCommands } from "app/popover";
+import { initPopovers, polyfillCommands, polyfillDialogLightDismiss } from "app/popover";
+import { initActions } from "app/actions";
 
 window.htmx = htmx;
 window.Alpine = Alpine;
@@ -14,6 +15,8 @@ Alpine.start();
 initRefraction();
 initPopovers();
 polyfillCommands();
+polyfillDialogLightDismiss();
+initActions();
 
 htmx.on("htmx:afterSettle", (event) => initRefraction(event.target));
 
