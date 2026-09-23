@@ -1,0 +1,7 @@
+{% extends "layouts/auth.html" %}
+{% block title %}{% translate "Page not found" %}{% endblock %}
+{% block content %}
+  <h1 id="auth-title" class="auth-title">{% translate "Page not found" %}</h1>
+  <p class="auth-lede">{% translate "The link may be old, or the page has moved. Everything else is where you left it." %}</p>
+  <c-button href="/" icon="arrow-left">{% translate "Back to the overview" %}</c-button>
+{% endblock %}

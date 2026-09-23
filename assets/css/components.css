@@ -676,7 +676,8 @@
     background: var(--line-soft);
     color: var(--ink);
   }
-  dialog.modal:has(> .modal-close) > :is(h2, header):first-of-type {
+  /* Keep the title clear of the close button, wherever in the dialog it sits. */
+  dialog.modal:has(> .modal-close) h2 {
     padding-right: 2.5rem;
   }
   dialog.modal:not([open]) {

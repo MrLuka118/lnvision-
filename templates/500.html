@@ -1,0 +1,8 @@
+{% extends "layouts/auth.html" %}
+{% comment %} Rendered without context processors: no studio, request or theme here. {% endcomment %}
+{% block title %}{% translate "Something went wrong" %}{% endblock %}
+{% block content %}
+  <h1 id="auth-title" class="auth-title">{% translate "Something went wrong" %}</h1>
+  <p class="auth-lede">{% translate "It's on our side, not yours. Try again in a moment; if it keeps happening, let us know." %}</p>
+  <c-button href="/" icon="arrow-left">{% translate "Back to the overview" %}</c-button>
+{% endblock %}

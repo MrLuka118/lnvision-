@@ -146,3 +146,24 @@ def test_shoot_events_are_not_deleted_from_the_calendar(auth_client, studio):
     response = auth_client.post(reverse("scheduling:delete", args=[event.pk]))
     assert response.status_code == 404
     assert Event.objects.filter(pk=event.pk).exists()
+
+
+def test_event_detail_htmx_returns_fragment(auth_client, studio):
+    event = EventFactory(studio=studio)
+    response = auth_client.get(
+        reverse("scheduling:detail", args=[event.pk]),
+        headers={"HX-Request": "true"},
+    )
+    assert response.status_code == 200
+    content = response.content.decode()
+    assert "<html" not in content
+    assert event.display_title in content
+
+
+def test_event_detail_direct_returns_full_page(auth_client, studio):
+    event = EventFactory(studio=studio)
+    response = auth_client.get(reverse("scheduling:detail", args=[event.pk]))
+    assert response.status_code == 200
+    content = response.content.decode()
+    assert "<html" in content
+    assert event.display_title in content

@@ -59,6 +59,17 @@ def test_status_change(auth_client, shoot):
     assert shoot.status == Shoot.Status.PAID
 
 
+def test_status_change_sets_success_message(auth_client, shoot):
+    response = auth_client.post(
+        reverse("shoots:status", args=[shoot.pk]), {"status": "paid"}, follow=True
+    )
+    assert response.status_code == 200
+    messages = list(response.context["messages"])
+    assert len(messages) == 1
+    shoot.refresh_from_db()
+    assert str(messages[0]) == f"Status: {shoot.get_status_display()}"
+
+
 def test_active_list_puts_upcoming_first(auth_client, shoot):
     response = auth_client.get(reverse("shoots:list"))
     assert response.status_code == 200

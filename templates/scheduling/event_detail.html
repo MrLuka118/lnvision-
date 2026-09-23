@@ -1,0 +1,9 @@
+{% extends "layouts/app.html" %}
+{% block title %}{{ object.display_title }}{% endblock %}
+{% block content %}
+  <a class="back-link" href="{% url 'scheduling:calendar' %}"><c-icon name="chevron-left" size="sm" />{% translate "Calendar" %}</a>
+  <c-page-header :title="object.display_title" />
+  <div class="panel max-w-xl p-5">
+    {% include "scheduling/_event_detail.html" %}
+  </div>
+{% endblock %}

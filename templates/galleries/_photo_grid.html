@@ -12,7 +12,9 @@
             {% if group.section %}
               <div class="flex items-center justify-between gap-4">
                 <h2 class="text-xl">{{ group.section.title }} <span class="font-sans text-sm text-ink-2">{{ group.photos|length }}</span></h2>
-                <form method="post" action="{% url 'galleries:section_delete' object.pk group.section.pk %}">
+                <form method="post" action="{% url 'galleries:section_delete' object.pk group.section.pk %}"
+                      data-confirm="{% translate 'Remove this section?' %}"
+                      data-confirm-detail="{% translate 'Its photos stay in the gallery, without a section.' %}">
                   {% csrf_token %}
                   <button class="btn btn-quiet btn-sm" type="submit"><c-icon name="x" size="sm" />{% translate "Remove section" %}</button>
                 </form>

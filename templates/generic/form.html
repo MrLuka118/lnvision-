@@ -21,7 +21,7 @@
       <div class="flex flex-wrap items-center gap-2">
         <c-button type="submit">{{ submit_label }}</c-button>
         <c-button variant="quiet" :href="cancel_url">{% translate "Cancel" %}</c-button>
-        {% if delete_url %}<a class="ml-auto inline-flex items-center gap-2 text-sm text-danger" href="{{ delete_url }}"><c-icon name="trash-2" size="sm" />{% translate "Delete" %}</a>{% endif %}
+        {% if delete_url %}<a class="ml-auto action-link is-danger" href="{{ delete_url }}"><c-icon name="trash-2" size="sm" />{% translate "Delete" %}</a>{% endif %}
       </div>
     </form>
   </div>

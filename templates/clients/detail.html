@@ -61,7 +61,7 @@
           <div class="text-ink-2">{{ object.notes|linebreaks }}</div>
         </div>
       {% endif %}
-      <a class="inline-flex items-center gap-2 text-sm text-danger" href="{% url 'clients:delete' object.pk %}"><c-icon name="trash-2" size="sm" />{% translate "Delete client" %}</a>
+      <a class="action-link is-danger" href="{% url 'clients:delete' object.pk %}"><c-icon name="trash-2" size="sm" />{% translate "Delete client" %}</a>
     </aside>
   </div>
 {% endblock %}

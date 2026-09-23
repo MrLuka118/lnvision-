@@ -147,7 +147,7 @@ await flow('calendar', true, async (page, check) => {
   check('today returns', (await title()) === t0);
   await page.locator('.segmented label, .segmented button, [name="cal-view"]').filter({ hasText: 'Teden' }).first().click().catch(async () => page.locator('text=Teden').first().click());
   await page.waitForTimeout(500);
-  check('week view switch', (await title()) !== t0, await title());
+  check('week view switch', (await page.evaluate(() => document.querySelector('input[name="cal-view"]:checked')?.value)) === 'timeGridWeek');
   await page.locator('text=Mesec').first().click();
   await page.waitForTimeout(500);
   const ev = page.locator('.fc-event, [data-event-id], .cal-event').first();
@@ -194,6 +194,14 @@ await flow('gallery-editor', true, async (page, check) => {
   await page.locator('button', { hasText: 'Dodaj' }).click();
   await page.waitForTimeout(1000);
   check('add section appears', (await page.content()).includes('UI test poglavje'));
+  // Clean up through the confirmation dialog (plain form with data-confirm).
+  const remove = page.locator('section.grid', { has: page.locator('h2', { hasText: 'UI test poglavje' }) }).locator('form[data-confirm] button').first();
+  await remove.click();
+  await page.waitForTimeout(300);
+  check('remove section asks first', await dialogOpen(page, 'confirm-dialog'));
+  await Promise.all([page.waitForLoadState('networkidle'), page.locator('#confirm-dialog [data-confirm-ok]').click()]);
+  await page.waitForTimeout(500);
+  check('section removed after confirming', !(await page.content()).includes('UI test poglavje'));
 });
 
 await flow('client-gallery', false, async (page, check) => {

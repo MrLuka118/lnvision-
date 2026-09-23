@@ -157,7 +157,12 @@ class EventUpdateView(DialogFormMixin, StudioUpdateView):
 
 class EventDetailView(StudioScopedMixin, DetailView):
     model = Event
-    template_name = "scheduling/_event_detail.html"
+    template_name = "scheduling/event_detail.html"
+
+    def get_template_names(self):
+        if self.request.htmx:
+            return ["scheduling/_event_detail.html"]
+        return [self.template_name]
 
     def get_queryset(self):
         return super().get_queryset().select_related("shoot", "client", "location")

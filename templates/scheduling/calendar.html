@@ -42,11 +42,13 @@
   <div id="event-popover" class="menu glass event-popover" popover></div>
 
   <dialog id="event-dialog" class="modal glass" aria-label="{% translate 'Event' %}" closedby="any">
+    <c-modal-close for="event-dialog" />
     <div id="event-dialog-body"></div>
   </dialog>
 
   <dialog id="ics-dialog" class="modal glass" aria-labelledby="ics-title" closedby="any">
-    <h2 id="ics-title" class="text-xl">{% translate "Subscribe from your phone or computer" %}</h2>
+    <c-modal-close for="ics-dialog" />
+    <h2 id="ics-title" class="section-title">{% translate "Subscribe from your phone or computer" %}</h2>
     <p class="mt-3 text-ink-2">{% translate "Add this link as a calendar subscription in Google Calendar or Apple Calendar. Your shoots, meetings and deadlines appear there and update on their own." %}</p>
     <div class="mt-5 flex gap-2" x-data="copy" data-copied="{% translate 'Copied' %}">
       <label class="visually-hidden" for="ics-url">{% translate "Calendar link" %}</label>

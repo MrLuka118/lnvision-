@@ -2898,3 +2898,43 @@ msgstr "Dodajte pakete, ki jih ponujate, s ceno, trajanjem in časom dostave."
 
 msgid "Confirm"
 msgstr "Potrdi"
+
+msgid "Delete this photo?"
+msgstr "Želite izbrisati to fotografijo?"
+
+msgid "The original and all its sizes are removed. This can't be undone."
+msgstr "Izbrisani bodo izvirnik in vse njegove velikosti. Tega ni mogoče razveljaviti."
+
+msgid "Remove this section?"
+msgstr "Želite odstraniti to poglavje?"
+
+msgid "Its photos stay in the gallery, without a section."
+msgstr "Fotografije ostanejo v galeriji, brez poglavja."
+
+msgid "Remove from the calendar?"
+msgstr "Želite odstraniti iz koledarja?"
+
+msgid "Cancel this shoot?"
+msgstr "Želite odpovedati to fotografiranje?"
+
+msgid "It moves to the history. You can reopen it as an inquiry."
+msgstr "Premakne se v zgodovino. Pozneje ga lahko znova odprete kot povpraševanje."
+
+#, python-format
+msgid "Status: %(status)s"
+msgstr "Status: %(status)s"
+
+msgid "Page not found"
+msgstr "Strani ni mogoče najti"
+
+msgid "The link may be old, or the page has moved. Everything else is where you left it."
+msgstr "Povezava je morda zastarela ali pa se je stran preselila. Vse drugo je tam, kjer ste ga pustili."
+
+msgid "Back to the overview"
+msgstr "Nazaj na pregled"
+
+msgid "Something went wrong"
+msgstr "Nekaj je šlo narobe"
+
+msgid "It's on our side, not yours. Try again in a moment; if it keeps happening, let us know."
+msgstr "Napaka je na naši strani, ne na vaši. Poskusite znova čez trenutek; če se ponavlja, nam sporočite."

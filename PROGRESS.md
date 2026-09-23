@@ -15,6 +15,7 @@ Stack starts, `check` clean, no pending migrations, ruff clean, 171 tests green.
 | 3b Client gallery | ✅ |
 | 4 Public portfolio + inquiry | ✅ merged 2026-09-22 |
 | 5 Finance | 🟡 001 models + 002 recurring done; 003–005 next |
+| UI/UX pass (`UI-UX-AUDIT.md`) | 🟡 functional A1–A9 + tokens B1–B4 + gallery hero C1 done; 008 page polish next |
 | 6 Polish (a11y, Lighthouse, security review, README) | ⬜ |
 
 Decisions:

@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.db.models import F
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -170,4 +171,6 @@ class ShootStatusView(StudioScopedMixin, View):
     def post(self, request, pk):
         shoot = get_object_or_404(Shoot.objects.for_studio(request.studio), pk=pk)
         services.set_status(shoot, request.POST.get("status", ""))
+        shoot.refresh_from_db()
+        messages.success(request, _("Status: %(status)s") % {"status": shoot.get_status_display()})
         return HttpResponseRedirect(shoot.get_absolute_url())

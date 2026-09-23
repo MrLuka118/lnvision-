@@ -49,3 +49,17 @@ class TestViews:
         client.force_login(staff_user)
         response = client.get(reverse("core:styleguide"))
         assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_missing_page_uses_the_styled_404(client):
+    response = client.get("/ta-stran-ne-obstaja/")
+    assert response.status_code == 404
+    assert "404.html" in [t.name for t in response.templates]
+
+
+def test_500_page_renders_without_request_context():
+    from django.template import loader
+
+    html = loader.get_template("500.html").render()
+    assert 'href="/"' in html
