@@ -3,7 +3,7 @@
 {% block title %}{% translate "Overview" %}{% endblock %}
 {% block content %}
   <header class="mb-14 grid gap-3">
-    <p class="text-md text-ink-2">
+    <p class="eyebrow">
       {% if request.user.first_name %}{% blocktranslate with name=request.user.first_name %}Good day, {{ name }}.{% endblocktranslate %}{% else %}{% translate "Good day." %}{% endif %}
     </p>
     {% now "l" as weekday %}
@@ -16,11 +16,11 @@
     <section aria-labelledby="inquiries-title" class="xl:col-start-2 xl:row-start-1">
       <div class="mb-4 flex items-baseline justify-between gap-4">
         <h2 id="inquiries-title" class="text-xl">
-          {% translate "Waiting for a reply" %} <span class="tnum text-ink-2">{{ inquiry_count }}</span>
+          {% translate "Waiting for a reply" %} <span class="tnum count-pill">{{ inquiry_count }}</span>
         </h2>
         <a class="link text-sm" href="{% url 'shoots:list' %}?status=inquiry">{% translate "All inquiries" %}</a>
       </div>
-      <div class="rows">
+      <div class="rows rows-accent">
         {% for shoot in inquiries %}
           <a class="row grid-cols-[minmax(0,1fr)_auto]" href="{{ shoot.get_absolute_url }}">
             <span class="grid min-w-0">
@@ -45,7 +45,11 @@
       <div class="grid gap-6">
         {% for day in days %}
           <div class="grid gap-2">
+            {% if day.date == today %}
+            <h3 class="font-sans text-sm font-semibold text-accent">
+            {% else %}
             <h3 class="font-sans text-sm font-semibold text-ink-2">
+            {% endif %}
               {% if day.date == today %}{% translate "Today" %}{% else %}{{ day.date|date:"l, j. n."|capfirst }}{% endif %}
             </h3>
             <div class="rows">

@@ -8,7 +8,7 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-feature-settings: "kern", "liga";
+    font-feature-settings: "cv11", "ss01", "kern", "liga";
   }
 
   body {
@@ -19,9 +19,8 @@
 
   :where(h1, h2, h3, .display) {
     font-family: var(--font-display);
-    font-optical-sizing: auto;
-    font-weight: 500;
-    letter-spacing: -0.01em;
+    font-weight: 600;
+    letter-spacing: -0.02em;
     text-wrap: balance;
   }
 
