@@ -14,11 +14,11 @@
   {% if inquiries %}
     {# Waiting for a reply comes first on a phone; beside the week on a wide screen. #}
     <section aria-labelledby="inquiries-title" class="xl:col-start-2 xl:row-start-1">
-      <div class="mb-4 flex items-baseline justify-between gap-4">
-        <h2 id="inquiries-title" class="text-xl">
+      <div class="mb-4 flex items-center justify-between gap-4">
+        <h2 id="inquiries-title" class="section-title whitespace-nowrap">
           {% translate "Waiting for a reply" %} <span class="tnum count-pill">{{ inquiry_count }}</span>
         </h2>
-        <a class="link text-sm" href="{% url 'shoots:list' %}?status=inquiry">{% translate "All inquiries" %}</a>
+        <a class="action-link shrink-0" href="{% url 'shoots:list' %}?status=inquiry">{% translate "All inquiries" %} <c-icon name="chevron-right" size="sm" /></a>
       </div>
       <div class="rows rows-accent">
         {% for shoot in inquiries %}
@@ -37,16 +37,16 @@
   {% endif %}
 
   <section aria-labelledby="week-title" class="max-w-3xl xl:col-start-1 xl:row-start-1">
-    <div class="mb-4 flex items-baseline justify-between gap-4">
-      <h2 id="week-title" class="text-xl">{% translate "Next 7 days" %}</h2>
-      <a class="link text-sm" href="{% url 'scheduling:calendar' %}">{% translate "Open calendar" %}</a>
+    <div class="mb-4 flex items-center justify-between gap-4">
+      <h2 id="week-title" class="section-title">{% translate "Next 7 days" %}</h2>
+      <a class="action-link shrink-0" href="{% url 'scheduling:calendar' %}">{% translate "Open calendar" %} <c-icon name="chevron-right" size="sm" /></a>
     </div>
     {% if days %}
       <div class="grid gap-6">
         {% for day in days %}
           <div class="grid gap-2">
             {% if day.date == today %}
-            <h3 class="font-sans text-sm font-semibold text-accent">
+            <h3 class="font-sans text-sm font-semibold text-accent-ink">
             {% else %}
             <h3 class="font-sans text-sm font-semibold text-ink-2">
             {% endif %}

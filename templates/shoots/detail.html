@@ -42,7 +42,7 @@
     <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
       <section aria-labelledby="when-title" class="grid content-start gap-8">
         <div class="panel p-5">
-          <h2 id="when-title" class="mb-4 text-xl">{% translate "When and where" %}</h2>
+          <h2 id="when-title" class="mb-4 section-title">{% translate "When and where" %}</h2>
           <dl class="facts sm:grid-cols-2">
             <div>
               <dt>{% translate "Date" %}</dt>
@@ -50,7 +50,7 @@
             </div>
             <div>
               <dt>{% translate "Time" %}</dt>
-              <dd class="tnum">{% if object.starts_at %}{{ object.starts_at|date:"H:i" }}{% if object.ends_at %}–{{ object.ends_at|date:"H:i" }}{% endif %}{% else %}—{% endif %}</dd>
+              <dd class="tnum">{% if object.all_day %}{% translate "All day" %}{% elif object.starts_at %}{{ object.starts_at|date:"H:i" }}{% if object.ends_at %}–{{ object.ends_at|date:"H:i" }}{% endif %}{% else %}—{% endif %}</dd>
             </div>
             <div class="sm:col-span-2">
               <dt>{% translate "Location" %}</dt>
@@ -65,7 +65,7 @@
         </div>
 
         <section aria-labelledby="deadlines-title">
-          <h2 id="deadlines-title" class="mb-4 text-xl">{% translate "Deadlines and meetings" %}</h2>
+          <h2 id="deadlines-title" class="mb-4 section-title">{% translate "Deadlines and meetings" %}</h2>
           {% if deadlines %}
             <div class="grid gap-2">
               {% for event in deadlines %}
@@ -92,7 +92,7 @@
         </div>
         {% if object.notes %}
           <div class="panel p-5">
-            <h2 class="mb-3 text-xl">{% translate "Notes" %}</h2>
+            <h2 class="mb-3 section-title">{% translate "Notes" %}</h2>
             <div class="text-ink-2">{{ object.notes|linebreaks }}</div>
           </div>
         {% endif %}

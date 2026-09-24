@@ -61,6 +61,7 @@ class ShootQuerySet(TenantQuerySet):
         return self.annotate(
             starts_at=Subquery(main.values("start")[:1]),
             ends_at=Subquery(main.values("end")[:1]),
+            all_day=Subquery(main.values("all_day")[:1]),
         )
 
 

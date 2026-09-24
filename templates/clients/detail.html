@@ -16,7 +16,7 @@
 
   <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
     <section aria-labelledby="shoots-title" class="min-w-0">
-      <h2 id="shoots-title" class="mb-4 text-xl">{% translate "Shoots" %}</h2>
+      <h2 id="shoots-title" class="mb-4 section-title">{% translate "Shoots" %}</h2>
       {% if shoots %}
         <div class="rows">
           {% for shoot in shoots %}
@@ -28,7 +28,7 @@
                 <span class="row-title">{{ shoot.title }}</span>
                 <span class="row-meta">{% firstof shoot.package.name "" %}{% if shoot.package and shoot.location %}, {% endif %}{% firstof shoot.location.name "" %}</span>
               </span>
-              <span class="grid justify-items-end gap-1">
+              <span class="row-aside tnum">
                 <c-badge :dot="shoot.status_colour">{{ shoot.get_status_display }}</c-badge>
                 <span class="tnum text-sm text-ink-2">{{ shoot.price|eur }}</span>
               </span>
@@ -46,7 +46,7 @@
 
     <aside aria-labelledby="contact-title" class="grid content-start gap-6">
       <div class="panel p-5">
-        <h2 id="contact-title" class="mb-4 text-xl">{% translate "Contact" %}</h2>
+        <h2 id="contact-title" class="mb-4 section-title">{% translate "Contact" %}</h2>
         <dl class="facts">
           {% if object.email %}<div><dt>{% translate "Email" %}</dt><dd><a class="link" href="mailto:{{ object.email }}">{{ object.email }}</a></dd></div>{% endif %}
           {% if object.phone %}<div><dt>{% translate "Phone" %}</dt><dd><a class="link" href="tel:{{ object.phone|cut:' ' }}">{{ object.phone }}</a></dd></div>{% endif %}
@@ -57,7 +57,7 @@
       </div>
       {% if object.notes %}
         <div class="panel p-5">
-          <h2 class="mb-3 text-xl">{% translate "Notes" %}</h2>
+          <h2 class="mb-3 section-title">{% translate "Notes" %}</h2>
           <div class="text-ink-2">{{ object.notes|linebreaks }}</div>
         </div>
       {% endif %}

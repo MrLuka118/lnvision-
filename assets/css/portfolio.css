@@ -127,7 +127,7 @@
   }
   .pf-hero-line {
     font-family: var(--font-display);
-    font-style: italic;
+    font-weight: 350;
     font-size: var(--text-xl);
     opacity: 0.92;
   }
@@ -216,7 +216,7 @@
   /* Story cards. */
   .pf-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
     gap: 3rem clamp(1rem, 3vw, 2.5rem);
   }
   .pf-card {

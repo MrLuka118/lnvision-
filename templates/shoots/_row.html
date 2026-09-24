@@ -3,14 +3,14 @@
   <span class="tnum w-24 text-sm leading-snug">
     {% if shoot.starts_at %}
       <span class="block{% if shoot.starts_at < now %} text-ink-2{% endif %}">{{ shoot.starts_at|date:"j. n. Y" }}</span>
-      <span class="block text-ink-2">{{ shoot.starts_at|date:"D, H:i" }}</span>
+      <span class="block text-ink-2">{% if shoot.all_day %}{{ shoot.starts_at|date:"D" }}{% else %}{{ shoot.starts_at|date:"D, H:i" }}{% endif %}</span>
     {% else %}<span class="text-ink-2">{% translate "No date" %}</span>{% endif %}
   </span>
   <span class="grid min-w-0">
     <span class="row-title">{{ shoot.title }}</span>
     <span class="row-meta">{{ shoot.client.display_name }}{% if shoot.location %}, {{ shoot.location.name }}{% endif %}</span>
   </span>
-  <span class="grid justify-items-end gap-1">
+  <span class="row-aside tnum">
     <c-badge :dot="shoot.status_colour">{{ shoot.get_status_display }}</c-badge>
     <span class="tnum text-sm text-ink-2">{{ shoot.price|eur }}</span>
   </span>

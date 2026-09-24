@@ -8,7 +8,7 @@
           <span class="row-title">{{ client.display_name }}</span>
           <span class="row-meta">{% firstof client.email client.phone client.company %}</span>
         </span>
-        <span class="tnum text-right text-sm text-ink-2">
+        <span class="row-aside tnum">
           {% if client.next_shoot %}
             <span class="block text-ink">{{ client.next_shoot|date:"SHORT_DATE_FORMAT" }}</span>{% translate "next shoot" %}
           {% elif client.shoot_count %}

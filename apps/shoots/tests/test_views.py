@@ -107,3 +107,30 @@ def test_client_search_partial_for_htmx(auth_client, studio):
         headers={"HX-Request": "true", "HX-Target": "client-results"},
     )
     assert response.templates[0].name == "clients/_results.html"
+
+
+def test_all_day_shoot_detail_does_not_contain_midnight(auth_client, studio, shoot):
+    Event.objects.create(
+        studio=studio,
+        kind=Event.Kind.SHOOT,
+        shoot=shoot,
+        start=timezone.now().replace(hour=0, minute=0, second=0, microsecond=0),
+        all_day=True,
+    )
+    response = auth_client.get(shoot.get_absolute_url())
+    assert response.status_code == 200
+    assert response.context["object"].all_day is True
+    assert "00:00" not in response.content.decode()
+
+
+def test_all_day_shoot_row_omits_time(auth_client, studio, shoot):
+    Event.objects.create(
+        studio=studio,
+        kind=Event.Kind.SHOOT,
+        shoot=shoot,
+        start=timezone.now().replace(hour=0, minute=0, second=0, microsecond=0),
+        all_day=True,
+    )
+    response = auth_client.get(reverse("shoots:list"))
+    assert response.status_code == 200
+    assert "00:00" not in response.content.decode()

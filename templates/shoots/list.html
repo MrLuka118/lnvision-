@@ -18,7 +18,7 @@
         {% for label, shoots in groups %}
           {% if shoots %}
             <section class="grid gap-3">
-              <h2 class="text-xl">{{ label }}</h2>
+              <h2 class="section-title">{{ label }}</h2>
               <div class="rows">{% for shoot in shoots %}{% include "shoots/_row.html" %}{% endfor %}</div>
             </section>
           {% endif %}

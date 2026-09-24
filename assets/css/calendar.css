@@ -63,10 +63,21 @@
     outline: 1px dashed color-mix(in srgb, var(--dot) 70%, transparent);
     outline-offset: -1px;
   }
-  /* In the week and day grid there is room: let the title wrap. */
-  .cal-event.is-tall .cal-event-title {
-    white-space: normal;
+  /* Week and day view: single-line title with ellipsis, time and title on one line for short events. */
+  .fc-timegrid-event .cal-event-title {
     width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .fc-timegrid-event-short .cal-event {
+    flex-wrap: nowrap;
+  }
+  .fc-timegrid-event-short .cal-event-time {
+    flex-shrink: 0;
+  }
+  .fc-timegrid-event-short .cal-event-title {
+    width: auto;
   }
   .cal-event-time {
     font-size: var(--text-xs);

@@ -2,7 +2,7 @@
 <form method="post" action="{{ request.get_full_path }}" hx-post="{{ request.get_full_path }}" hx-target="#event-dialog-body" class="grid gap-5" novalidate>
   {% csrf_token %}
   <div class="flex items-start justify-between gap-4">
-    <h2 class="text-xl">{{ page_title }}</h2>
+    <h2 class="section-title">{{ page_title }}</h2>
     <button class="btn btn-quiet btn-sm btn-icon -mr-2 -mt-1" type="button" value="close" formmethod="dialog" data-close-dialog aria-label="{% translate 'Close' %}"><c-icon name="x" /></button>
   </div>
   {% if shoot_url %}

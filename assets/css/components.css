@@ -438,8 +438,11 @@
   }
 
   /* ----------------------------------------------------------------- fields */
+  /* align-content: start, so a field stretched by a taller neighbour in a form grid keeps its
+     control at the top instead of spreading the extra height between label and control. */
   .field {
     display: grid;
+    align-content: start;
     gap: 0.4rem;
   }
   .field-label {
