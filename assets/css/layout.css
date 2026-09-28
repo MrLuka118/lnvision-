@@ -282,3 +282,12 @@
     }
   }
 }
+
+@layer components {
+  .wordmark { display: flex; align-items: center; gap: .6rem; font-size: 1.8rem; }
+  .brand-caption { display: block; margin-top: .75rem; font-size: .6rem; letter-spacing: .2em; color: var(--ink-3); }
+  .app-main { max-width: 160rem; }
+  .nav-item[aria-current="page"] { color: var(--accent-ink); }
+  .page-header { padding-bottom: 1.75rem; border-bottom: 1px solid var(--line-soft); }
+  .tab { font-size: 9px; }
+}

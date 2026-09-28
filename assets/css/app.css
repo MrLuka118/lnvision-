@@ -12,3 +12,4 @@
 
 @source not "../../docs";
 @source not "../../staticfiles";
+@import "./finance.css";

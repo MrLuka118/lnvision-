@@ -1,5 +1,5 @@
 {% url "public_portfolio:inquiry" studio.slug as inquiry_url %}
-<form class="pf-form panel" method="post" action="{{ inquiry_url }}" hx-post="{{ inquiry_url }}" hx-target="this" hx-swap="outerHTML" novalidate>
+<form hx-boost="false" class="pf-form panel" method="post" action="{{ inquiry_url }}" hx-post="{{ inquiry_url }}" hx-target="this" hx-swap="outerHTML" novalidate>
   {% csrf_token %}
   {% include "partials/form_errors.html" %}
   {{ form.started }}

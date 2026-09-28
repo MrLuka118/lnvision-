@@ -16,10 +16,13 @@ def test_security_headers(client):
 
 
 @pytest.mark.django_db
-def test_import_map_carries_the_csp_nonce(client):
+def test_vite_bundle_carries_the_csp_nonce(client):
     response = client.get(reverse("account_login"))
     nonce = response.headers["Content-Security-Policy"].split("'nonce-")[1].split("'")[0]
-    assert f'<script type="importmap" nonce="{nonce}">' in response.content.decode()
+    html = response.content.decode()
+    assert f'nonce="{nonce}"' in html
+    assert 'type="module"' in html
+    assert "/static/dist/assets/main-" in html
 
 
 @pytest.mark.django_db

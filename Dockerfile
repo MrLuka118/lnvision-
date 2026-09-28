@@ -1,4 +1,14 @@
 # syntax=docker/dockerfile:1.7
+FROM node:22-slim AS frontend
+WORKDIR /build
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY assets ./assets
+COPY static ./static
+COPY templates ./templates
+COPY vite.config.js ./
+RUN npm run build
+
 FROM python:3.13-slim-trixie AS base
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -22,13 +32,9 @@ ARG UV_GROUPS="--group dev"
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-install-project ${UV_GROUPS}
 
-# Tailwind standalone CLI lives outside the bind-mounted source tree.
-ENV TAILWIND_CLI_PATH=/opt/tailwind
 COPY . .
-RUN DJANGO_SETTINGS_MODULE=config.settings.dev DJANGO_SECRET_KEY=build \
-    DATABASE_URL=postgres://build@localhost/build python manage.py tailwind download_cli
-
-RUN useradd --create-home --uid 1000 app && mkdir -p /data && chown -R app:app /app /data /opt/tailwind
+COPY --from=frontend /build/static/dist ./static/dist
+RUN useradd --create-home --uid 1000 app && mkdir -p /data && chown -R app:app /app /data
 USER app
 
 EXPOSE 8000

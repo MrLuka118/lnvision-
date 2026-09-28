@@ -1,0 +1,20 @@
+{% extends "layouts/app.html" %}
+{% load formatting %}
+{% block title %}{{ title|capfirst }}{% endblock %}
+{% block content %}
+<c-page-header title="{% translate 'Finance' %}" lede="{% translate 'A clear view of the work behind your work.' %}"><c-button :href="create_url" icon="plus">{% translate "New record" %}</c-button></c-page-header>
+{% include "finance/_tabs.html" %}
+{% if is_ledger %}{% include "finance/_period.html" %}
+<div class="ledger-heading"><h2 class="section-title">{{ title|capfirst }}</h2><span class="ledger-total tnum">{{ total|eur }}</span></div>
+{% else %}<h2 class="section-title mb-6">{{ title|capfirst }}</h2>{% endif %}
+{% if rows %}<div class="rows">
+{% for row in rows %}{% with item=row.object %}
+<div class="row finance-row">
+  <span class="tnum text-sm text-ink-2">{% if item.date %}{{ item.date|date:"j. n. Y" }}{% else %}<c-icon name="wallet" />{% endif %}</span>
+  <a href="{{ row.edit_url }}" class="grid min-w-0"><span class="row-title">{% firstof item.description item.name item.supplier item.client item.shoot title %}</span><span class="row-meta">{% if item.category %}{{ item.category.name }}{% if item.supplier %} · {{ item.supplier }}{% endif %}{% elif item.method %}{{ item.get_method_display }}{% endif %}{% if active == 'recurring' %} · {{ item.get_interval_display }} · {% if item.is_active %}{% translate "Active" %}{% else %}{% translate "Paused" %}{% endif %}{% endif %}</span></a>
+  <span class="row-aside tnum">{% if item.amount %}{{ item.amount|eur }}{% endif %}</span>
+  <div class="flex gap-1">{% if item.receipt %}<a class="btn btn-quiet btn-icon" hx-boost="false" href="{% url 'finance:receipt' item.pk %}" aria-label="{% translate 'Download receipt' %}"><c-icon name="download" /></a>{% endif %}<a class="btn btn-quiet btn-icon" href="{{ row.edit_url }}" aria-label="{% translate 'Edit' %}"><c-icon name="pencil" /></a><a class="btn btn-quiet btn-icon" href="{{ row.delete_url }}" aria-label="{% translate 'Delete' %}"><c-icon name="trash-2" /></a></div>
+</div>{% endwith %}{% endfor %}
+</div>{% include "partials/pagination.html" %}
+{% else %}<c-empty icon="wallet" title="{% translate 'Nothing recorded yet' %}">{% translate "Add your first record, or choose another period." %}<c-slot name="actions"><c-button :href="create_url" icon="plus">{% translate "New record" %}</c-button></c-slot></c-empty>{% endif %}
+{% endblock %}

@@ -6,7 +6,7 @@
     <c-slot name="actions"><c-button :href="create_url" icon="plus">{% translate "New client" %}</c-button></c-slot>
   </c-page-header>
 
-  <form class="search mb-6 max-w-md" role="search" method="get"
+  <form hx-boost="false" class="search mb-6 max-w-md" role="search" method="get"
         hx-get="{% url 'clients:list' %}" hx-target="#client-results" hx-push-url="true"
         hx-trigger="input changed delay:250ms from:input, search from:input">
     <c-icon name="search" />

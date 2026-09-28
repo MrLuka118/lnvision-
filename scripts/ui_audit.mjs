@@ -28,6 +28,11 @@ const PAGES = {
   ],
   app: [
     ['dashboard', '/'],
+    ['finance', '/finance/'],
+    ['income', '/finance/prihodki/'],
+    ['expense', '/finance/stroski/'],
+    ['income-new', '/finance/prihodki/nov/'],
+    ['expense-new', '/finance/stroski/nov/'],
     ['styleguide', '/stil/'],
     ['settings', '/nastavitve/'],
     ['settings-studio', '/nastavitve/studio/'],
@@ -110,9 +115,10 @@ function inspect() {
 const browser = await chromium.launch({ channel: process.env.PW_CHANNEL || 'chrome' });
 const report = {};
 for (const [vpName, vp] of Object.entries(VIEWPORTS)) {
-  const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, hasTouch: !!vp.touch, isMobile: !!vp.touch, colorScheme: 'dark' });
+  const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, hasTouch: !!vp.touch, isMobile: !!vp.touch, colorScheme: process.env.THEME || 'dark' });
+  await context.addCookies([{name:'theme', value:process.env.THEME || 'dark', url:BASE}]);
   await login(context);
-  const anon = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, hasTouch: !!vp.touch, isMobile: !!vp.touch, colorScheme: 'dark' });
+  const anon = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, hasTouch: !!vp.touch, isMobile: !!vp.touch, colorScheme: process.env.THEME || 'dark' });
   for (const [group, pages] of Object.entries(PAGES)) {
     for (const [name, path] of pages) {
       if (only && !only.split(',').includes(name)) continue;

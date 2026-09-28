@@ -1,7 +1,8 @@
 {% extends "layouts/gallery.html" %}
 {% load formatting %}
 {% block title %}{{ gallery.title }}{% endblock %}
-{% block gallery_head %}<script type="module" src="{% static 'js/gallery.js' %}"></script>{% endblock %}
+{% load django_vite %}
+{% block gallery_head %}{% vite_asset 'static/js/gallery.js' %}{% endblock %}
 {% block body %}
   {{ gallery_config|json_script:"gallery-config" }}
 
@@ -81,7 +82,7 @@
   {# Who is choosing: asked once, before the first favourite or comment. #}
   <dialog id="g-identify" class="modal glass" aria-labelledby="g-identify-title" closedby="any">
     <c-modal-close for="g-identify" />
-    <form class="grid gap-5" data-identify novalidate>
+    <form hx-boost="false" class="grid gap-5" data-identify novalidate>
       <div class="grid gap-2">
         <h2 id="g-identify-title" class="section-title">{% translate "Who is choosing?" %}</h2>
         <p class="text-ink-2">{% blocktranslate with name=studio.name %}Your name tells {{ name }} whose favourites these are.{% endblocktranslate %}</p>
@@ -99,7 +100,7 @@
   {% if gallery.downloads != "none" %}
     <dialog id="g-zip" class="modal glass" aria-labelledby="g-zip-title" closedby="any">
       <c-modal-close for="g-zip" />
-      <form class="grid gap-5" data-zip novalidate>
+      <form hx-boost="false" class="grid gap-5" data-zip novalidate>
         <div class="grid gap-2">
           <h2 id="g-zip-title" class="section-title">{% translate "Download the whole gallery" %}</h2>
           <p class="text-ink-2">{% blocktranslate count counter=photo_count trimmed %}{{ counter }} photo, packed as one ZIP file. We prepare it in the background and e-mail you the link.{% plural %}{{ counter }} photos, packed as one ZIP file. We prepare it in the background and e-mail you the link.{% endblocktranslate %}</p>
@@ -126,7 +127,7 @@
   {% if gallery.allow_comments %}
     <dialog id="g-comment" class="modal glass" aria-labelledby="g-comment-title" closedby="any">
       <c-modal-close for="g-comment" />
-      <form class="grid gap-5" data-comment novalidate>
+      <form hx-boost="false" class="grid gap-5" data-comment novalidate>
         <h2 id="g-comment-title" class="section-title">{% blocktranslate with name=studio.name %}A note for {{ name }}{% endblocktranslate %}</h2>
         <div class="field"><label class="visually-hidden" for="g-comment-body">{% translate "Comment" %}</label><textarea class="input" id="g-comment-body" name="body" rows="4" maxlength="2000" required></textarea></div>
         <p class="field-help" data-status role="status"></p>

@@ -14,7 +14,7 @@
       <c-button size="sm" :href="object.shoot.get_absolute_url">{% translate "Open shoot" %}</c-button>
     {% else %}
       <button class="btn btn-secondary btn-sm" type="button" data-edit-url="{% url 'scheduling:update' object.pk %}"><c-icon name="pencil" size="sm" />{% translate "Edit" %}</button>
-      <form method="post" action="{% url 'scheduling:delete' object.pk %}" hx-post="{% url 'scheduling:delete' object.pk %}" hx-swap="none"
+      <form hx-boost="false" method="post" action="{% url 'scheduling:delete' object.pk %}" hx-post="{% url 'scheduling:delete' object.pk %}" hx-swap="none"
             hx-confirm="{% translate 'Remove from the calendar?' %}">
         {% csrf_token %}
         <button class="btn btn-quiet btn-sm text-danger" type="submit"><c-icon name="trash-2" size="sm" />{% translate "Remove" %}</button>

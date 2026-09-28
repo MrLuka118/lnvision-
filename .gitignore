@@ -13,3 +13,6 @@ screenshots/
 .DS_Store
 .playwright-mcp/
 .aider*
+
+node_modules/
+static/dist/

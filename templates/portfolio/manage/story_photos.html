@@ -17,7 +17,7 @@
     </div>
   {% else %}
     {% if available_photos %}
-      <form method="post">
+      <form hx-boost="false" method="post">
         {% csrf_token %}
         <div class="justified">
           {% for photo in available_photos %}

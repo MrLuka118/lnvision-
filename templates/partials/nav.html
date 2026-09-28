@@ -2,10 +2,10 @@
 {% url "core:settings" as settings_url %}
 {# Desktop: floating glass sidebar. Nothing scrolls beneath it, so it has no refraction. #}
 <nav class="app-sidebar glass" aria-label="{% translate 'Main' %}">
-  <div class="sidebar-brand"><a class="wordmark" href="{% url 'core:dashboard' %}">{{ APP_NAME }}</a></div>
+  <div class="sidebar-brand"><a class="wordmark" href="{% url 'core:dashboard' %}"><c-icon name="aperture" /> Aperture</a><span class="brand-caption">L&N VISION · STUDIO</span></div>
   <div class="sidebar-nav">
     {% for item in nav_items %}
-      <a class="nav-item" href="{{ item.url }}"{% if item.current %} aria-current="page"{% endif %}>
+      <a class="nav-item" href="{{ item.url }}"{% if item.icon == "calendar" %} hx-boost="false"{% endif %}{% if item.current %} aria-current="page"{% endif %}>
         <c-icon :name="item.icon" />{{ item.label }}
       </a>
     {% endfor %}
@@ -22,7 +22,7 @@
       {% include "partials/theme_switch.html" with prefix="sidebar" %}
       <div class="menu-sep"></div>
       {% if settings_url %}<a class="menu-item" href="{{ settings_url }}"><c-icon name="settings" />{% translate "Settings" %}</a>{% endif %}
-      <form method="post" action="{{ logout_url }}">
+      <form hx-boost="false" method="post" action="{{ logout_url }}">
         {% csrf_token %}
         <button class="menu-item" type="submit"><c-icon name="log-out" />{% translate "Sign out" %}</button>
       </form>
@@ -44,7 +44,7 @@
     {% include "partials/theme_switch.html" with prefix="fab" %}
     <div class="menu-sep"></div>
     {% if settings_url %}<a class="menu-item" href="{{ settings_url }}"><c-icon name="settings" />{% translate "Settings" %}</a>{% endif %}
-    <form method="post" action="{{ logout_url }}">
+    <form hx-boost="false" method="post" action="{{ logout_url }}">
       {% csrf_token %}
       <button class="menu-item" type="submit"><c-icon name="log-out" />{% translate "Sign out" %}</button>
     </form>
@@ -56,8 +56,8 @@
 {% if nav_items|length > 1 %}
   <nav class="app-tabbar glass" data-refract aria-label="{% translate 'Main' %}">
     <div class="tabbar-items">
-      {% for item in nav_items|slice:":5" %}
-        <a class="tab" href="{{ item.url }}"{% if item.current %} aria-current="page"{% endif %}>
+      {% for item in nav_items %}
+        <a class="tab" href="{{ item.url }}"{% if item.icon == "calendar" %} hx-boost="false"{% endif %}{% if item.current %} aria-current="page"{% endif %}>
           <c-icon :name="item.icon" />{{ item.label }}
         </a>
       {% endfor %}

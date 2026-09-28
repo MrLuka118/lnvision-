@@ -4,7 +4,7 @@
   <div class="max-w-2xl">
     {% if back_label %}<a class="back-link" href="{{ cancel_url }}"><c-icon name="chevron-left" size="sm" />{{ back_label }}</a>{% endif %}
     <c-page-header :title="page_title" :lede="lede" />
-    <form method="post" class="grid gap-10" novalidate>
+    <form hx-boost="false" method="post" enctype="multipart/form-data" class="grid gap-10" novalidate>
       {% csrf_token %}
       {% include "partials/form_errors.html" %}
       {% for field in form.hidden_fields %}{{ field }}{% endfor %}
@@ -12,7 +12,7 @@
         <fieldset class="grid gap-5">
           {% if section.legend %}<legend class="mb-5 font-display text-xl">{{ section.legend }}</legend>{% endif %}
           {% for row in section.rows %}
-            <div class="grid gap-5{% if row|length > 1 %} sm:grid-cols-2{% endif %}">
+            <div class="grid items-start gap-5{% if row|length > 1 %} sm:grid-cols-2{% endif %}">
               {% for field in row %}<c-field :field="field" />{% endfor %}
             </div>
           {% endfor %}

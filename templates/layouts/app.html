@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+{% block body_attrs %}hx-boost="true" hx-swap="innerHTML transition:true"{% endblock %}
 {% block body %}
+  <a class="skip-link" href="#main">{% translate "Skip to content" %}</a>
   {% include "partials/nav.html" %}
   {% include "partials/messages.html" %}
   <main id="main" class="app-main">

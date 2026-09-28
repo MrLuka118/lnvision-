@@ -1,5 +1,5 @@
 {# Dialog body on the calendar page; also rendered inside generic/form.html's layout when not HTMX. #}
-<form method="post" action="{{ request.get_full_path }}" hx-post="{{ request.get_full_path }}" hx-target="#event-dialog-body" class="grid gap-5" novalidate>
+<form hx-boost="false" method="post" action="{{ request.get_full_path }}" hx-post="{{ request.get_full_path }}" hx-target="#event-dialog-body" class="grid gap-5" novalidate>
   {% csrf_token %}
   <div class="flex items-start justify-between gap-4">
     <h2 class="section-title">{{ page_title }}</h2>

@@ -17,14 +17,14 @@
   <div id="shoot-body" class="grid gap-10">
     {% url "shoots:status" object.pk as status_url %}
     {% if object.status == "cancelled" %}
-      <form method="post" action="{{ status_url }}" hx-post="{{ status_url }}" hx-target="#shoot-body" hx-select="#shoot-body" hx-select-oob="#toasts" hx-swap="outerHTML"
+      <form hx-boost="false" method="post" action="{{ status_url }}" hx-post="{{ status_url }}" hx-target="#shoot-body" hx-select="#shoot-body" hx-select-oob="#toasts" hx-swap="outerHTML"
             class="panel flex flex-wrap items-center justify-between gap-4 p-5">
         {% csrf_token %}
         <p><span class="font-semibold">{% translate "Cancelled." %}</span> <span class="text-ink-2">{% translate "It stays in the history but not in your active shoots." %}</span></p>
         <button class="btn btn-secondary btn-sm" name="status" value="inquiry">{% translate "Reopen as inquiry" %}</button>
       </form>
     {% else %}
-      <form method="post" action="{{ status_url }}" hx-post="{{ status_url }}" hx-target="#shoot-body" hx-select="#shoot-body" hx-select-oob="#toasts" hx-swap="outerHTML">
+      <form hx-boost="false" method="post" action="{{ status_url }}" hx-post="{{ status_url }}" hx-target="#shoot-body" hx-select="#shoot-body" hx-select-oob="#toasts" hx-swap="outerHTML">
         {% csrf_token %}
         <h2 class="visually-hidden">{% translate "Status" %}</h2>
         <ol class="pipeline">
@@ -97,7 +97,7 @@
           </div>
         {% endif %}
         {% if object.status != "cancelled" %}
-          <form method="post" action="{{ status_url }}">
+          <form hx-boost="false" method="post" action="{{ status_url }}">
             {% csrf_token %}
             <button class="action-link" name="status" value="cancelled"
                     data-confirm="{% translate 'Cancel this shoot?' %}"

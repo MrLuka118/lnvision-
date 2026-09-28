@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "django_cotton.apps.SimpleAppConfig",
     "django_htmx",
     "django_tailwind_cli",
+    "django_vite",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -267,4 +268,12 @@ LOGGING = {
     "handlers": {"console": {"class": "logging.StreamHandler"}},
     "root": {"handlers": ["console"], "level": "INFO"},
     "loggers": {"pyvips": {"level": "WARNING"}},
+}
+
+DJANGO_VITE = {
+    "default": {
+        "dev_mode": env.bool("VITE_DEV_MODE", default=False),
+        "manifest_path": BASE_DIR / "static/dist/.vite/manifest.json",
+        "static_url_prefix": "dist",
+    }
 }

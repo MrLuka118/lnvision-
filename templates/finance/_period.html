@@ -1,0 +1,9 @@
+<form hx-boost="false" method="get" class="finance-filters">
+  <div><label for="finance-year" class="field-label">{% translate "Year" %}</label><select id="finance-year" name="leto" class="input">{% for option in years %}<option value="{{ option }}" {% if year == option %}selected{% endif %}>{{ option }}</option>{% endfor %}</select></div>
+  {% if is_ledger %}
+    <div><label for="finance-month" class="field-label">{% translate "Month" %}</label><select id="finance-month" name="mesec" class="input"><option value="0">{% translate "All months" %}</option>{% for option in months %}<option value="{{ option }}" {% if month == option %}selected{% endif %}>{{ option }}</option>{% endfor %}</select></div>
+    {% if active == 'expense' %}<div><label for="finance-category" class="field-label">{% translate "Category" %}</label><select id="finance-category" name="kategorija" class="input"><option value="">{% translate "All categories" %}</option>{% for category in categories %}<option value="{{ category.pk }}" {% if selected_category == category.pk|stringformat:'s' %}selected{% endif %}>{{ category.name }}</option>{% endfor %}</select></div>{% endif %}
+  {% endif %}
+  <button class="btn btn-secondary" type="submit">{% translate "Apply" %}</button>
+  <a class="action-link" hx-boost="false" href="{% url 'finance:export' %}?leto={{ year }}&mesec={{ month }}&kategorija={{ selected_category }}"><c-icon name="download" size="sm" />{% translate "Export CSV" %}</a>
+</form>

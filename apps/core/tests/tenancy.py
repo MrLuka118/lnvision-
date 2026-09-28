@@ -108,5 +108,17 @@ def _register_url_cases():
     ]:
         register_url(TenantURLCase(name, model, methods=("get", "post")))
 
+    from apps.finance.models import Expense, ExpenseCategory, Income, RecurringExpense
+
+    for kind, model in [
+        ("income", Income),
+        ("expense", Expense),
+        ("category", ExpenseCategory),
+        ("recurring", RecurringExpense),
+    ]:
+        for action in ["update", "delete"]:
+            register_url(TenantURLCase(f"finance:{kind}_{action}", model, methods=("get", "post")))
+    register_url(TenantURLCase("finance:receipt", Expense))
+
 
 _register_url_cases()

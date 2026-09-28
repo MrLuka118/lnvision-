@@ -1,0 +1,8 @@
+<nav class="finance-tabs" aria-label="{% translate 'Finance' %}">
+  <a href="{% url 'finance:dashboard' %}" {% if active == 'dashboard' %}aria-current="page"{% endif %}>{% translate "Overview" %}</a>
+  <a href="{% url 'finance:income_list' %}" {% if active == 'income' %}aria-current="page"{% endif %}>{% translate "Income" %}</a>
+  <a href="{% url 'finance:expense_list' %}" {% if active == 'expense' %}aria-current="page"{% endif %}>{% translate "Expenses" %}</a>
+  <a href="{% url 'finance:recurring_list' %}" {% if active == 'recurring' %}aria-current="page"{% endif %}>{% translate "Recurring" %}</a>
+  <a href="{% url 'finance:category_list' %}" {% if active == 'category' %}aria-current="page"{% endif %}>{% translate "Categories" %}</a>
+  <a href="{% url 'finance:suggestions' %}" {% if active == 'suggestions' %}aria-current="page"{% endif %}>{% translate "To record" %}</a>
+</nav>

@@ -1,0 +1,23 @@
+{% extends "layouts/app.html" %}
+{% load formatting %}
+{% block title %}{% translate "Finance" %}{% endblock %}
+{% block content %}
+{% url 'finance:income_create' as income_url %}{% url 'finance:expense_create' as expense_url %}
+<c-page-header title="{% translate 'Finance' %}" lede="{% translate 'Your practice, in perspective.' %}"><c-button variant="secondary" :href="expense_url">{% translate "Add expense" %}</c-button><c-button :href="income_url" icon="plus">{% translate "Record income" %}</c-button></c-page-header>
+{% include 'finance/_tabs.html' %}{% include 'finance/_period.html' %}
+<section class="finance-stats" aria-label="{% translate 'Annual summary' %}">
+<c-stat label="{% translate 'Income' %}" :value="summary.income" format="eur" />
+<c-stat label="{% translate 'Expenses' %}" :value="summary.expenses" format="eur" />
+<c-stat label="{% translate 'Net income' %}" :value="summary.profit" format="eur" />
+<div class="grid gap-1"><p class="text-sm text-ink-2">{% translate "Income vs last year" %}</p><p class="tnum text-2xl font-display">{% if summary.income_change != None %}{{ summary.income_change|floatformat:1 }}%{% else %}—{% endif %}</p><p class="text-xs text-ink-3">{{ year|add:'-1' }} → {{ year }}</p></div>
+</section>
+{% if summary.income or summary.expenses %}
+{{ monthly|json_script:'finance-monthly' }}{{ previous_monthly|json_script:'finance-previous' }}{{ categories_report|json_script:'finance-categories' }}
+<section class="finance-chart-section"><div class="ledger-heading"><h2 class="section-title">{% translate "The year in focus" %}</h2><span class="eyebrow">{{ year }}</span></div><div class="chart-frame"><canvas id="finance-chart" role="img" aria-label="{% translate 'Monthly income, expenses and net income' %}"></canvas></div>
+<details class="mt-4"><summary class="action-link">{% translate "View monthly figures" %}</summary><div class="table-scroll"><table class="finance-table"><thead><tr><th>{% translate "Month" %}</th><th>{% translate "Income" %}</th><th>{% translate "Expenses" %}</th><th>{% translate "Net income" %}</th></tr></thead><tbody>{% for row in monthly %}<tr><th>{{ row.month }}</th><td>{{ row.income|eur }}</td><td>{{ row.expenses|eur }}</td><td>{{ row.profit|eur }}</td></tr>{% endfor %}</tbody></table></div></details></section>
+<div class="finance-columns">
+<section><h2 class="section-title mb-6">{% translate "Where it goes" %}</h2>{% if categories_report %}<div class="chart-frame chart-small"><canvas id="expense-chart" role="img" aria-label="{% translate 'Expenses by category' %}"></canvas></div><div class="mt-6 grid gap-3">{% for row in categories_report %}<div class="flex justify-between gap-4 text-sm"><span>{{ row.category__name }}</span><span class="tnum">{{ row.total|eur }}</span></div>{% endfor %}</div>{% else %}<p class="text-ink-2">{% translate "No expenses this year." %}</p>{% endif %}</section>
+<section><h2 class="section-title mb-6">{% translate "Your best collaborations" %}</h2>{% if top_clients %}<div class="rows">{% for row in top_clients %}<a class="row grid-cols-[1fr_auto]" href="{% url 'clients:detail' row.client_id %}"><span class="row-title">{{ row.client__first_name }} {{ row.client__last_name }}</span><span class="tnum">{{ row.total|eur }}</span></a>{% endfor %}</div>{% else %}<p class="text-ink-2">{% translate "Link income to clients to see your collaborations here." %}</p>{% endif %}</section>
+</div>
+{% else %}<c-empty icon="wallet" title="{% translate 'Make room for what is next.' %}">{% translate "Record income and expenses to see your studio's year take shape." %}<c-slot name="actions"><c-button :href="income_url">{% translate "Record income" %}</c-button></c-slot></c-empty>{% endif %}
+{% endblock %}

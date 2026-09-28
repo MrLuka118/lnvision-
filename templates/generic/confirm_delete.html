@@ -3,7 +3,7 @@
 {% block content %}
   <div class="max-w-xl">
     <c-page-header :title="page_title" :lede="lede" />
-    <form method="post" class="flex flex-wrap gap-2">
+    <form hx-boost="false" method="post" class="flex flex-wrap gap-2">
       {% csrf_token %}
       <c-button type="submit" variant="danger" icon="trash-2">{{ confirm_label }}</c-button>
       <c-button variant="quiet" :href="cancel_url">{% translate "Cancel" %}</c-button>

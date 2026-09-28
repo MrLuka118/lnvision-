@@ -21,3 +21,15 @@ Vite build, design system alignment, finish finance and dashboard, security and 
   while reviewing requested Pillow/WebP/ThumbHash support.
 - No credentials requested; local development needs no external R2 or SMTP credentials.
 - Do not mark APP_COMPLETE until the plan and verification are complete.
+
+## Verified working step: foundation + finance
+- Baseline: 210 tests passed against PostgreSQL.
+- Vite/django-vite now bundles Tailwind v4, self-hosted Fraunces/Inter, HTMX and Alpine.
+- Warm darkroom/print-room tokens, grain, iris transitions, keyboard skip link and branding.
+- Finance ledger CRUD, recurring/category management, private receipt download, period filters,
+  spreadsheet-safe CSV, remaining-payment suggestions and lazy-loaded Chart.js reports.
+- Validation: 239 tests pass; 33 finance tests pass; Django check, Ruff and build clean.
+- Playwright foundation screenshots reviewed at desktop/mobile; dark/light captures saved under
+  screenshots/. In-app Browser was unavailable; standalone Playwright is installed.
+- Remaining visual fixes: dashboard inquiry header crowding, gallery 40px favourites; full
+  final matrix still pending. Receipt and relationship validation are covered by tests.
