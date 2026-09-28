@@ -177,15 +177,26 @@ export function registerComponents(Alpine) {
   Alpine.data("themeSwitch", () => ({
     theme: document.documentElement.dataset.theme || "dark",
 
+    // One crossfade, not the page iris. .theme-switching turns off every CSS transition, so
+    // colours don't also animate one by one inside the live new snapshot.
     choose(event) {
       const theme = event.target.value;
-      morph(() => {
-        document.documentElement.dataset.theme = theme;
+      const root = document.documentElement;
+      const apply = () => {
+        root.dataset.theme = theme;
         // The browser chrome follows the page surround (--theme-color in tokens.css).
         const meta = document.querySelector('meta[name="theme-color"]');
-        const color = getComputedStyle(document.documentElement).getPropertyValue("--theme-color").trim();
+        const color = getComputedStyle(root).getPropertyValue("--theme-color").trim();
         if (meta && color) meta.content = color;
-      });
+      };
+      const done = () => requestAnimationFrame(() => root.classList.remove("theme-switching"));
+      root.classList.add("theme-switching");
+      if (!document.startViewTransition || reducedMotion()) {
+        apply();
+        done();
+      } else {
+        document.startViewTransition(apply).finished.finally(done);
+      }
       this.theme = theme;
       document.cookie = `theme=${theme}; path=/; max-age=31536000; samesite=lax`;
     },

@@ -1,5 +1,6 @@
 @layer base {
   html {
+    scrollbar-gutter: stable;
     background: var(--surround);
     color: var(--ink);
     font-family: var(--font-sans);
@@ -72,6 +73,17 @@
    (root) never passes over it and the nav indicator glides inside it. */
 ::view-transition-new(sidebar) { animation: none; }
 ::view-transition-old(sidebar) { animation: none; opacity: 0; }
+/* Theme switch (themeSwitch in components.js): a plain 300 ms crossfade of every layer, no
+   iris, no transitions, and clicks pass through so the open menu is not light-dismissed. */
+.theme-switching *, .theme-switching *::before, .theme-switching *::after { transition: none !important; }
+.theme-switching::view-transition { pointer-events: none; }
+/* The account menu sits inside the sidebar but in the top layer: its own layer, or the sidebar
+   capture would clip it to the sidebar's box. */
+#account-menu { view-transition-name: account-menu; }
+@keyframes theme-fade-in { from { opacity: 0; } }
+@keyframes theme-fade-out { to { opacity: 0; } }
+html.theme-switching::view-transition-old(*) { animation: theme-fade-out 300ms var(--ease-out) both; opacity: 1; }
+html.theme-switching::view-transition-new(*) { animation: theme-fade-in 300ms var(--ease-out) both; }
 /* main.js focuses <main> after a boosted swap for screen readers; it is not a control, so no
    ring (WebKit otherwise draws one along the sidebar edge after every navigation). */
 #main:focus { outline: none; }
