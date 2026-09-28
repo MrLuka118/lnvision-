@@ -2,6 +2,7 @@ import secrets
 from decimal import Decimal
 
 from django.conf import settings
+from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -33,6 +34,13 @@ class Studio(models.Model):
     default_vat_rate = models.DecimalField(
         _("default VAT rate (%)"), max_digits=4, decimal_places=1, default=Decimal("22.0")
     )
+    accent_colour = models.CharField(
+        _("gallery accent"),
+        max_length=7,
+        default="#c7955a",
+        validators=[RegexValidator(r"^#[0-9a-fA-F]{6}$")],
+    )
+    logo = models.ImageField(_("studio logo"), upload_to="branding/", blank=True)
     ics_token = models.CharField(max_length=64, unique=True, default=new_token, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

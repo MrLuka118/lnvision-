@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
 import { resolve } from 'node:path';
+import { utimesSync, existsSync } from 'node:fs';
 export default defineConfig({
-  plugins: [tailwindcss()],
+  plugins: [tailwindcss(), { name: 'django-reload', closeBundle() { const now = new Date(); if (existsSync('config/settings/dev.py')) utimesSync('config/settings/dev.py', now, now); } }],
   base: '/static/dist/',
   resolve: { alias: {
     htmx: resolve('static/vendor/htmx-2.0.10.esm.js'),

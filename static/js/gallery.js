@@ -168,8 +168,10 @@ function updateFavoritesFilter() {
 }
 
 filterButton?.addEventListener("click", () => {
+  const state = !calm && window.Flip ? window.Flip.getState(".g-tile") : null;
   const on = document.body.classList.toggle("show-favorites");
   filterButton.setAttribute("aria-pressed", String(on));
+  if (state) window.Flip.from(state, { duration: .48, ease: "power3.out", absolute: true, scale: true });
   lightbox.options.children = on ? ".g-tile.is-favorite .g-link" : ".g-tile .g-link";
   updateFavoritesFilter();
   window.ScrollTrigger?.refresh();
@@ -253,7 +255,7 @@ const lightbox = new PhotoSwipeLightbox({
   arrowPrevTitle: config.labels.previous,
   arrowNextTitle: config.labels.next,
   zoomTitle: "",
-  paddingFn: (viewport) => (viewport.x < 640 ? { top: 70, bottom: 20, left: 0, right: 0 } : { top: 80, bottom: 40, left: 70, right: 70 }),
+  paddingFn: (viewport) => (viewport.x < 640 ? { top: 70, bottom: 95, left: 0, right: 0 } : { top: 80, bottom: 85, left: 70, right: 70 }),
 });
 
 lightbox.addFilter("itemData", (itemData) => {
@@ -262,6 +264,7 @@ lightbox.addFilter("itemData", (itemData) => {
     itemData.uuid = el.dataset.uuid;
     itemData.bright = el.dataset.bright === "1";
     itemData.name = el.dataset.name;
+    itemData.exif = el.dataset.exif;
   }
   return itemData;
 });
@@ -279,6 +282,10 @@ lightbox.on("uiRegister", () => {
       onClick,
     });
 
+  pswp.ui.registerElement({ name: 'exif-caption', order: 20, isButton: false, appendTo: 'root', onInit(el) {
+    el.setAttribute('aria-live', 'polite');
+    pswp.on('change', () => { el.textContent = [pswp.currSlide.data.name, pswp.currSlide.data.exif].filter(Boolean).join(' — '); });
+  }});
   if (config.favorites) {
     pswp.ui.registerElement({
       name: "heart",

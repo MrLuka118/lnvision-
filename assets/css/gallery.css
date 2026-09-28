@@ -580,3 +580,9 @@
     background: rgb(20 20 20 / 0.85) !important;
   }
 }
+
+@layer components {
+  .g-heart, .g-bar-button { min-width: 44px; min-height: 44px; }
+  .pswp__exif-caption { position: absolute; bottom: 20px; inset-inline: 24px; color: #ddd8ce; text-align: center; font-family: var(--font-sans); font-size: 12px; line-height: 1.7; font-variant-numeric: tabular-nums; pointer-events: none; }
+  .studio-logo { width: auto; height: 40px; max-width: 180px; object-fit: contain; }
+}

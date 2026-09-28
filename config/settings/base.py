@@ -277,3 +277,5 @@ DJANGO_VITE = {
         "static_url_prefix": "dist",
     }
 }
+
+FORMS_URLFIELD_ASSUME_HTTPS = True

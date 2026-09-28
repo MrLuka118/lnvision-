@@ -3,8 +3,8 @@
   <a class="g-link" href="{{ photo.display_src }}"
      data-pswp-width="{{ photo.display_width }}" data-pswp-height="{{ photo.display_height }}"
      data-pswp-srcset="{{ photo.srcset_jpg }}" data-uuid="{{ photo.uuid }}"
-     data-bright="{% if photo.is_bright %}1{% else %}0{% endif %}" data-name="{{ photo.original_name }}">
-    <c-photo :photo="photo" :sizes="sizes" alt="" />
+     data-bright="{% if photo.is_bright %}1{% else %}0{% endif %}" data-name="{{ photo.original_name }}" data-exif="{{ photo.exif_caption }}">
+    <c-photo :photo="photo" :sizes="sizes" :alt="photo.original_name" />
     <span class="visually-hidden">{% blocktranslate with name=photo.original_name %}Open {{ name }}{% endblocktranslate %}</span>
   </a>
   {% if gallery.allow_favorites %}

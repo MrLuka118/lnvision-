@@ -1,9 +1,11 @@
 import csv
+import json
 from decimal import Decimal
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import transaction
 from django.db.models import Sum
 from django.http import FileResponse, Http404, HttpResponse
@@ -65,12 +67,23 @@ class FinanceDashboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         studio = self.request.studio
         year, _month = period(self.request)
+        monthly = reports.monthly(studio, year)
+        previous = reports.monthly(studio, year - 1)
+        categories = list(reports.by_category(studio, year))
         return super().get_context_data(
             **period_context(self.request),
             summary=reports.summary(studio, year),
-            monthly=reports.monthly(studio, year),
-            categories_report=list(reports.by_category(studio, year)),
-            previous_monthly=reports.monthly(studio, year - 1),
+            monthly=monthly,
+            chart_data=json.dumps(
+                {
+                    "monthly": monthly,
+                    "previous": previous,
+                    "categories": categories,
+                },
+                cls=DjangoJSONEncoder,
+            ),
+            categories_report=categories,
+            previous_monthly=previous,
             top_clients=reports.top_clients(studio, year),
             active="dashboard",
             **kwargs,

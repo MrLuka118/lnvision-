@@ -1,15 +1,16 @@
 import uuid
 from pathlib import PurePosixPath
 
-from django.core.files.storage import storages
+from django.core import signing
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.models import TenantModel
 
 # Widths generated for every photo (never upscaled) and the formats per width.
 RENDITION_WIDTHS = [480, 960, 1600, 2400]
-RENDITION_FORMATS = ["avif", "jpg"]
+RENDITION_FORMATS = ["avif", "webp", "jpg"]
 
 
 def original_path(photo, filename):
@@ -54,6 +55,7 @@ class Photo(TenantModel):
     renditions = models.JSONField(default=dict, blank=True)
     rendition_version = models.PositiveIntegerField(default=0)
     lqip = models.TextField(blank=True)
+    blurhash = models.CharField(max_length=100, blank=True)
     dominant_color = models.CharField(max_length=7, blank=True)
     luminance = models.FloatField(null=True, blank=True)
     position = models.PositiveIntegerField(default=0)
@@ -83,8 +85,10 @@ class Photo(TenantModel):
         return self.luminance is not None and self.luminance >= 0.45
 
     def rendition_url(self, width: int, fmt: str = "jpg") -> str:
-        key = rendition_key(self.uuid, self.rendition_version, width, fmt)
-        return storages["renditions"].url(key)
+        token = signing.dumps(
+            [str(self.uuid), self.rendition_version, width, fmt], salt="photo-rendition"
+        )
+        return reverse("photos:rendition", args=[token])
 
     def srcset(self, fmt: str = "jpg") -> str:
         widths = self.renditions.get("widths", [])
@@ -93,6 +97,33 @@ class Photo(TenantModel):
     @property
     def srcset_avif(self) -> str:
         return self.srcset("avif") if "avif" in self.renditions.get("formats", []) else ""
+
+    @property
+    def srcset_webp(self) -> str:
+        return self.srcset("webp") if "webp" in self.renditions.get("formats", []) else ""
+
+    @property
+    def exif_caption(self) -> str:
+        values = []
+        for key in ["model", "lens", "focal_length", "aperture", "shutter", "iso"]:
+            value = self.exif.get(key)
+            if value is None:
+                continue
+            if key == "focal_length":
+                value = f"{value} mm"
+            elif key == "aperture":
+                value = f"f/{value}"
+            elif key == "iso":
+                value = f"ISO {value}"
+            elif key == "shutter":
+                try:
+                    value = (
+                        f"1/{round(1 / float(value))} s" if 0 < float(value) < 1 else f"{value} s"
+                    )
+                except (ValueError, ZeroDivisionError):
+                    value = str(value)
+            values.append(str(value))
+        return " · ".join(values)
 
     @property
     def srcset_jpg(self) -> str:

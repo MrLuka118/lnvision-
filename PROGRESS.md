@@ -33,3 +33,16 @@ Vite build, design system alignment, finish finance and dashboard, security and 
   screenshots/. In-app Browser was unavailable; standalone Playwright is installed.
 - Remaining visual fixes: dashboard inquiry header crowding, gallery 40px favourites; full
   final matrix still pending. Receipt and relationship validation are covered by tests.
+
+## Dashboard, branding and photo security
+- Added monthly dashboard totals and gallery activity; client detail shows actual revenue.
+- Added profile, password/email links, validated logo upload and gallery accent settings.
+- Closed permanent rendition URL exposure: signed, expiring gateway checks password, expiry,
+  publication and owner access; R2 rendition bucket is now private. Raw local rendition paths
+  are blocked. Expired/unpublished galleries also revoke ZIP downloads.
+- Added WebP derivatives, Pillow/BlurHash previews, owner photo detail with shared transition,
+  EXIF lightbox captions, GSAP Flip favourite filtering and calendar shared transitions.
+- Regression suite: 247 passed. New tests cover rendition tampering/expiry, tenant access,
+  client revenue, profile ownership and branding validation.
+- Fixed Vite development manifest reloads and missing finance header actions found visually.
+- Final screenshots, translations, flow tests and Lighthouse remain in progress.

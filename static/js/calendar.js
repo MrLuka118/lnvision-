@@ -70,7 +70,7 @@ async function move(info) {
 
 function openDialog(url) {
   popover.hidePopover?.();
-  window.htmx.ajax("GET", url, { target: dialogBody, swap: "innerHTML" }).then(() => {
+  return window.htmx.ajax("GET", url, { target: dialogBody, swap: "innerHTML" }).then(() => {
     if (!dialog.open) dialog.showModal();
   });
 }
@@ -79,13 +79,12 @@ let anchored;
 function openPopover(info) {
   const url = config.detailUrl.replace("/0/", `/${info.event.id}/`);
   if (compact.matches) {
-    openDialog(url);
-    return;
+    return openDialog(url);
   }
   anchored?.style.removeProperty("anchor-name");
   anchored = info.el;
   anchored.style.setProperty("anchor-name", "--event-anchor");
-  window.htmx.ajax("GET", url, { target: popover, swap: "innerHTML" }).then(() => {
+  return window.htmx.ajax("GET", url, { target: popover, swap: "innerHTML" }).then(() => {
     if (!popover.matches(":popover-open")) popover.showPopover();
     if (!CSS.supports("anchor-name: --a")) {
       const r = info.el.getBoundingClientRect();
@@ -128,7 +127,16 @@ const calendar = new FullCalendar.Calendar(el, {
   eventResize: move,
   eventClick(info) {
     info.jsEvent.preventDefault();
-    openPopover(info);
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!document.startViewTransition || calm) { openPopover(info); return; }
+    document.querySelectorAll('[style*="view-transition-name: calendar-event"]').forEach(el => el.style.viewTransitionName = 'none');
+    const title = info.el.querySelector('.cal-event-title');
+    if (title) title.style.viewTransitionName = 'calendar-event';
+    const transition = document.startViewTransition(async () => {
+      if (title) title.style.viewTransitionName = 'none';
+      await openPopover(info);
+    });
+    transition.ready.catch(() => {});
   },
   select(info) {
     openDialog(createUrl(info.startStr, info.endStr, info.allDay));

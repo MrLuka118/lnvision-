@@ -13,5 +13,8 @@ def file_response(storage, name: str, filename: str):
             parameters={"ResponseContentDisposition": content_disposition_header(True, filename)},
             expire=SIGNED_URL_SECONDS,
         )
-        return HttpResponseRedirect(url)
-    return FileResponse(storage.open(name, "rb"), as_attachment=True, filename=filename)
+        response = HttpResponseRedirect(url)
+    else:
+        response = FileResponse(storage.open(name, "rb"), as_attachment=True, filename=filename)
+    response["Cache-Control"] = "private, no-store"
+    return response

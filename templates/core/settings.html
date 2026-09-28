@@ -4,6 +4,9 @@
   <c-page-header title="{% translate 'Settings' %}" />
 
   <div class="rows max-w-3xl">
+    <a class="row" href="{% url 'core:profile_settings' %}"><span class="avatar"><c-icon name="users" /></span><span><span class="row-title">{% translate "Your profile" %}</span><span class="row-meta block">{% translate "Your name and personal details" %}</span></span><c-icon name="chevron-right" /></a>
+    <a class="row" hx-boost="false" href="{% url 'account_change_password' %}"><span class="avatar"><c-icon name="lock" /></span><span><span class="row-title">{% translate "Password & security" %}</span><span class="row-meta block">{% translate "Change your account password" %}</span></span><c-icon name="chevron-right" /></a>
+    <a class="row" hx-boost="false" href="{% url 'account_email' %}"><span class="avatar"><c-icon name="mail" /></span><span><span class="row-title">{% translate "Email addresses" %}</span><span class="row-meta block">{% translate "Manage and verify your email" %}</span></span><c-icon name="chevron-right" /></a>
     <a class="row" href="{% url 'core:studio_settings' %}">
       <span class="avatar" aria-hidden="true"><c-icon name="settings" size="sm" /></span>
       <span class="grid min-w-0">

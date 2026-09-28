@@ -59,7 +59,7 @@ def _register_url_cases():
     ]:
         register_url(TenantURLCase(name, Event, methods=methods))
     from apps.galleries.models import Gallery
-    from apps.photos.models import UploadSession
+    from apps.photos.models import Photo, UploadSession
 
     for name, methods in [
         ("galleries:editor", ("get",)),
@@ -80,6 +80,7 @@ def _register_url_cases():
             kwargs=lambda o: {"pk": o.pk, "action": "publish"},
         )
     )
+    register_url(TenantURLCase("photos:detail", Photo, kwargs=lambda o: {"uuid": o.uuid}))
     register_url(
         TenantURLCase(
             "photos:upload_chunk",

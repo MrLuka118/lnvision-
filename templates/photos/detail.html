@@ -1,0 +1,8 @@
+{% extends 'layouts/app.html' %}
+{% block title %}{{ photo.original_name }}{% endblock %}
+{% block content %}
+<a class="back-link" href="{{ photo.gallery.get_absolute_url }}"><c-icon name="chevron-left" size="sm" />{{ photo.gallery.title }}</a>
+<c-page-header :title="photo.original_name" />
+{% if photo.is_ready %}<div class="photo-detail" style="view-transition-name: photo-{{ photo.uuid.hex }}"><c-photo :photo="photo" sizes="(min-width: 64rem) 75vw, 100vw" loading="eager" :alt="photo.original_name" /></div>{% endif %}
+<dl class="photo-metadata mt-8"><div><dt>{% translate "Camera & exposure" %}</dt><dd class="tnum">{{ photo.exif_caption|default:'—' }}</dd></div><div><dt>{% translate "Dimensions" %}</dt><dd class="tnum">{{ photo.width }} × {{ photo.height }}</dd></div><div><dt>{% translate "File size" %}</dt><dd class="tnum">{{ photo.size_bytes|filesizeformat }}</dd></div></dl>
+{% endblock %}

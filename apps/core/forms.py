@@ -61,6 +61,7 @@ class StudioForm(FormLayoutMixin, forms.ModelForm):
     layout = [
         (None, ["name", "slug"]),
         (_("Contact"), [("email", "phone"), "address"]),
+        (_("Branding"), ["accent_colour", "logo"]),
         (_("Invoicing"), [("vat_id", "iban"), ("vat_registered", "default_vat_rate")]),
     ]
 
@@ -69,6 +70,8 @@ class StudioForm(FormLayoutMixin, forms.ModelForm):
         fields = [
             "name",
             "slug",
+            "accent_colour",
+            "logo",
             "email",
             "phone",
             "address",
@@ -77,7 +80,27 @@ class StudioForm(FormLayoutMixin, forms.ModelForm):
             "vat_registered",
             "default_vat_rate",
         ]
-        widgets = {"address": forms.Textarea(attrs={"rows": 3})}
+        widgets = {
+            "address": forms.Textarea(attrs={"rows": 3}),
+            "accent_colour": forms.TextInput(attrs={"type": "color"}),
+        }
+
+    def clean_logo(self):
+        logo = self.cleaned_data.get("logo")
+        if logo and hasattr(logo, "content_type"):
+            if logo.size > 2 * 1024 * 1024:
+                raise forms.ValidationError(_("Use a logo smaller than 2 MB."))
+            from io import BytesIO
+
+            from django.core.files.base import ContentFile
+            from PIL import Image
+
+            image = Image.open(logo)
+            image.thumbnail((1000, 1000))
+            output = BytesIO()
+            image.convert("RGBA").save(output, format="PNG")
+            return ContentFile(output.getvalue(), name="logo.png")
+        return logo
 
     def clean_slug(self):
         return self.cleaned_data["slug"].lower()
@@ -95,3 +118,11 @@ class DateInput(forms.DateInput):
 
     def __init__(self, attrs=None):
         super().__init__(attrs, format="%Y-%m-%d")
+
+
+class ProfileForm(FormLayoutMixin, forms.ModelForm):
+    class Meta:
+        from apps.accounts.models import User
+
+        model = User
+        fields = ["first_name", "last_name"]

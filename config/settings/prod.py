@@ -35,10 +35,11 @@ if env("STORAGE_BACKEND", default="filesystem") == "s3":
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
             **_s3,
-            "bucket_name": env("S3_PUBLIC_BUCKET"),
-            "custom_domain": env("S3_PUBLIC_DOMAIN"),
-            "querystring_auth": False,
-            "object_parameters": {"CacheControl": "public, max-age=31536000, immutable"},
+            "bucket_name": env("S3_RENDITIONS_BUCKET", default=env("S3_PRIVATE_BUCKET")),
+            "default_acl": "private",
+            "querystring_auth": True,
+            "querystring_expire": 600,
+            "object_parameters": {"CacheControl": "private, max-age=600"},
         },
     }
-    CONTENT_SECURITY_POLICY["DIRECTIVES"]["img-src"].append(f"https://{env('S3_PUBLIC_DOMAIN')}")
+    CONTENT_SECURITY_POLICY["DIRECTIVES"]["img-src"].append(env("S3_ENDPOINT_URL"))

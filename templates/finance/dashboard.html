@@ -3,7 +3,7 @@
 {% block title %}{% translate "Finance" %}{% endblock %}
 {% block content %}
 {% url 'finance:income_create' as income_url %}{% url 'finance:expense_create' as expense_url %}
-<c-page-header title="{% translate 'Finance' %}" lede="{% translate 'Your practice, in perspective.' %}"><c-button variant="secondary" :href="expense_url">{% translate "Add expense" %}</c-button><c-button :href="income_url" icon="plus">{% translate "Record income" %}</c-button></c-page-header>
+<c-page-header title="{% translate 'Finance' %}" lede="{% translate 'Your practice, in perspective.' %}"><c-slot name="actions"><c-button variant="secondary" :href="expense_url">{% translate "Add expense" %}</c-button><c-button :href="income_url" icon="plus">{% translate "Record income" %}</c-button></c-slot></c-page-header>
 {% include 'finance/_tabs.html' %}{% include 'finance/_period.html' %}
 <section class="finance-stats" aria-label="{% translate 'Annual summary' %}">
 <c-stat label="{% translate 'Income' %}" :value="summary.income" format="eur" />
@@ -12,7 +12,7 @@
 <div class="grid gap-1"><p class="text-sm text-ink-2">{% translate "Income vs last year" %}</p><p class="tnum text-2xl font-display">{% if summary.income_change != None %}{{ summary.income_change|floatformat:1 }}%{% else %}—{% endif %}</p><p class="text-xs text-ink-3">{{ year|add:'-1' }} → {{ year }}</p></div>
 </section>
 {% if summary.income or summary.expenses %}
-{{ monthly|json_script:'finance-monthly' }}{{ previous_monthly|json_script:'finance-previous' }}{{ categories_report|json_script:'finance-categories' }}
+<div hidden id="finance-data">{{ chart_data }}</div>
 <section class="finance-chart-section"><div class="ledger-heading"><h2 class="section-title">{% translate "The year in focus" %}</h2><span class="eyebrow">{{ year }}</span></div><div class="chart-frame"><canvas id="finance-chart" role="img" aria-label="{% translate 'Monthly income, expenses and net income' %}"></canvas></div>
 <details class="mt-4"><summary class="action-link">{% translate "View monthly figures" %}</summary><div class="table-scroll"><table class="finance-table"><thead><tr><th>{% translate "Month" %}</th><th>{% translate "Income" %}</th><th>{% translate "Expenses" %}</th><th>{% translate "Net income" %}</th></tr></thead><tbody>{% for row in monthly %}<tr><th>{{ row.month }}</th><td>{{ row.income|eur }}</td><td>{{ row.expenses|eur }}</td><td>{{ row.profit|eur }}</td></tr>{% endfor %}</tbody></table></div></details></section>
 <div class="finance-columns">

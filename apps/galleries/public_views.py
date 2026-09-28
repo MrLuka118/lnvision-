@@ -43,13 +43,14 @@ def _limited(request, group, rate):
 
 def _noindex(response):
     response["X-Robots-Tag"] = "noindex, nofollow"
+    response["Cache-Control"] = "private, no-store"
     return response
 
 
 def _page_context(gallery):
     mode = "dark" if gallery.theme in DARK_THEMES else "light"
-    base = gallery.cover_photo.dominant_color if gallery.cover_photo else ""
-    accent = accessible_accent(base or "#9a9a9a", SURROUND[mode], minimum=3.0)
+    base = gallery.studio.accent_colour
+    accent = accessible_accent(base or "#9a9a9a", SURROUND[mode], minimum=4.5)
     # "theme" overrides the visitor's app setting: the photographer chose this gallery's look.
     return {"gallery": gallery, "studio": gallery.studio, "mode": mode, "theme": mode,
             "accent": accent, "on_accent": text_on(accent)}  # fmt: skip
@@ -346,6 +347,8 @@ def zip_file(request, signed):
     if not req.file or (req.expires_at and req.expires_at < timezone.now()):
         raise Http404
     gallery = req.gallery
+    if not gallery.is_live:
+        raise Http404
     analytics.record(request, gallery, GalleryEvent.Kind.DOWNLOAD_ZIP, visitor=req.visitor)
     filename = f"{gallery.title}.zip".replace("/", "-")
     return file_response(req.file.storage, req.file.name, filename)

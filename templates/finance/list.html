@@ -2,7 +2,7 @@
 {% load formatting %}
 {% block title %}{{ title|capfirst }}{% endblock %}
 {% block content %}
-<c-page-header title="{% translate 'Finance' %}" lede="{% translate 'A clear view of the work behind your work.' %}"><c-button :href="create_url" icon="plus">{% translate "New record" %}</c-button></c-page-header>
+<c-page-header title="{% translate 'Finance' %}" lede="{% translate 'A clear view of the work behind your work.' %}"><c-slot name="actions"><c-button :href="create_url" icon="plus">{% translate "New record" %}</c-button></c-slot></c-page-header>
 {% include "finance/_tabs.html" %}
 {% if is_ledger %}{% include "finance/_period.html" %}
 <div class="ledger-heading"><h2 class="section-title">{{ title|capfirst }}</h2><span class="ledger-total tnum">{{ total|eur }}</span></div>

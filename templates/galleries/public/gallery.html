@@ -16,7 +16,7 @@
       <c-photo :photo="gallery.cover_photo" sizes="100vw" loading="eager" class="g-cover-photo" fetchpriority="high" />
     {% endif %}
     <div class="g-cover-text">
-      <p class="g-cover-studio">{{ studio.name }}</p>
+      <p class="g-cover-studio">{% if studio.logo %}<img class="studio-logo" src="{% url 'core:studio_logo' studio.slug %}" alt="{{ studio.name }}" width="100" height="40">{% else %}{{ studio.name }}{% endif %}</p>
       <h1 class="g-title">{{ gallery.title }}</h1>
       {% if gallery.event_date %}<p class="g-cover-date">{{ gallery.event_date|long_date }}</p>{% endif %}
     </div>
@@ -74,7 +74,7 @@
   </main>
 
   <footer class="g-footer">
-    <p class="font-display text-xl">{{ studio.name }}</p>
+    <p class="font-display text-xl">{% if studio.logo %}<img class="studio-logo" src="{% url 'core:studio_logo' studio.slug %}" alt="{{ studio.name }}" width="100" height="40">{% else %}{{ studio.name }}{% endif %}</p>
     {% if studio.email %}<a class="link" href="mailto:{{ studio.email }}">{{ studio.email }}</a>{% endif %}
     {% if gallery.expires_at %}<p class="text-sm">{% blocktranslate with date=gallery.expires_at|long_date %}This gallery is available until {{ date }}.{% endblocktranslate %}</p>{% endif %}
   </footer>

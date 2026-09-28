@@ -128,6 +128,7 @@ def process(photo: Photo) -> Photo:
     }
     photo.rendition_version = version
     photo.lqip = rendered.lqip
+    photo.blurhash = rendered.blurhash
     photo.dominant_color = rendered.dominant_color
     photo.luminance = rendered.luminance
     photo.status = Photo.Status.READY

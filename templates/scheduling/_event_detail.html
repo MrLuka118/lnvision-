@@ -2,7 +2,7 @@
   <div class="flex items-center gap-2 text-sm text-ink-2">
     <span class="badge-dot" aria-hidden="true"></span>{{ object.get_kind_display }}{% if object.is_tentative %} <span>({% translate "tentative" %})</span>{% endif %}
   </div>
-  <p class="font-display text-xl leading-tight">{{ object.display_title }}</p>
+  <p class="font-display text-xl leading-tight" style="view-transition-name: calendar-event">{{ object.display_title }}</p>
   <p class="tnum text-sm">
     {% if object.all_day %}{{ object.start|date:"l, j. n. Y"|capfirst }}{% else %}{{ object.start|date:"l, j. n. Y"|capfirst }}<br>{{ object.start|date:"H:i" }}{% if object.end %}–{{ object.end|date:"H:i" }}{% endif %}{% endif %}
   </p>
@@ -13,7 +13,7 @@
     {% if object.shoot %}
       <c-button size="sm" :href="object.shoot.get_absolute_url">{% translate "Open shoot" %}</c-button>
     {% else %}
-      <button class="btn btn-secondary btn-sm" type="button" data-edit-url="{% url 'scheduling:update' object.pk %}"><c-icon name="pencil" size="sm" />{% translate "Edit" %}</button>
+      <a class="btn btn-secondary btn-sm" href="{% url 'scheduling:update' object.pk %}" data-edit-url="{% url 'scheduling:update' object.pk %}"><c-icon name="pencil" size="sm" />{% translate "Edit" %}</a>
       <form hx-boost="false" method="post" action="{% url 'scheduling:delete' object.pk %}" hx-post="{% url 'scheduling:delete' object.pk %}" hx-swap="none"
             hx-confirm="{% translate 'Remove from the calendar?' %}">
         {% csrf_token %}

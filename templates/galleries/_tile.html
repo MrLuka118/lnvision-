@@ -1,7 +1,7 @@
 {# One photo in the editor grid. Expects: photo, gallery, sections. #}
 <div class="tile" style="--ar: {{ photo.aspect_ratio|stringformat:'.4f' }}">
   {% if photo.is_ready %}
-    <c-photo :photo="photo" sizes="(min-width: 64rem) 18vw, 45vw" :alt="photo.original_name" />
+    <a href="{% url 'photos:detail' photo.uuid %}" style="view-transition-name: photo-{{ photo.uuid.hex }}"><c-photo :photo="photo" sizes="(min-width: 64rem) 18vw, 45vw" :alt="photo.original_name" /></a>
   {% else %}
     <div class="photo" style="--ar: 1.5"></div>
     <div class="tile-state{% if photo.status == 'failed' %} is-failed{% endif %}">

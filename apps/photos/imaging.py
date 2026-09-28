@@ -1,10 +1,13 @@
 """libvips renditions: sRGB, never upscaled, mildly sharpened, metadata stripped."""
 
 import base64
+import io
 from dataclasses import dataclass, field
 from pathlib import Path
 
+import blurhash
 import pyvips
+from PIL import Image
 
 from .models import RENDITION_FORMATS, RENDITION_WIDTHS
 
@@ -30,6 +33,7 @@ class Rendered:
     dominant_color: str
     luminance: float
     files: dict[tuple[int, str], bytes] = field(default_factory=dict)
+    blurhash: str = ""
 
 
 def inspect(path: Path) -> tuple[int, int]:
@@ -90,10 +94,17 @@ def render(path: Path, *, formats=RENDITION_FORMATS, watermark_text: str = "") -
         rendered.widths.append(target)
 
     tiny = _thumbnail(path, 24)
-    rendered.lqip = (
-        "data:image/webp;base64,"
-        + base64.b64encode(tiny.write_to_buffer(".webp", Q=40, keep="none")).decode()
-    )
+    # Pillow handles the tiny preview; the existing libvips pipeline retains full-size efficiency.
+    preview = Image.open(io.BytesIO(tiny.write_to_buffer(".png"))).convert("RGB")
+    pixels = list(preview.get_flattened_data())
+    matrix = [pixels[y * preview.width : (y + 1) * preview.width] for y in range(preview.height)]
+    rendered.blurhash = blurhash.encode(matrix, components_x=4, components_y=3)
+    decoded = blurhash.decode(rendered.blurhash, 24, max(1, round(24 * height / width)))
+    placeholder = Image.new("RGB", (24, len(decoded)))
+    placeholder.putdata([tuple(pixel) for row in decoded for pixel in row])
+    output = io.BytesIO()
+    placeholder.save(output, format="WEBP", quality=40)
+    rendered.lqip = "data:image/webp;base64," + base64.b64encode(output.getvalue()).decode()
     small = _thumbnail(path, 64)
     r, g, b = (round(small[band].avg()) for band in range(3))
     rendered.dominant_color = f"#{r:02x}{g:02x}{b:02x}"

@@ -5,7 +5,7 @@
       <a class="row" href="{{ client.get_absolute_url }}">
         <span class="avatar" aria-hidden="true">{{ client.initials }}</span>
         <span class="grid min-w-0">
-          <span class="row-title">{{ client.display_name }}</span>
+          <span class="row-title" style="view-transition-name: client-{{ client.pk }}">{{ client.display_name }}</span>
           <span class="row-meta">{% firstof client.email client.phone client.company %}</span>
         </span>
         <span class="row-aside tnum">

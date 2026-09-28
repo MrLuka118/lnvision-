@@ -10,12 +10,18 @@
     <h1 class="text-6xl">{{ weekday|capfirst }}, <span class="whitespace-nowrap">{{ today|long_date:False }}</span></h1>
   </header>
 
+  <section class="finance-stats mb-10" aria-label="{% translate 'This month' %}">
+    <c-stat label="{% translate 'Income this month' %}" :value="finance.income" format="eur" />
+    <c-stat label="{% translate 'Expenses this month' %}" :value="finance.expenses" format="eur" />
+    <c-stat label="{% translate 'Net income' %}" :value="finance.profit" format="eur" />
+    <a class="action-link self-center" href="{% url 'finance:dashboard' %}">{% translate "Open finances" %}<c-icon name="chevron-right" size="sm" /></a>
+  </section>
   <div class="grid items-start gap-14 xl:grid-cols-[minmax(0,48rem)_minmax(0,22rem)] xl:justify-between">
   {% if inquiries %}
     {# Waiting for a reply comes first on a phone; beside the week on a wide screen. #}
     <section aria-labelledby="inquiries-title" class="xl:col-start-2 xl:row-start-1">
-      <div class="mb-4 flex items-center justify-between gap-4">
-        <h2 id="inquiries-title" class="section-title whitespace-nowrap">
+      <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
+        <h2 id="inquiries-title" class="section-title">
           {% translate "Waiting for a reply" %} <span class="tnum count-pill">{{ inquiry_count }}</span>
         </h2>
         <a class="action-link shrink-0" href="{% url 'shoots:list' %}?status=inquiry">{% translate "All inquiries" %} <c-icon name="chevron-right" size="sm" /></a>
@@ -76,4 +82,8 @@
     {% endif %}
   </section>
   </div>
+  <section class="mt-14" aria-labelledby="activity-title">
+    <div class="ledger-heading"><h2 id="activity-title" class="section-title">{% translate "In the darkroom" %}</h2><span class="eyebrow">{% translate "Recent client activity" %}</span></div>
+    {% if activity %}<div class="rows">{% for event in activity %}<a class="row" href="{% url 'galleries:editor' event.gallery_id %}"><span class="avatar"><c-icon name="eye" size="sm" /></span><span class="grid min-w-0"><span class="row-title">{{ event.gallery.title }}</span><span class="row-meta">{% firstof event.visitor.name event.gallery.client.display_name %} · {{ event.get_kind_display }}</span></span><span class="row-aside tnum">{{ event.created_at|date:"j. n. H:i" }}</span></a>{% endfor %}</div>{% else %}<c-empty icon="images" title="{% translate 'The next chapter starts here' %}">{% translate "Share a gallery to follow your clients' views, selections and downloads." %}</c-empty>{% endif %}
+  </section>
 {% endblock %}

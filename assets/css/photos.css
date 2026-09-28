@@ -242,3 +242,10 @@
     transition: width var(--dur-2) var(--ease-out);
   }
 }
+@layer components {
+ .photo-detail { background: var(--well); }
+ .photo-detail .photo { max-height: 70vh; }
+ .photo-detail img { object-fit: contain; max-height: 70vh; }
+ .photo-metadata { display: flex; flex-wrap: wrap; gap: 2rem; font-size: var(--text-sm); }
+ .photo-metadata dt { color: var(--ink-3); margin-bottom: .5rem; }
+}

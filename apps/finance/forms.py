@@ -92,6 +92,14 @@ class CategoryForm(StudioModelForm):
         fields = ["name", "colour", "position"]
         widgets = {"colour": forms.TextInput(attrs={"type": "color"})}
 
+    def clean_colour(self):
+        import re
+
+        colour = self.cleaned_data["colour"]
+        if not re.fullmatch(r"#[0-9a-fA-F]{6}", colour):
+            raise forms.ValidationError(_("Use a six-digit hex colour."))
+        return colour
+
     def clean_name(self):
         name = self.cleaned_data["name"].strip()
         if (

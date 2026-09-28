@@ -24,3 +24,12 @@ async function charts() {
 }
 charts();
 document.addEventListener('htmx:afterSettle', charts);
+
+// Public pages and the calendar own their page modules and use native document navigation.
+document.addEventListener('htmx:beforeRequest', event => {
+  if (!event.detail.boosted) return;
+  const link = event.detail.elt.closest('a');
+  if (link && /^\/(koledar|g|p|racun)\//.test(new URL(link.href).pathname)) {
+    event.preventDefault(); location.assign(link.href);
+  }
+});

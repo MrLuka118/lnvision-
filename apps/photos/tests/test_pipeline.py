@@ -53,9 +53,13 @@ def test_processing_makes_srgb_renditions_without_location(studio, camera_file, 
 
     assert photo.status == Photo.Status.READY
     assert (photo.width, photo.height) == (2000, 3000)  # orientation applied
-    assert photo.renditions == {"widths": [480, 960, 1600, 2000], "formats": ["avif", "jpg"]}
+    assert photo.renditions == {
+        "widths": [480, 960, 1600, 2000],
+        "formats": ["avif", "jpg", "webp"],
+    }
     assert photo.exif["make"] == "Canon" and "gps" not in json.dumps(photo.exif).lower()
     assert timezone.localtime(photo.taken_at).strftime("%Y-%m-%d %H:%M") == "2026-06-14 15:30"
+    assert len(photo.blurhash) > 10
     assert photo.lqip.startswith("data:image/webp;base64,")
     assert photo.dominant_color.startswith("#") and 0 <= photo.luminance <= 1
 

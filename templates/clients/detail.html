@@ -5,7 +5,7 @@
   <a class="back-link" href="{% url 'clients:list' %}"><c-icon name="chevron-left" size="sm" />{% translate "Clients" %}</a>
   <header class="page-header">
     <div class="grid gap-2">
-      <h1 class="page-title">{{ object.display_name }}</h1>
+      <h1 class="page-title" style="view-transition-name: client-{{ object.pk }}">{{ object.display_name }}</h1>
       {% if object.company %}<p class="text-md text-ink-2">{{ object.company }}</p>{% endif %}
     </div>
     <div class="flex flex-wrap gap-2">
@@ -45,6 +45,7 @@
     </section>
 
     <aside aria-labelledby="contact-title" class="grid content-start gap-6">
+      <c-stat label="{% translate 'Total revenue' %}" :value="revenue" format="eur" />
       <div class="panel p-5">
         <h2 id="contact-title" class="mb-4 section-title">{% translate "Contact" %}</h2>
         <dl class="facts">

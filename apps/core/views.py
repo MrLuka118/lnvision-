@@ -44,7 +44,17 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             .select_related("client", "package")
             .order_by("-created_at")
         )
+        from apps.finance.reports import summary
+        from apps.galleries.models import GalleryEvent
+
+        activity = (
+            GalleryEvent.objects.for_studio(self.request.studio)
+            .select_related("gallery", "visitor")
+            .order_by("-created_at")[:6]
+        )
         return super().get_context_data(
+            finance=summary(self.request.studio, today.year, today.month),
+            activity=activity,
             days=days,
             today=today,
             inquiries=inquiries[:5],
@@ -167,3 +177,27 @@ class StyleGuideForm(forms.Form):
     )
     notes = forms.CharField(label=_("Notes"), widget=forms.Textarea, required=False)
     newsletter = forms.BooleanField(label=_("Send a reminder a day before"), required=False)
+
+
+class ProfileSettingsView(LoginRequiredMixin, FormPageMixin, SuccessMessageMixin, UpdateView):
+    from .forms import ProfileForm
+
+    form_class = ProfileForm
+    page_title = _("Your profile")
+    success_message = _("Changes saved.")
+    success_url = reverse_lazy("core:settings")
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+def studio_logo(request, slug):
+    from django.http import FileResponse
+    from django.shortcuts import get_object_or_404
+
+    studio = get_object_or_404(Studio, slug=slug)
+    if not studio.logo:
+        raise Http404
+    response = FileResponse(studio.logo.open("rb"), content_type="image/png")
+    response["Cache-Control"] = "public, max-age=300"
+    return response

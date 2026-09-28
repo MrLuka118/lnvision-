@@ -10,7 +10,7 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods, require_POST
@@ -19,7 +19,7 @@ from apps.galleries.models import Gallery, GallerySection
 
 from . import services
 from .imaging import UnreadableImage
-from .models import UploadSession
+from .models import Photo, UploadSession
 
 
 def _error(message, status=400, **extra):
@@ -106,3 +106,12 @@ def upload_chunk(request, uuid):
     return JsonResponse(
         {"received": session.received_bytes, "photo": {"id": photo.pk, "status": photo.status}}
     )
+
+
+@login_required
+@require_http_methods(["GET"])
+def photo_detail(request, uuid):
+    photo = get_object_or_404(
+        Photo.objects.for_studio(request.studio).select_related("gallery"), uuid=uuid
+    )
+    return render(request, "photos/detail.html", {"photo": photo})

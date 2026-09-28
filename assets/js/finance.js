@@ -7,9 +7,7 @@ export function initFinance() {
   if (!target) return;
   const style = getComputedStyle(document.documentElement);
   const color = name => style.getPropertyValue(name).trim();
-  const monthly = JSON.parse(document.getElementById('finance-monthly').textContent);
-  const previous = JSON.parse(document.getElementById('finance-previous').textContent);
-  const categories = JSON.parse(document.getElementById('finance-categories').textContent);
+  const {monthly, previous, categories} = JSON.parse(document.getElementById('finance-data').textContent);
   const money = value => new Intl.NumberFormat(document.documentElement.lang, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);
   Chart.defaults.color = color('--ink-2');
   Chart.defaults.font.family = color('--font-sans');
@@ -29,7 +27,7 @@ export function initFinance() {
       { type: 'line', label: sl ? 'Preteklo leto' : 'Previous year', data: previous.map(r=>+r.income), borderColor: color('--ink-3'), borderDash: [4,4], borderWidth: 1, pointRadius: 0, tension: .25 },
     ] }, options: { ...options, scales: { x: { grid: { display: false } }, y: { ticks: { callback: money }, beginAtZero: true } } } }));
   const donut = document.getElementById('expense-chart');
-  if (donut) charts.push(new Chart(donut, { type: 'doughnut', data: { labels: categories.map(r=>r.category__name), datasets: [{ data: categories.map(r=>+r.total), backgroundColor: categories.map(r=>r.category__colour), borderColor: color('--surround'), borderWidth: 4 }] }, options: { ...options, cutout: '78%', plugins: { ...options.plugins, legend: { display: false } } } }));
+  if (donut) charts.push(new Chart(donut, { type: 'doughnut', data: { labels: categories.map(r=>r.category__name), datasets: [{ data: categories.map(r=>+r.total), backgroundColor: categories.map((r,i)=>r.category__colour || [color('--accent'), color('--color-cc-moderate-red'), color('--color-cc-bluish-green')][i%3]), borderColor: color('--surround'), borderWidth: 4 }] }, options: { ...options, cutout: '78%', plugins: { ...options.plugins, legend: { display: false } } } }));
 }
 new MutationObserver(initFinance).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 matchMedia('(prefers-color-scheme: light)').addEventListener('change', initFinance);

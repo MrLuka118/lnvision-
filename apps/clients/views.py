@@ -69,7 +69,13 @@ class ClientDetailView(StudioDetailView):
             .select_related("package", "location")
             .order_by("-starts_at", "-created_at")
         )
-        return super().get_context_data(shoots=shoots, now=timezone.now(), **kwargs)
+        from apps.finance.models import Income
+        from apps.finance.reports import total
+
+        revenue = total(Income.objects.for_studio(self.request.studio).filter(client=self.object))
+        return super().get_context_data(
+            shoots=shoots, revenue=revenue, now=timezone.now(), **kwargs
+        )
 
 
 class ClientCreateView(StudioCreateView):
