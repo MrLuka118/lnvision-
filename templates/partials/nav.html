@@ -1,9 +1,11 @@
 {% url "account_logout" as logout_url %}
 {% url "core:settings" as settings_url %}
 {# Desktop: floating glass sidebar. Nothing scrolls beneath it, so it has no refraction. #}
-<nav class="app-sidebar glass" aria-label="{% translate 'Main' %}">
+{# hx-preserve keeps this node across boosted swaps; app.js moves aria-current and the indicator. #}
+<nav id="app-sidebar" class="app-sidebar" hx-preserve aria-label="{% translate 'Main' %}">
   <div class="sidebar-brand"><a class="wordmark" href="{% url 'core:dashboard' %}"><c-icon name="aperture" /> Aperture</a><span class="brand-caption">L&N VISION · STUDIO</span></div>
   <div class="sidebar-nav">
+    <span class="nav-indicator" aria-hidden="true"{% for item in nav_items %}{% if item.current %} style="--nav-i: {{ forloop.counter0 }}" data-current{% endif %}{% endfor %}></span>
     {% for item in nav_items %}
       <a class="nav-item" href="{{ item.url }}"{% if item.icon == "calendar" %} hx-boost="false"{% endif %}{% if item.current %} aria-current="page"{% endif %}>
         <c-icon :name="item.icon" />{{ item.label }}

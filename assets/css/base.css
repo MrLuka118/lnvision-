@@ -68,6 +68,13 @@
 ::view-transition-new(root) { animation: iris-in var(--dur-3) var(--ease-out) both; }
 ::view-transition-old(root) { animation: iris-out var(--dur-3) var(--ease-out) both; }
 .partial-transition::view-transition-new(root) { animation: iris-out var(--dur-2) reverse both; }
+/* The sidebar is its own layer and stays put: only the live new state is shown, so the iris
+   (root) never passes over it and the nav indicator glides inside it. */
+::view-transition-new(sidebar) { animation: none; }
+::view-transition-old(sidebar) { animation: none; opacity: 0; }
+/* main.js focuses <main> after a boosted swap for screen readers; it is not a control, so no
+   ring (WebKit otherwise draws one along the sidebar edge after every navigation). */
+#main:focus { outline: none; }
 .skip-link { position: fixed; z-index: 100; left: 1rem; top: 1rem; padding: 1rem; background: var(--surface); transform: translateY(-200%); }
 .skip-link:focus { transform: none; }
 body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: .025; background-image: url('/static/img/grain.svg'); }

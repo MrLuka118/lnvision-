@@ -20,6 +20,20 @@ initActions();
 
 htmx.on("htmx:afterSettle", (event) => initRefraction(event.target));
 
+// The sidebar survives boosted swaps (hx-preserve), so its current item is synced from the
+// new page's <main data-nav-current>; the indicator's CSS transition does the glide.
+htmx.on("htmx:afterSwap", () => {
+  const nav = document.querySelector(".sidebar-nav");
+  const main = document.getElementById("main");
+  if (!nav || !main) return;
+  const items = [...nav.querySelectorAll(".nav-item")];
+  const index = items.findIndex((a) => a.getAttribute("href") === main.dataset.navCurrent);
+  items.forEach((a, i) => (i === index ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current")));
+  const indicator = nav.querySelector(".nav-indicator");
+  indicator.toggleAttribute("data-current", index >= 0);
+  if (index >= 0) indicator.style.setProperty("--nav-i", index);
+});
+
 // Fade photos in over their blurred placeholder once they have loaded.
 const markLoaded = (img) => img.classList.add("is-loaded");
 document.addEventListener(

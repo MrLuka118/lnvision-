@@ -126,7 +126,6 @@
       display: none;
     }
     .app-sidebar {
-      --glass-radius: var(--radius-xl);
       position: fixed;
       z-index: 40;
       top: var(--nav-inset);
@@ -136,7 +135,6 @@
       display: flex;
       flex-direction: column;
       padding: 1.25rem 0.75rem 0.75rem;
-      view-transition-name: app-sidebar;
     }
     .app-main {
       padding: 3rem clamp(2rem, 4vw, 4rem) 4rem;
@@ -148,17 +146,34 @@
     padding: 0.25rem 0.75rem 1.5rem;
   }
   .sidebar-nav {
+    position: relative;
     display: grid;
-    gap: 2px;
+    gap: var(--nav-gap);
+  }
+  /* One highlight shared by all items; it glides to the current one (static/js/app.js). */
+  .nav-indicator {
+    position: absolute;
+    inset: 0 0 auto;
+    height: var(--nav-item-h);
+    border-radius: calc(var(--sidebar-radius) - 0.75rem);
+    background: color-mix(in oklab, var(--ink) 11%, transparent);
+    translate: 0 calc(var(--nav-i, 0) * (var(--nav-item-h) + var(--nav-gap)));
+    transition:
+      translate var(--dur-2) var(--ease-out),
+      opacity var(--dur-1) var(--ease-out);
+  }
+  .nav-indicator:not([data-current]) {
+    opacity: 0;
   }
   /* 28px outer radius - 12px padding = 16px: concentric with the sidebar corner. */
   .nav-item {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    height: 2.625rem;
+    height: var(--nav-item-h);
     padding-inline: 0.75rem;
-    border-radius: calc(var(--radius-xl) - 0.75rem);
+    border-radius: calc(var(--sidebar-radius) - 0.75rem);
     font-size: var(--text-sm);
     font-weight: 560;
     color: var(--ink-2);
@@ -167,13 +182,13 @@
       background-color var(--dur-1) var(--ease-out),
       color var(--dur-1) var(--ease-out);
   }
-  .nav-item:hover {
+  /* The current item's background is the indicator, so hover never stacks a second one. */
+  .nav-item:not([aria-current="page"]):hover {
     color: var(--ink);
     background: var(--line-soft);
   }
   .nav-item[aria-current="page"] {
     color: var(--ink);
-    background: color-mix(in oklab, var(--ink) 11%, transparent);
   }
   .sidebar-foot {
     margin-top: auto;
@@ -184,9 +199,10 @@
     align-items: center;
     gap: 0.7rem;
     padding: 0.5rem;
-    border-radius: calc(var(--radius-xl) - 0.75rem);
+    border-radius: calc(var(--sidebar-radius) - 0.75rem);
     text-align: left;
     cursor: pointer;
+    transition: background-color var(--dur-1) var(--ease-out);
   }
   .account-button:hover {
     background: var(--line-soft);
@@ -291,3 +307,5 @@
   .page-header { padding-bottom: 1.75rem; border-bottom: 1px solid var(--line-soft); }
   .tab { font-size: 9px; }
 }
+
+@layer components { @media(max-width: 40rem) { .schedule-row { grid-template-columns: 3rem minmax(0,1fr) .5rem; } .schedule-row > :last-child { grid-column: 3; grid-row: 1; } .schedule-row .row-title { white-space: normal; } } }

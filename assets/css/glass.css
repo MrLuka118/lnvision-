@@ -62,6 +62,55 @@
     --ink-2: rgb(255 255 255 / 0.82);
   }
 
+  /*
+   * Sidebar: the glass lives on ::before, clipped by clip-path, not on the sidebar box.
+   * Chromium does not clip a backdrop-filter to border-radius when the element is captured
+   * for a view transition (and occasionally on repaint), so the blurred backdrop showed as
+   * a sharp rectangle behind the corners. clip-path clips it in every paint path. It sits on
+   * the pseudo element because clip-path on the sidebar would also clip its shadow and make
+   * the sidebar a backdrop root (the ::before blur would then see nothing).
+   */
+  .app-sidebar {
+    isolation: isolate;
+    border-radius: var(--sidebar-radius);
+    box-shadow: var(--shadow-float);
+    --ink-2: var(--glass-ink-2);
+    view-transition-name: sidebar;
+  }
+  .app-sidebar::before,
+  .app-sidebar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  .app-sidebar::before {
+    background: var(--glass-tint);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat)) var(--glass-lum);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat)) var(--glass-lum);
+    clip-path: inset(0 round var(--sidebar-radius));
+  }
+  /* Specular edge, as .glass::before. */
+  .app-sidebar::after {
+    padding: 1px;
+    background: linear-gradient(
+      180deg,
+      var(--glass-spec) 0%,
+      var(--glass-rim) 32%,
+      var(--glass-rim) 72%,
+      color-mix(in srgb, var(--glass-spec) 45%, transparent) 100%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+  }
+
   .glass-clear[data-dim] {
     background:
       linear-gradient(rgb(0 0 0 / 0.35), rgb(0 0 0 / 0.35)),
@@ -70,7 +119,8 @@
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .glass {
+  .glass,
+  .app-sidebar::before {
     background: var(--surface);
   }
   .glass-clear {
@@ -80,11 +130,13 @@
 
 @media (prefers-reduced-transparency: reduce) {
   .glass,
-  .glass-clear {
+  .glass-clear,
+  .app-sidebar::before {
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
   }
-  .glass {
+  .glass,
+  .app-sidebar::before {
     background: var(--surface);
   }
   .glass-clear {
@@ -93,6 +145,12 @@
 }
 
 @media (prefers-contrast: more) {
+  .app-sidebar::before {
+    background: var(--surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .app-sidebar,
   .glass {
     background: var(--surface);
     -webkit-backdrop-filter: none;

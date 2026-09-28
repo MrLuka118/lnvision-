@@ -4,7 +4,7 @@
   <a class="skip-link" href="#main">{% translate "Skip to content" %}</a>
   {% include "partials/nav.html" %}
   {% include "partials/messages.html" %}
-  <main id="main" class="app-main">
+  <main id="main" class="app-main" data-nav-current="{% for item in nav_items %}{% if item.current %}{{ item.url }}{% endif %}{% endfor %}">
     {% block content %}{% endblock %}
   </main>
   {% include "partials/confirm_dialog.html" %}
