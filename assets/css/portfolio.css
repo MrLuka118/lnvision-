@@ -62,11 +62,10 @@
     font-weight: 560;
     text-decoration: none;
     white-space: nowrap;
-    transition: transform 380ms var(--ease-spring);
+    transition: transform var(--dur-1) var(--ease-out);
   }
   .pf-nav-cta:active {
-    transform: scale(0.95);
-    transition-duration: 90ms;
+    transform: translateY(1px);
   }
   @media (min-width: 56rem) {
     .pf-nav-links {

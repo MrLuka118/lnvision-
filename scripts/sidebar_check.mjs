@@ -107,5 +107,22 @@ for (let i = 0; i < 10; i++) {
   if (JSON.stringify(await page.locator('.app-sidebar').boundingBox()) !== sbBox) failures.push(`sidebar moved on nav ${i}`);
   if (!(await page.evaluate(() => window.__sidebar === document.querySelector('.app-sidebar')))) failures.push(`sidebar re-rendered on nav ${i}`);
 }
+// Dashboard controls: hover and press each type (recorded), and only colour/opacity/transform animate.
+await page.goto(`${BASE}/`); await page.waitForTimeout(600);
+const allowed = new Set(['background-color', 'color', 'border-color', 'opacity', 'transform', 'translate', 'all']);
+const bad = await page.evaluate(() => [...document.querySelectorAll('a, button, label, .btn')].flatMap(e => {
+  const props = getComputedStyle(e).transitionProperty.split(',').map(x => x.trim());
+  const dur = getComputedStyle(e).transitionDuration;
+  return props.map(p => [p, dur, e.className]);
+}));
+for (const [p, dur, cls] of bad) if (dur !== '0s' && !allowed.has(p)) failures.push(`animates ${p} on .${cls}`);
+for (const sel of ['.btn', 'a.row', '.nav-item', '.account-button', '.link', '.action-link', '.filter-pill']) {
+  const el = page.locator(`main ${sel}, .app-sidebar ${sel}`).first();
+  if (!(await el.count()) || !(await el.isVisible())) continue;
+  const bb = await el.boundingBox();
+  await page.mouse.move(bb.x + bb.width / 2, bb.y + bb.height / 2, { steps: 5 }); await page.waitForTimeout(250);
+  await page.mouse.down(); await page.waitForTimeout(150);
+  await page.mouse.move(bb.x + bb.width / 2, bb.y - 60, { steps: 3 }); await page.mouse.up(); await page.waitForTimeout(250);
+}
 await ctx.close(); await browser.close();
 console.log(failures.length ? `FAIL ${engine} ${scale}x\n` + failures.join('\n') : `PASS ${engine} ${scale}x`);

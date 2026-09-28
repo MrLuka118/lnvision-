@@ -53,11 +53,11 @@
     -webkit-tap-highlight-color: transparent;
     transition:
       color var(--dur-1) var(--ease-out),
-      transform 380ms var(--ease-spring);
+      background-color var(--dur-1) var(--ease-out),
+      transform var(--dur-1) var(--ease-out);
   }
   .tab:active {
-    transform: scale(0.92);
-    transition-duration: 90ms;
+    transform: translateY(1px);
   }
   .tab[aria-current="page"] {
     color: var(--ink);

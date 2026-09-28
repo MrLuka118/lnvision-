@@ -34,16 +34,14 @@
     user-select: none;
     -webkit-tap-highlight-color: transparent;
     transition:
-      transform 420ms var(--ease-spring),
+      transform var(--dur-1) var(--ease-out),
       background-color var(--dur-1) var(--ease-out),
       color var(--dur-1) var(--ease-out),
-      box-shadow var(--dur-1) var(--ease-out);
+      border-color var(--dur-1) var(--ease-out);
   }
-  /* Press: the button gives a little, then springs back on release. */
+  /* Press: a 1 px give. No scale: scaling text blurs it mid-animation. */
   .btn:active {
-    transform: scale(0.955);
-    transition-duration: 90ms;
-    transition-timing-function: var(--ease-out);
+    transform: translateY(1px);
   }
   .btn:disabled,
   .btn[aria-disabled="true"] {
@@ -473,9 +471,7 @@
     color: var(--ink);
     font-size: 1rem; /* 16px keeps iOS from zooming on focus */
     border: 1px solid var(--line-strong); /* 3:1 against the surround, WCAG 1.4.11 */
-    transition:
-      border-color var(--dur-1) var(--ease-out),
-      box-shadow var(--dur-1) var(--ease-out);
+    transition: border-color var(--dur-1) var(--ease-out);
   }
   .input::placeholder {
     color: var(--ink-3);
@@ -545,7 +541,7 @@
     background: var(--raised);
     box-shadow: var(--shadow-soft);
     translate: calc(var(--seg-i, 0) * 100%) 0;
-    transition: translate 380ms var(--ease-spring);
+    transition: translate var(--dur-2) var(--ease-out);
   }
   .segmented:has(> label:nth-child(3)) {
     --seg-n: 3;
@@ -745,6 +741,7 @@
     text-decoration: none;
     text-align: left;
     cursor: pointer;
+    transition: background-color var(--dur-1) var(--ease-out);
   }
   .menu-item:hover,
   .menu-item:focus-visible {

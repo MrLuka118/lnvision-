@@ -102,13 +102,13 @@
   /* The words rise in once, after the photo has settled. */
   @media (prefers-reduced-motion: no-preference) {
     .g-cover-text > * {
-      animation: g-rise 700ms var(--ease-out) both;
+      animation: g-rise var(--dur-3) var(--ease-out) both;
     }
     .g-cover-text > :nth-child(2) {
-      animation-delay: 80ms;
+      animation-delay: 40ms;
     }
     .g-cover-text > :nth-child(3) {
-      animation-delay: 160ms;
+      animation-delay: 80ms;
     }
   }
   @keyframes g-rise {
@@ -230,14 +230,13 @@
     cursor: pointer;
     transition:
       background-color var(--dur-1) var(--ease-out),
-      transform 380ms var(--ease-spring);
+      transform var(--dur-1) var(--ease-out);
   }
   .g-bar-button:hover {
     background: var(--line-soft);
   }
   .g-bar-button:active {
-    transform: scale(0.95);
-    transition-duration: 90ms;
+    transform: translateY(1px);
   }
   .g-bar-button[aria-pressed="true"] {
     background: var(--accent);
