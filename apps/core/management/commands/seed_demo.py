@@ -54,9 +54,10 @@ class Command(BaseCommand):
         """Create or update demo user."""
         user, created = User.objects.update_or_create(
             email="demo@aperture.local",
+            # No personal name: the demo account is the studio, and "Maja" is also a demo client.
             defaults={
-                "first_name": "Maja",
-                "last_name": "Kovač",
+                "first_name": "",
+                "last_name": "",
                 "is_staff": True,
             },
         )

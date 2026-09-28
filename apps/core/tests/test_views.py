@@ -17,6 +17,15 @@ class TestViews:
         response = auth_client.get(reverse("core:dashboard"))
         assert response.status_code == 200
 
+    def test_dashboard_greets_the_signed_in_user_or_their_studio(self, auth_client, studio):
+        """The greeting names the signed-in user, or the studio when the user has no name."""
+        studio.owner.first_name = "Ana"
+        studio.owner.save()
+        assert "Ana." in auth_client.get(reverse("core:dashboard")).content.decode()
+        studio.owner.first_name = ""
+        studio.owner.save()
+        assert f"{studio.name}." in auth_client.get(reverse("core:dashboard")).content.decode()
+
     def test_dashboard_lists_inquiries_waiting_for_a_reply(self, auth_client, studio, other_studio):
         from apps.shoots.models import Shoot
         from apps.shoots.tests.factories import ShootFactory

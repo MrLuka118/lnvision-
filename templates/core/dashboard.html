@@ -4,7 +4,7 @@
 {% block content %}
   <header class="mb-14 grid gap-3">
     <p class="eyebrow">
-      {% if request.user.first_name %}{% blocktranslate with name=request.user.first_name %}Good day, {{ name }}.{% endblocktranslate %}{% else %}{% translate "Good day." %}{% endif %}
+      {% with name=request.user.first_name|default:studio.name %}{% if name %}{% blocktranslate %}Good day, {{ name }}.{% endblocktranslate %}{% else %}{% translate "Good day." %}{% endif %}{% endwith %}
     </p>
     {% now "l" as weekday %}
     <h1 class="text-6xl">{{ weekday|capfirst }}, <span class="whitespace-nowrap">{{ today|long_date:False }}</span></h1>
@@ -60,7 +60,7 @@
             </h3>
             <div class="rows">
               {% for event in day.events %}
-                <a class="row" href="{% if event.shoot %}{{ event.shoot.get_absolute_url }}{% else %}{% url 'scheduling:calendar' %}{% endif %}" style="--dot: {{ event.colour }}">
+                <a class="row schedule-row" href="{% if event.shoot %}{{ event.shoot.get_absolute_url }}{% else %}{% url 'scheduling:calendar' %}{% endif %}" style="--dot: {{ event.colour }}">
                   <span class="tnum w-14 text-sm text-ink-2">{% if event.all_day %}{% translate "All day" %}{% else %}{{ event.start|date:"H:i" }}{% endif %}</span>
                   <span class="grid min-w-0">
                     <span class="row-title">{{ event.display_title }}</span>
