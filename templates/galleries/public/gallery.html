@@ -38,7 +38,7 @@
         </button>
       {% endif %}
       {% if gallery.downloads != "none" %}
-        <button class="g-bar-button" type="button" commandfor="g-zip" command="show-modal"><c-icon name="download" size="sm" /><span class="g-bar-label">{% translate "Download all" %}</span></button>
+        <button class="g-bar-button" type="button" aria-label="{% translate 'Download all' %}" commandfor="g-zip" command="show-modal"><c-icon name="download" size="sm" /><span class="g-bar-label">{% translate "Download all" %}</span></button>
       {% endif %}
     </div>
   </nav>

@@ -11,7 +11,7 @@
   <title>{% block title %}{% endblock %} – {{ APP_NAME }}</title>
   <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
   {% vite_hmr_client %}
-  {% vite_asset 'assets/js/main.js' nonce=CSP_NONCE %}
+  {% block assets %}{% vite_asset 'assets/js/main.js' nonce=CSP_NONCE %}{% endblock %}
   {% block head %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' {% block body_attrs %}{% endblock %}>

@@ -40,7 +40,7 @@
           {% endif %}
         </div>
         <p class="text-sm text-ink-3">{% translate "JPEG, PNG, TIFF, WebP or AVIF, up to 150 MB each. Originals are kept; clients see web-size copies." %}</p>
-        <input class="visually-hidden" type="file" multiple accept="image/*,.tif,.tiff,.avif" x-ref="input" @change="chosen" tabindex="-1">
+        <input class="visually-hidden" type="file" multiple accept="image/*,.tif,.tiff,.avif" aria-label="{% translate 'Upload photos' %}" x-ref="input" @change="chosen" tabindex="-1">
       </div>
       <form hx-boost="false" class="flex max-w-md gap-2" method="post" action="{% url 'galleries:section_create' object.pk %}">
         {% csrf_token %}

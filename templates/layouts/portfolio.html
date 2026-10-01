@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load django_vite %}
+{% block assets %}{% vite_asset 'assets/js/public-core.js' nonce=CSP_NONCE %}{% endblock %}
 {% block head %}
   {% vite_asset 'assets/js/public.js' %}
   {% vite_asset 'static/js/portfolio.js' %}

@@ -54,6 +54,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "django.middleware.gzip.GZipMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -109,6 +110,11 @@ DATABASES["default"]["CONN_HEALTH_CHECKS"] = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REDIS_URL = env("REDIS_URL", default="redis://redis:6379/0")
+
+# Compose service names (db, redis) only resolve inside Docker; on the host use the published ports.
+if not Path("/.dockerenv").exists() and DATABASES["default"]["HOST"] == "db":
+    DATABASES["default"]["HOST"] = "localhost"
+    REDIS_URL = REDIS_URL.replace("//redis:", "//localhost:")
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",

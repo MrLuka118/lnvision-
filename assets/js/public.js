@@ -8,10 +8,10 @@ import 'photoswipe/style.css';
 gsap.registerPlugin(ScrollTrigger, SplitText, Flip);
 Object.assign(window, { gsap, ScrollTrigger, SplitText, Flip, Lenis });
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  document.fonts.ready.then(() => {
+  {
     const heading = document.querySelector('.g-cover h1, .pf-hero h1');
-    if (heading) SplitText.create(heading, { type: 'words', autoSplit: true, onSplit(self) {
-      return gsap.from(self.words, { opacity: 0, y: 12, duration: .48, stagger: .025, ease: 'power3.out' });
+    if (heading) SplitText.create(heading, { type: 'words', onSplit(self) {
+      return gsap.from(self.words, { y: 12, duration: .48, stagger: .025, ease: 'power3.out' });
     }});
-  });
+  }
 }

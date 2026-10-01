@@ -14,7 +14,7 @@ export default defineConfig({
     'app/refraction': resolve('static/js/refraction.js'),
   }},
   build: { outDir: 'static/dist', emptyOutDir: true, manifest: true,
-    rollupOptions: { input: ['assets/js/main.js', 'assets/js/public.js', 'static/js/gallery.js', 'static/js/portfolio.js'] }
+    rollupOptions: { input: ['assets/js/main.js', 'assets/js/public-core.js', 'assets/js/public.js', 'static/js/gallery.js', 'static/js/portfolio.js'] }
   },
   server: { cors: { origin: /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/ } }
 });

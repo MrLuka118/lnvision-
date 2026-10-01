@@ -166,7 +166,7 @@ for (const input of document.querySelectorAll('input[name="cal-view"]')) {
 // Edit buttons inside the popover open the form in the dialog.
 popover.addEventListener("click", (event) => {
   const button = event.target.closest("[data-edit-url]");
-  if (button) openDialog(button.dataset.editUrl);
+  if (button) { event.preventDefault(); openDialog(button.dataset.editUrl); }
 });
 
 // Server responses: HX-Trigger {"calendar:refresh", "dialog:close"}.

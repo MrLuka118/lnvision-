@@ -62,11 +62,11 @@ await flow('account-menu', true, async (page, check) => {
   const before = await page.evaluate(() => document.documentElement.dataset.theme || '');
   const light = page.locator('#account-menu input[value="light"], #account-menu [value="light"]').first();
   if (await light.count()) {
-    await light.check({ force: true });
+    await light.locator("..").click();
     await page.waitForTimeout(200);
     const after = await page.evaluate(() => document.documentElement.dataset.theme || '');
     check('theme switch changes theme', after !== before, `${before} -> ${after}`);
-    await page.locator('#account-menu [value="dark"]').first().check({ force: true });
+    await page.locator('#account-menu [value="dark"]').first().locator('..').click();
   } else check('theme switch present', false);
 });
 

@@ -67,15 +67,15 @@ Fix order: functional first, then shared tokens/components, then pages.
   boundaries). Fix: a stronger `--line-strong` for inputs and checkboxes.
 - [x] **B4 M – `ink-3` on raised surfaces is 4.4:1** (tertiary meta text on list rows). Fix: lift
   `--ink-3`.
-- [ ] **B5 M – heading scale too flat.** Section H2s ("Izbor strank", "Kdaj in kje") are nearly the
+- [x] **B5 M – heading scale too flat.** Section H2s ("Izbor strank", "Kdaj in kje") are nearly the
   size of the page H1, and stat numbers compete with the title. Fix: a clear section-title
   token (`.section-title`), smaller stat numerals.
-- [ ] **B6 M – list rows truncate the primary text first.**
+- [x] **B6 M – list rows truncate the primary text first.**
   - clients on mobile: "Anže Kast…", because the two-line meta column keeps its full width
   - shoot rows on client detail
 
   Fix: the shared row lets the title shrink last and the meta wrap under it on narrow screens.
-- [ ] **B7 L – form grid misalignment:** a select next to an input with help text sits 13 px lower
+- [x] **B7 L – form grid misalignment:** a select next to an input with help text sits 13 px lower
   (shoot form "Paket"/"Cena"). Fix: align field grid items to start.
 
 ## C. Pages
@@ -83,14 +83,18 @@ Fix order: functional first, then shared tokens/components, then pages.
 - [x] **C1 H – client gallery hero and grid (1440 px).** The grid fills two columns and leaves the
   right third empty, and the cover's title sits low and heavy. Fix: balanced columns, refined
   hero (owned by lead).
-- [ ] **C2 M – dashboard, desktop:** the "Čakajo na odgovor" heading and the "Vsa povpraševanja"
+- [x] **C2 M – dashboard, desktop:** the "Čakajo na odgovor" heading and the "Vsa povpraševanja"
   link wrap to two lines in the narrow aside. Fix: header row stacks the link and the heading
   stays on one line.
-- [ ] **C3 M – shoot detail: time shows "00:00"** for an inquiry that has a date but no time.
+- [x] **C3 M – shoot detail: time shows "00:00"** for an inquiry that has a date but no time.
   Fix: show "Čas še ni določen" when the time is unset or all-day.
-- [ ] **C4 M – calendar week/day view:** one-hour events clip the title mid-line ("Sestanek:
+- [x] **C4 M – calendar week/day view:** one-hour events clip the title mid-line ("Sestanek:
   Špela / Rozman" cut in half). Fix: short events show time + single-line title with ellipsis.
-- [ ] **C5 L – styleguide:** demo buttons (lightbox toolbar, dialog actions) do nothing. That is
+- [x] **C5 L – styleguide:** demo buttons (lightbox toolbar, dialog actions) do nothing. That is
   expected on a style page, so it stays as it is.
-- [ ] **C6 L – portfolio public:** the "Nedavne zgodbe" grid leaves an empty third column with two
+- [x] **C6 L – portfolio public:** the "Nedavne zgodbe" grid leaves an empty third column with two
   stories. Fix: auto-fit grid.
+
+2026-09-28: re-audited during Codex completion. Warm darkroom/print-room palette replaces
+slate. Existing B5–B7/C2–C6 fixes verified and dashboard mobile rows refined. See PROGRESS.md
+and docs/VERIFICATION.md for current evidence.
